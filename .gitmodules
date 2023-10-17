@@ -1,0 +1,6 @@
+[submodule "CraftNow/vendor/spdlog"]
+	path = CraftNow/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "CraftNow/vendor/GLFW"]
+	path = CraftNow/vendor/GLFW
+	url = https://github.com/TheCherno/glfw
