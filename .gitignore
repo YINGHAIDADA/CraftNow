@@ -1,7 +1,20 @@
-#Dir
-.vs/
+# Binaries
 bin/
 bin-int/
+Intermediates/
 
-#Files
-*.user
+# CraftNow files
+*.log
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
+
+# Directories
+CraftNow/vendor/VulkanSDK
+CraftNownut/assets/cache
+scripts/__pycache__
