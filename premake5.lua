@@ -12,8 +12,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "CraftNow/vendor/GLFW/include"
+IncludeDir["Glad"] = "CraftNow/vendor/Glad/include"
 
 include "CraftNow/vendor/GLFW"
+include "CraftNow/vendor/Glad"
 
 project "CraftNow"
 	location "CraftNow"
@@ -36,12 +38,14 @@ project "CraftNow"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 

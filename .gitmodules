@@ -3,4 +3,4 @@
 	url = https://github.com/gabime/spdlog
 [submodule "CraftNow/vendor/GLFW"]
 	path = CraftNow/vendor/GLFW
-	url = https://github.com/TheCherno/glfw
+	url = https://github.com/YINGHAIDADA/glfw

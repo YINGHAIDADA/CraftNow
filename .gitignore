@@ -9,11 +9,11 @@ Intermediates/
 # Visual Studio files and folder
 .vscode/
 .vs/
-**.sln
-**.vcxproj
-**.vcxproj.filters
-**.vcxproj.user
-**.csproj
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.csproj
 
 # Directories
 CraftNow/vendor/VulkanSDK
