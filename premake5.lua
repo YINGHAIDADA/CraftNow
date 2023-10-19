@@ -57,7 +57,8 @@ project "CraftNow"
 		defines
 		{
 			"CN_PLATFORM_WINDOWS",
-			"CN_BUILD_DLL"
+			"CN_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands

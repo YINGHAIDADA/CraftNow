@@ -6,6 +6,8 @@
 #include "CraftNow/Events/MouseEvent.h"
 #include "CraftNow/Events/KeyEvent.h"
 
+#include <glad/glad.h>
+
 namespace CraftNow {
 
 	static bool s_GLFWInitialized = false;
@@ -48,7 +50,7 @@ namespace CraftNow {
 		{
 			//CN_PROFILE_SCOPE("glfwInit");
 			int success = glfwInit();
-			CN_CORE_ASSERT(success, "Could not initialize GLFW!");
+			CN_CORE_ASSERT(success, "GLFW初始化失败!");
 			glfwSetErrorCallback(GLFWErrorCallback);
 
 			s_GLFWInitialized = true;
@@ -56,6 +58,10 @@ namespace CraftNow {
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
+
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		CN_CORE_ASSERT(status, "初始化Glad失败!");
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 

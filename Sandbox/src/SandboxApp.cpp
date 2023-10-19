@@ -11,7 +11,7 @@ public:
 
 	void OnUpdate() override
 	{
-		CN_INFO("ExampleLayer::Update");
+		//CN_INFO("ExampleLayer::Update");
 	}
 
 	void OnEvent(CraftNow::Event& event) override
