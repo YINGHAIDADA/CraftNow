@@ -21,8 +21,6 @@ namespace CraftNow {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		CN_CORE_TRACE("{0}", e);
-
 		//从最上层开始迭代检查事件触发
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
