@@ -37,6 +37,12 @@
     <ClInclude Include="src\CraftNow\Events\MouseEvent.h">
       <Filter>CraftNow\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\CraftNow\Layer.h">
+      <Filter>CraftNow</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CraftNow\LayerStack.h">
+      <Filter>CraftNow</Filter>
+    </ClInclude>
     <ClInclude Include="src\CraftNow\Log.h">
       <Filter>CraftNow</Filter>
     </ClInclude>
@@ -50,6 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CraftNow\Application.cpp">
+      <Filter>CraftNow</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CraftNow\Layer.cpp">
+      <Filter>CraftNow</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CraftNow\LayerStack.cpp">
       <Filter>CraftNow</Filter>
     </ClCompile>
     <ClCompile Include="src\CraftNow\Log.cpp">

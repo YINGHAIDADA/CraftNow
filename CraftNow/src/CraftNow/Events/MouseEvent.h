@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CraftNow/Events/Event.h"
 //#include "CraftNow/Core/MouseCodes.h"

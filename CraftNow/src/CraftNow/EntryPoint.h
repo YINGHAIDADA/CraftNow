@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifdef CN_PLATFORM_WINDOWS
 

@@ -1,10 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 //For use by CraftNow Application
 #include "CraftNow/Application.h"
+#include "CraftNow/Layer.h"
 #include "CraftNow/Log.h"
 
 
-//------------½øÈëµã--------------------
+//------------è¿›å…¥ç‚¹----------------
 #include "CraftNow/EntryPoint.h"
-//------------½øÈëµã--------------------
+//------------è¿›å…¥ç‚¹----------------

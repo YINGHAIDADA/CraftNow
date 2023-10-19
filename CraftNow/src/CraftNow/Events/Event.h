@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "cnpch.h"
 #include "CraftNow/Core.h"
@@ -12,7 +12,7 @@ namespace CraftNow {
 	// For the future, a better strategy might be to buffer events in an event
 	// bus and process them during the "event" part of the update stage.
 
-	//ÊÂ¼þ¾ßÌå
+	//äº‹ä»¶å…·ä½“
 	enum class EventType
 	{
 		None = 0,
@@ -22,7 +22,7 @@ namespace CraftNow {
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
-	//ÊÂ¼þÀàÐÍ
+	//äº‹ä»¶ç±»åž‹
 	enum EventCategory
 	{
 		None = 0,
@@ -41,8 +41,10 @@ namespace CraftNow {
 
 	class CRAFTNOW_API Event
 	{
-		friend class EventDispatcher;
 	public:
+		bool Handled = false;
+
+
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
 		virtual int GetCategoryFlags() const = 0;
@@ -73,7 +75,7 @@ namespace CraftNow {
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
-				m_Event.m_Handled = func(*(T*)&m_Event);
+				m_Event.Handled = func(*(T*)&m_Event);
 				return true;
 			}
 			return false;

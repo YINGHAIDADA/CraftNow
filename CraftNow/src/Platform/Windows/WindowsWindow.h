@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CraftNow/Window.h"
 //#include "Hazel/Renderer/GraphicsContext.h"

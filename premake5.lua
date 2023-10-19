@@ -1,4 +1,4 @@
-workspace "CraftNow"
+﻿workspace "CraftNow"
 	architecture "x64"
 
 	configurations
@@ -67,15 +67,21 @@ project "CraftNow"
 			"CN_DEBUG",
 			"CN_ENABLE_ASSERTS"
 		}
+		staticruntime "off"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "CN_RELEASE"
-		symbols "On"
+		staticruntime "off"
+		runtime "Release"
+		optimize "On"
 
 	filter "configurations:Dist"
 		defines "CN_DIST"
-		symbols "On"
+		staticruntime "off"
+		runtime "Release"
+		optimize "On"
 
 project "Sandbox"
 	location "Sandbox"
@@ -114,12 +120,18 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "CN_DEBUG"
+		staticruntime "off"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "CN_RELEASE"
+		staticruntime "off"
+		runtime "Release"
 		symbols "On"
 
 	filter "configurations:Dist"
 		defines "CN_DIST"
+		staticruntime "off"
+		runtime "Release"
 		symbols "On"
