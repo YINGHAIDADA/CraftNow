@@ -7,3 +7,6 @@
 [submodule "CraftNow/vendor/imgui"]
 	path = CraftNow/vendor/imgui
 	url = https://github.com/YINGHAIDADA/imgui
+[submodule "CraftNow/vendor/glm"]
+	path = CraftNow/vendor/glm
+	url = https://github.com/g-truc/glm

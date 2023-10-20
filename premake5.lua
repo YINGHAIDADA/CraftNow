@@ -14,6 +14,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "CraftNow/vendor/GLFW/include"
 IncludeDir["Glad"] = "CraftNow/vendor/Glad/include"
 IncludeDir["ImGui"] = "CraftNow/vendor/imgui"
+IncludeDir["glm"] = "CraftNow/vendor/glm"
 
 include "CraftNow/vendor/GLFW"
 include "CraftNow/vendor/Glad"
@@ -35,7 +36,9 @@ project "CraftNow"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl",
 	}
 
 	includedirs
@@ -44,7 +47,8 @@ project "CraftNow"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -104,7 +108,8 @@ project "Sandbox"
 	includedirs
 	{
 		"CraftNow/vendor/spdlog/include",
-		"CraftNow/src"
+		"CraftNow/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links
