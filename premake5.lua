@@ -23,6 +23,8 @@ project "CraftNow"
 	location "CraftNow"
 	kind "SharedLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -54,8 +56,6 @@ project "CraftNow"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -71,31 +71,26 @@ project "CraftNow"
 		}
 
 	filter "configurations:Debug"
-		defines
-		{
-			"CN_DEBUG",
-			"CN_ENABLE_ASSERTS"
-		}
-		staticruntime "off"
+		defines "CN_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "CN_RELEASE"
-		staticruntime "off"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "CN_DIST"
-		staticruntime "off"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -118,8 +113,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -129,18 +122,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "CN_DEBUG"
-		staticruntime "off"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "CN_RELEASE"
-		staticruntime "off"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "CN_DIST"
-		staticruntime "off"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
