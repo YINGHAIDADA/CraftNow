@@ -16,7 +16,7 @@ public:
 
 	void OnEvent(CraftNow::Event& event) override
 	{
-		CN_TRACE("{0}", event);
+		CN_TRACE("{0}:{1}", m_DebugName, event);
 	}
 };
 
@@ -26,6 +26,7 @@ public:
 	Sandbox() 
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new CraftNow::ImGuiLayer());
 	}
 	~Sandbox()
 	{

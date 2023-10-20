@@ -5,6 +5,8 @@
 #include "CraftNow/Layer.h"
 #include "CraftNow/Log.h"
 
+#include "CraftNow/ImGui/ImGuiLayer.h"
+
 
 //------------进入点----------------
 #include "CraftNow/EntryPoint.h"
