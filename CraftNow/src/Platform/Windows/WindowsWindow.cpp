@@ -6,8 +6,6 @@
 #include "CraftNow/Events/MouseEvent.h"
 #include "CraftNow/Events/KeyEvent.h"
 
-#include <glad/glad.h>
-
 namespace CraftNow {
 
 	static bool s_GLFWInitialized = false;

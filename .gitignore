@@ -6,6 +6,9 @@ Intermediates/
 # CraftNow files
 *.log
 
+#imgui file
+**.ini
+
 # Visual Studio files and folder
 .vscode/
 .vs/

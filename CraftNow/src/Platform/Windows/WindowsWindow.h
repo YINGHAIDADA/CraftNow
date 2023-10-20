@@ -4,6 +4,7 @@
 //#include "Hazel/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 
 namespace CraftNow {
