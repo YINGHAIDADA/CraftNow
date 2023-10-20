@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "cnpch.h"
-
 #include "CraftNow/Core.h"
 #include "CraftNow/Events/Event.h"
 
@@ -39,7 +37,7 @@ namespace CraftNow {
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
-		//virtual void* GetNativeWindow() const = 0;
+		virtual void* GetNativeWindow() const = 0;
 
 		static Window* Create(const WindowProps& props = WindowProps());
 	};
