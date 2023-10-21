@@ -109,6 +109,7 @@ project "Sandbox"
 	{
 		"CraftNow/vendor/spdlog/include",
 		"CraftNow/src",
+		"CraftNow/vendor",
 		"%{IncludeDir.glm}"
 	}
 

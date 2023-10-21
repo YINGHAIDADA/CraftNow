@@ -7,6 +7,8 @@
 #include "CraftNow/Events/Event.h"
 #include "CraftNow/Events/ApplicationEvent.h"
 
+#include "CraftNow/ImGui/ImGuiLayer.h"
+
 int main(int argc, char** argv);
 
 namespace CraftNow {
@@ -32,6 +34,7 @@ namespace CraftNow {
 
 	private:
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
