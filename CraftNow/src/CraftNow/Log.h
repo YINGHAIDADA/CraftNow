@@ -28,11 +28,11 @@ namespace CraftNow {
 #define CN_CORE_INFO(...)	 ::CraftNow::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define CN_CORE_WARN(...)	 ::CraftNow::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define CN_CORE_ERROR(...)	 ::CraftNow::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define CN_CORE_FATAL(...)   ::CraftNow::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define CN_CORE_FATAL(...)   ::CraftNow::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client Log macros
 #define CN_TRACE(...)        ::CraftNow::Log::GetClientLogger()->trace(__VA_ARGS__)
 #define CN_INFO(...)	     ::CraftNow::Log::GetClientLogger()->info(__VA_ARGS__)
 #define CN_WARN(...)	     ::CraftNow::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define CN_ERROR(...)	     ::CraftNow::Log::GetClientLogger()->error(__VA_ARGS__)
-#define CN_FATAL(...)        ::CraftNow::Log::GetClientLogger()->fatal(__VA_ARGS__)
+#define CN_FATAL(...)        ::CraftNow::Log::GetClientLogger()->critical(__VA_ARGS__)

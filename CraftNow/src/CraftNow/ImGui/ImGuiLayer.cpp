@@ -20,10 +20,6 @@ namespace CraftNow
     {
     }
 
-    ImGuiLayer::~ImGuiLayer()
-    {
-    }
-
     void ImGuiLayer::OnAttach()
     {
         // 从ImGui样例代码中复制初始化
@@ -85,7 +81,8 @@ namespace CraftNow
     {
         ImGuiIO& io = ImGui::GetIO();
         Application& app = Application::Get();
-        io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
+        //TODO: app.GetWindow().GetWidth()方法原始数据类型是否可以改成float
+        io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
 
         // Rendering
         ImGui::Render();

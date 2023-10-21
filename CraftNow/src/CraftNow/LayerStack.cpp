@@ -3,10 +3,6 @@
 
 namespace CraftNow
 {
-	LayerStack::LayerStack()
-	{
-		
-	}
 
 	LayerStack::~LayerStack()
 	{
