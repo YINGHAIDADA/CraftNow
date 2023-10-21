@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-#include "CraftNow/Core.h"
+#include "CraftNow/Core/Core.h"
 #include "CraftNow/Events/Event.h"
 
 namespace CraftNow {
-	class CRAFTNOW_API Layer
+	class Layer
 	{
 	public:
 		Layer(const std::string& name = "Layer");

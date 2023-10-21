@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "CraftNow/Log.h"
+#include "CraftNow/Core/Log.h"
 
 
 #ifdef  CN_PLATFORM_WINDOWS

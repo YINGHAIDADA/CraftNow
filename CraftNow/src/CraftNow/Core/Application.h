@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "CraftNow/Core.h"
+#include "CraftNow/Core/Core.h"
 
 #include "Window.h"
-#include "CraftNow/LayerStack.h"
+#include "CraftNow/Core/LayerStack.h"
 #include "CraftNow/Events/Event.h"
 #include "CraftNow/Events/ApplicationEvent.h"
 
@@ -13,7 +13,7 @@ int main(int argc, char** argv);
 
 namespace CraftNow {
 
-	class CRAFTNOW_API Application
+	class Application
 	{
 	public:
 		Application();

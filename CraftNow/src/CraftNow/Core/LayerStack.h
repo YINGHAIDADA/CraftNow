@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "CraftNow/Core.h"
-#include "CraftNow/Layer.h"
+#include "CraftNow/Core/Core.h"
+#include "CraftNow/Core/Layer.h"
 
 namespace CraftNow {
 
-	class CRAFTNOW_API LayerStack
+	class LayerStack
 	{
 	public:
 		LayerStack() = default;

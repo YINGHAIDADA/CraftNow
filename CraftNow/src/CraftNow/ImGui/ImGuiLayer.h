@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "CraftNow/Layer.h"
+#include "CraftNow/Core/Layer.h"
 
 #include "CraftNow/Events/ApplicationEvent.h"
 #include "CraftNow/Events/KeyEvent.h"
@@ -9,7 +9,7 @@
 namespace CraftNow
 {
 
-	class CRAFTNOW_API ImGuiLayer : public Layer
+	class ImGuiLayer : public Layer
 	{
 	public:
 		ImGuiLayer();

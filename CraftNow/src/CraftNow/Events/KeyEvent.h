@@ -4,7 +4,7 @@
 
 namespace CraftNow {
 
-	class CRAFTNOW_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -17,7 +17,7 @@ namespace CraftNow {
 		int m_KeyCode;
 	};
 
-	class CRAFTNOW_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(const int keycode, int repeatCount)
@@ -37,7 +37,7 @@ namespace CraftNow {
 		int m_repeatCount;
 	};
 
-	class CRAFTNOW_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(const int keycode)
@@ -53,7 +53,7 @@ namespace CraftNow {
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class CRAFTNOW_API KeyTypedEvent : public KeyEvent
+	class KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(const int keycode)

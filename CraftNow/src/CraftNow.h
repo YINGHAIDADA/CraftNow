@@ -1,14 +1,14 @@
 ﻿#pragma once
 
 //For use by CraftNow Application
-#include "CraftNow/Application.h"
-#include "CraftNow/Input.h"
-#include "CraftNow/Layer.h"
-#include "CraftNow/Log.h"
+#include "CraftNow/Core/Application.h"
+#include "CraftNow/Core/Input.h"
+#include "CraftNow/Core/Layer.h"
+#include "CraftNow/Core/Log.h"
 
 #include "CraftNow/ImGui/ImGuiLayer.h"
 
 
 //------------进入点----------------
-#include "CraftNow/EntryPoint.h"
+#include "CraftNow/Core/EntryPoint.h"
 //------------进入点----------------

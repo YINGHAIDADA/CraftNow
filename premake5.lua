@@ -22,7 +22,7 @@ include "CraftNow/vendor/imgui"
 
 project "CraftNow"
 	location "CraftNow"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "off"
@@ -67,11 +67,6 @@ project "CraftNow"
 			"CN_PLATFORM_WINDOWS",
 			"CN_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
-		}
-
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 
 	filter "configurations:Debug"

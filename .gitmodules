@@ -1,12 +1,16 @@
 [submodule "CraftNow/vendor/spdlog"]
 	path = CraftNow/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+	branch = v1.x
 [submodule "CraftNow/vendor/GLFW"]
 	path = CraftNow/vendor/GLFW
 	url = https://github.com/YINGHAIDADA/glfw
+	branch = master
 [submodule "CraftNow/vendor/imgui"]
 	path = CraftNow/vendor/imgui
 	url = https://github.com/YINGHAIDADA/imgui
+	branch = docking
 [submodule "CraftNow/vendor/glm"]
 	path = CraftNow/vendor/glm
 	url = https://github.com/g-truc/glm
+	branch = master

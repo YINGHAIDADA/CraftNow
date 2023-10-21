@@ -1,18 +1,19 @@
 ﻿#pragma once
+#include "CraftNow/Core/Log.h"
 
-
-#ifdef CN_PLATFORM_WINDOWS
-	#ifdef CN_BUILD_DLL
-		#define CRAFTNOW_API __declspec(dllexport)
-	#else
-		#define CRAFTNOW_API __declspec(dllimport)
-	#endif // CN_BUILD_DLL
-#else
-	#error CraftNow only support Windows!
-#endif // CN_PLATFORM_WINDOWS
 
 #ifdef CN_DEBUG
-#define HZ_ENABLE_ASSERTS
+	#if defined(CN_PLATFORM_WINDOWS)
+		#define CN_DEBUGBREAK() __debugbreak()
+	#elif defined(CN_PLATFORM_LINUX)
+		#include <signal.h>
+		#define CN_DEBUGBREAK() raise(SIGTRAP)
+	#else
+		#error "Platform doesn't support debugbreak yet!"
+	#endif
+		#define CN_ENABLE_ASSERTS
+#else
+	#define CN_DEBUGBREAK()
 #endif
 
 #ifdef CN_ENABLE_ASSERTS

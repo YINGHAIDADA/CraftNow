@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include "CraftNow/Core/Core.h"
+#include "CraftNow/Core/Application.h"
 
 #ifdef CN_PLATFORM_WINDOWS
 

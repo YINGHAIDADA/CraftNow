@@ -1,13 +1,19 @@
 ﻿#pragma once
 
-#include "CraftNow/Core.h"
+#include "CraftNow/Core/Core.h"
 
-#include "spdlog/spdlog.h"
-#include "spdlog/fmt/ostr.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/string_cast.hpp"
+
+// This ignores all warnings raised inside External headers
+#pragma warning(push, 0)
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
+#pragma warning(pop)
 
 namespace CraftNow {
 
-	class CRAFTNOW_API Log
+	class Log
 	{
 	private:
 		static std::shared_ptr<spdlog::logger> s_CoreLogger;

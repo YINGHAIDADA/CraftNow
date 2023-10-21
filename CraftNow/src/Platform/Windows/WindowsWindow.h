@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "CraftNow/Window.h"
+#include "CraftNow/Core/Window.h"
 //#include "Hazel/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

@@ -6,7 +6,7 @@
 #include <backends/imgui_impl_glfw.h>
 #include "backends/imgui_impl_opengl3.h"
 
-#include "CraftNow/Application.h"
+#include "CraftNow/Core/Application.h"
 
 //暂时性
 #include "GLFW/glfw3.h"

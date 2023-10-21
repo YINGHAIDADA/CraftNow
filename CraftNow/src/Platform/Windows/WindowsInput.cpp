@@ -1,7 +1,7 @@
 ﻿#include "cnpch.h"
-#include "CraftNow/Input.h"
+#include "CraftNow/Core/Input.h"
 
-#include "CraftNow/Application.h"
+#include "CraftNow/Core/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace CraftNow {

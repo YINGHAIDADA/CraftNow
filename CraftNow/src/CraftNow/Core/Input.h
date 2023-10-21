@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-#include "CraftNow/KeyCodes.h"
-#include "CraftNow/MouseCodes.h"
+#include "CraftNow/Core/KeyCodes.h"
+#include "CraftNow/Core/MouseCodes.h"
 
 #include <glm/glm.hpp>
 
 namespace CraftNow {
 
-	class CRAFTNOW_API Input
+	class Input
 	{
 	public:
 		static bool IsKeyPressed(KeyCode key);

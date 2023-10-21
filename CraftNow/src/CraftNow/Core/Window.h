@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "CraftNow/Core.h"
+#include "CraftNow/Core/Core.h"
 #include "CraftNow/Events/Event.h"
 
 namespace CraftNow {
@@ -20,7 +20,7 @@ namespace CraftNow {
 	};
 
 	// Interface representing a desktop system based Window
-	class CRAFTNOW_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
