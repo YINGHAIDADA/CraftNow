@@ -1,7 +1,9 @@
 ﻿#include "cnpch.h"
-#include "Application.h"
+#include "CraftNow/Application.h"
 
 #include <glad/glad.h>
+
+#include "CraftNow/Input.h"
 
 namespace CraftNow
 {

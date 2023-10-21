@@ -2,6 +2,7 @@
 
 //For use by CraftNow Application
 #include "CraftNow/Application.h"
+#include "CraftNow/Input.h"
 #include "CraftNow/Layer.h"
 #include "CraftNow/Log.h"
 

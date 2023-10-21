@@ -7,7 +7,7 @@
 
 namespace CraftNow {
 
-	class Input
+	class CRAFTNOW_API Input
 	{
 	public:
 		static bool IsKeyPressed(KeyCode key);
