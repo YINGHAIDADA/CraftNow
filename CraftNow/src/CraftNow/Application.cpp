@@ -60,9 +60,14 @@ namespace CraftNow
 			m_Window->OnUpdate();
 		}
 	}
+
 	bool Application::OnWindowClose(WindowCloseEvent &e)
 	{
 		m_Running = false;
 		return true;
+	}
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		return false;
 	}
 }

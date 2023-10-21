@@ -7,6 +7,8 @@
 #include "CraftNow/Events/Event.h"
 #include "CraftNow/Events/ApplicationEvent.h"
 
+int main(int argc, char** argv);
+
 namespace CraftNow {
 
 	class CRAFTNOW_API Application
@@ -14,8 +16,6 @@ namespace CraftNow {
 	public:
 		Application();
 		virtual ~Application();
-
-		void Run();
 
 		void OnEvent(Event &e);
 
@@ -26,14 +26,18 @@ namespace CraftNow {
 		inline Window &GetWindow() { return *m_Window; }
 
 	private:
+		void Run();
 		bool OnWindowClose(WindowCloseEvent &e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
+	private:
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
 	private:
 		static Application *s_Instance;
+		friend int ::main(int argc, char** argv);
 	};
 
 	// To be defined in Client
