@@ -52,7 +52,7 @@ namespace CraftNow
 
 		while (m_Running)
 		{
-			glClearColor(0.738, 0.761, 0.777, 1);
+			glClearColor((GLfloat)0.738, (GLfloat)0.761, (GLfloat)0.777, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			// 从最底开始层更新每一层
