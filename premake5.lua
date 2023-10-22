@@ -59,14 +59,19 @@ project "CraftNow"
 		"opengl32.lib"
 	}
 
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
+	}
+
 	filter "system:windows"
 		systemversion "latest"
 
 		defines
 		{
 			"CN_PLATFORM_WINDOWS",
-			"CN_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
+			"CN_BUILD_DLL"
 		}
 
 	filter "configurations:Debug"
