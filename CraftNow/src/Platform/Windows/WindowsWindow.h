@@ -1,10 +1,9 @@
 ﻿#pragma once
 
 #include "CraftNow/Core/Window.h"
-//#include "Hazel/Renderer/GraphicsContext.h"
+#include "CraftNow/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
 
 
 namespace CraftNow {
@@ -31,6 +30,7 @@ namespace CraftNow {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 		//Scope<GraphicsContext> m_Context;
 
 		struct WindowData

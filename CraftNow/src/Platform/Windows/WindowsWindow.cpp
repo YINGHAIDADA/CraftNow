@@ -6,6 +6,8 @@
 #include "CraftNow/Events/MouseEvent.h"
 #include "CraftNow/Events/KeyEvent.h"
 
+#include "Platform/OpenGL/OpenGLContext.h"
+
 namespace CraftNow {
 
 	static bool s_GLFWInitialized = false;
@@ -55,10 +57,10 @@ namespace CraftNow {
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		CN_CORE_ASSERT(status, "初始化Glad失败!");
+		
+		//根据平台不同抽象出渲染API
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
@@ -168,7 +170,7 @@ namespace CraftNow {
 	{
 
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 
 	}
 

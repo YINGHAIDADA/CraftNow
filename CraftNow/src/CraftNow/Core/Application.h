@@ -38,6 +38,9 @@ namespace CraftNow {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
+		//--------暂时渲染三角形---------
+		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		//--------暂时渲染三角形---------
 	private:
 		static Application *s_Instance;
 		friend int ::main(int argc, char** argv);
