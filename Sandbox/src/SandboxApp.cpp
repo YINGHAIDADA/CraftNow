@@ -1,6 +1,6 @@
 ﻿#include "CraftNow.h"
 
-#include "imgui/imgui.h"
+//#include "imgui/imgui.h"
 
 class ExampleLayer : public CraftNow::Layer
 {
@@ -11,12 +11,12 @@ public:
 
 	}
 
-	virtual void OnImGuiRender() override
-	{
-		ImGui::Begin("Test");
-		ImGui::Text("Hello World");
-		ImGui::End();
-	}
+	//virtual void OnImGuiRender() override
+	//{
+	//	ImGui::Begin("Test");
+	//	ImGui::Text("Hello World");
+	//	ImGui::End();
+	//}
 
 	void OnUpdate() override
 	{
