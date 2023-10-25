@@ -9,6 +9,8 @@
 
 #include "CraftNow/ImGui/ImGuiLayer.h"
 
+#include "CraftNow/Renderer/Shader.h"
+
 int main(int argc, char** argv);
 
 namespace CraftNow {
@@ -29,6 +31,7 @@ namespace CraftNow {
 
 	private:
 		void Run();
+		void Draw();
 		bool OnWindowClose(WindowCloseEvent &e);
 		bool OnWindowResize(WindowResizeEvent& e);
 
@@ -38,9 +41,10 @@ namespace CraftNow {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		//--------暂时渲染三角形---------
+		//--------暂时---------
 		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
-		//--------暂时渲染三角形---------
+		Scope<Shader> m_Shader;
+		//--------暂时---------
 	private:
 		static Application *s_Instance;
 		friend int ::main(int argc, char** argv);
