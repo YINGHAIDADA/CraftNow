@@ -10,6 +10,7 @@
 #include "CraftNow/ImGui/ImGuiLayer.h"
 
 #include "CraftNow/Renderer/Shader.h"
+#include "CraftNow/Renderer/Buffer.h"
 
 int main(int argc, char** argv);
 
@@ -42,8 +43,10 @@ namespace CraftNow {
 		LayerStack m_LayerStack;
 
 		//--------暂时---------
-		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		unsigned int m_VertexArray;
 		Scope<Shader> m_Shader;
+		Ref<VertexBuffer> m_VertexBuffer;
+		Ref<IndexBuffer> m_IndexBuffer;
 		//--------暂时---------
 	private:
 		static Application *s_Instance;

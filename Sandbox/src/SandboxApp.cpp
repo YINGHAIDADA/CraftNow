@@ -34,7 +34,7 @@ class Sandbox : public CraftNow::Application
 public:
 	Sandbox() 
 	{
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
 	}
 	~Sandbox()
 	{
