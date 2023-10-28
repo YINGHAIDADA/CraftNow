@@ -16,7 +16,7 @@ namespace CraftNow {
 	{
 		switch (severity)
 		{
-		case GL_DEBUG_SEVERITY_HIGH:         CN_CORE_FATAL(message); return;
+		case GL_DEBUG_SEVERITY_HIGH:         CN_CORE_CRITICAL(message); return;
 		case GL_DEBUG_SEVERITY_MEDIUM:       CN_CORE_ERROR(message); return;
 		case GL_DEBUG_SEVERITY_LOW:          CN_CORE_WARN(message); return;
 		case GL_DEBUG_SEVERITY_NOTIFICATION: CN_CORE_TRACE(message); return;
