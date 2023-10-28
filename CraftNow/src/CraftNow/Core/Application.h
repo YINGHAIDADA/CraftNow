@@ -11,6 +11,7 @@
 
 #include "CraftNow/Renderer/Shader.h"
 #include "CraftNow/Renderer/Buffer.h"
+#include "CraftNow/Renderer/VertexArray.h"
 
 int main(int argc, char** argv);
 
@@ -43,10 +44,11 @@ namespace CraftNow {
 		LayerStack m_LayerStack;
 
 		//--------暂时---------
-		unsigned int m_VertexArray;
-		Scope<Shader> m_Shader;
-		Ref<VertexBuffer> m_VertexBuffer;
-		Ref<IndexBuffer> m_IndexBuffer;
+		Ref<Shader> m_Shader;
+		Ref<VertexArray> m_VertexArray;
+
+		Ref<Shader> m_BlueShader;
+		Ref<VertexArray> m_SquareVA;
 		//--------暂时---------
 	private:
 		static Application *s_Instance;

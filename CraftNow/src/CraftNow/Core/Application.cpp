@@ -24,8 +24,7 @@ namespace CraftNow
 		PushOverlay(m_ImGuiLayer);
 
 		//--------暂时渲染三角形---------
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
+		m_VertexArray = VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -33,35 +32,39 @@ namespace CraftNow
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		m_VertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
+		Ref<VertexBuffer> vertexBuffer = VertexBuffer::Create(vertices,sizeof(vertices));
 
-		{
-			BufferLayout layout = {
-				{ShaderDataType::Float3, "a_Position"},
-				{ShaderDataType::Float4, "a_Color"}
-			};
-
-			m_VertexBuffer->SetLayout(layout);
-		}
-
-		uint32_t index = 0;
-
-		const auto& layout = m_VertexBuffer->GetLayout();
-		for (const auto& element : layout)
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 
-				element.GetComponentCount(), 
-				GL_FLOAT, 
-				element.Normalized ? GL_TRUE : GL_FALSE, 
-				layout.GetStride(),
-				(const void*)element.Offset);
-			index++;
-		}
+		vertexBuffer->SetLayout({
+			{ShaderDataType::Float3, "a_Position"},
+			{ShaderDataType::Float4, "a_Color"}
+			});
+		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		m_IndexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+		Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+		m_VertexArray->SetIndexBuffer(indexBuffer);
+
+
+		m_SquareVA = VertexArray::Create();
+		float squareVertices[3 * 4] = {
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f,
+			 0.75f,  0.75f, 0.0f,
+			-0.75f,  0.75f, 0.0f
+		};
+
+		Ref<VertexBuffer> squareVB = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+
+		squareVB->SetLayout({
+			{ ShaderDataType::Float3, "a_Position" }
+			});
+		m_SquareVA->AddVertexBuffer(squareVB);
+
+		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+		Ref<IndexBuffer> squareIB = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		m_SquareVA->SetIndexBuffer(squareIB);
+
 		
 		//--------暂时渲染三角形---------
 
@@ -72,12 +75,10 @@ namespace CraftNow
 			layout(location = 0) in vec3 a_Position;
 			layout(location = 1) in vec4 a_Color;
 			
-			out vec3 v_Position;
 			out vec4 v_Color;
 
 			void main()
 			{
-				v_Position = a_Position;
 				v_Color = a_Color;
 				gl_Position = vec4(a_Position, 1.0);	
 			}
@@ -88,17 +89,41 @@ namespace CraftNow
 			
 			layout(location = 0) out vec4 color;
 
-			in vec3 v_Position;
 			in vec4 v_Color;
 
 			void main()
 			{
-				color = vec4(v_Position * 0.5 + 0.5, 1.0);
-				//color = v_Color;
+				color = v_Color;
 			}
 		)";
 
 		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+
+
+		std::string blueShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			out vec3 v_Position;
+			void main()
+			{
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);	
+			}
+		)";
+
+		std::string blueShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+			in vec3 v_Position;
+			void main()
+			{
+				color = vec4(0.3, 0.3, 0.3, 1.0);
+			}
+		)";
+
+		m_BlueShader.reset(new Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
 		//--------暂时shader---------
 	}
 
@@ -143,9 +168,14 @@ namespace CraftNow
 			glClearColor((GLfloat)0.1f, (GLfloat)0.1f, (GLfloat)0.1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+
+			m_BlueShader->Bind();
+			m_SquareVA->Bind();
+			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
 			m_Shader->Bind();
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_VertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			// 从最底开始层更新每一层
 			for (Layer *layer : m_LayerStack)
