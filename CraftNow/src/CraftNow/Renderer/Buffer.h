@@ -68,8 +68,9 @@ namespace CraftNow {
 	class BufferLayout
 	{
 	public:
-		BufferLayout() {}
+		BufferLayout() = default;
 
+		//接受一个初始化字典列表，而不需要多次隐式转换
 		BufferLayout(std::initializer_list<BufferElement> elements)
 			: m_Elements(elements)
 		{
