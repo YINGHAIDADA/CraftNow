@@ -1,7 +1,7 @@
 ﻿#include "cnpch.h"
 #include "CraftNow/Core/Application.h"
 
-#include <glad/glad.h>
+#include "CraftNow/Renderer/Renderer.h"
 
 #include "CraftNow/Core/Input.h"
 
@@ -165,17 +165,14 @@ namespace CraftNow
 		while (m_Running)
 		{
 			//glClearColor(0.738, (GLfloat)0.761, (GLfloat)0.777, 1);
-			glClearColor((GLfloat)0.1f, (GLfloat)0.1f, (GLfloat)0.1f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1});
+			RenderCommand::Clear();
 
-
-			m_BlueShader->Bind();
-			m_SquareVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_BlueShader, m_SquareVA);
 
 			m_Shader->Bind();
 			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_Shader, m_VertexArray);
 
 			// 从最底开始层更新每一层
 			for (Layer *layer : m_LayerStack)
