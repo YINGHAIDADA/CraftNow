@@ -13,6 +13,8 @@
 #include "CraftNow/Renderer/Buffer.h"
 #include "CraftNow/Renderer/VertexArray.h"
 
+#include "CraftNow/Renderer/OrthographicCamera.h"
+
 int main(int argc, char** argv);
 
 namespace CraftNow {
@@ -49,6 +51,8 @@ namespace CraftNow {
 
 		Ref<Shader> m_BlueShader;
 		Ref<VertexArray> m_SquareVA;
+
+		OrthographicCamera m_Camera;
 		//--------暂时---------
 	private:
 		static Application *s_Instance;
