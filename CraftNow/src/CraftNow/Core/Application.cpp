@@ -170,8 +170,6 @@ namespace CraftNow
 
 			Renderer::Submit(m_BlueShader, m_SquareVA);
 
-			m_Shader->Bind();
-			m_VertexArray->Bind();
 			Renderer::Submit(m_Shader, m_VertexArray);
 
 			// 从最底开始层更新每一层
