@@ -1,5 +1,14 @@
+<p align="center">
+  <h1 align="center" style="margin: 0 auto 0 auto;">CraftNow</h1>
+</p>
+<br>
+<p align="center">
+  <img src="https://img.shields.io/github/contributors/yinghaidada/CraftNow?color=0088f&style=for-the-badge&logo=github">
+  <img src="https://img.shields.io/github/issues/yinghaidada/CraftNow?color=4682f2&style=for-the-badge&logo=github">
+  <img src="https://img.shields.io/github/stars/yinghaidada/CraftNow?color=f7bb05&style=for-the-badge&logo=github">
+  <img alt="Views" src="https://komarev.com/ghpvc/?username=CraftNow&color=22d495&label=Views&style=for-the-badge">
+<p>
 # CraftNow
-
 CraftNow 是一个游戏引擎，基于C++和OpenGL，使用GLSL着色器语言，并计划支持Vulcan等其他渲染API。
 受到[Cherno](https://github.com/TheCherno)的启发，为了学习C++和大型项目开发的流程经验。我选择启动一个相对较为复杂的“软件”项目，而不是一个简单的“游戏”，
 因为游戏引擎的复杂程度远高于游戏，意在实际的开发中学习更实践的知识积累经验。
