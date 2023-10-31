@@ -7,13 +7,10 @@
 #include "CraftNow/Events/Event.h"
 #include "CraftNow/Events/ApplicationEvent.h"
 
+#include "CraftNow/Core/Timestep.h"
+
 #include "CraftNow/ImGui/ImGuiLayer.h"
 
-#include "CraftNow/Renderer/Shader.h"
-#include "CraftNow/Renderer/Buffer.h"
-#include "CraftNow/Renderer/VertexArray.h"
-
-#include "CraftNow/Renderer/OrthographicCamera.h"
 
 int main(int argc, char** argv);
 
@@ -44,15 +41,16 @@ namespace CraftNow {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		float m_LastFrameTime = 0.0f;
 
 		//--------暂时---------
-		Ref<Shader> m_Shader;
+		/*Ref<Shader> m_Shader;
 		Ref<VertexArray> m_VertexArray;
 
 		Ref<Shader> m_BlueShader;
 		Ref<VertexArray> m_SquareVA;
 
-		OrthographicCamera m_Camera;
+		OrthographicCamera m_Camera;*/
 		//--------暂时---------
 	private:
 		static Application *s_Instance;

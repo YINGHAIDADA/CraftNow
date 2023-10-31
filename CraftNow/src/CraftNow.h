@@ -8,6 +8,19 @@
 
 #include "CraftNow/ImGui/ImGuiLayer.h"
 
+#include "CraftNow/Core/Timestep.h"
+
+
+//----------Renderer-----------
+#include "CraftNow/Renderer/Renderer.h"
+
+#include "CraftNow/Renderer/Buffer.h"
+#include "CraftNow/Renderer/VertexArray.h"
+
+#include "CraftNow/Renderer/OrthographicCamera.h"
+
+//----------Renderer-----------
+
 
 //------------进入点----------------
 #include "CraftNow/Core/EntryPoint.h"
