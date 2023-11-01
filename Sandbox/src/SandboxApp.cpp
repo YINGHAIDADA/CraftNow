@@ -2,6 +2,7 @@
 
 #include "imgui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public CraftNow::Layer
 {
@@ -34,10 +35,10 @@ public:
 
 		m_SquareVA = CraftNow::VertexArray::Create();
 		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			-0.75f,  0.75f, 0.0f
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
 		};
 
 		CraftNow::Ref<CraftNow::VertexBuffer> squareVB = CraftNow::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
@@ -86,10 +87,10 @@ public:
 			}
 		)";
 
-		m_Shader.reset(new CraftNow::Shader(vertexSrc, fragmentSrc));
+		m_Shader = CraftNow::Shader::Create(vertexSrc, fragmentSrc);
 
 
-		std::string blueShaderVertexSrc = R"(
+		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 
 			layout(location = 0) in vec3 a_Position;
@@ -98,6 +99,7 @@ public:
 			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
+
 			void main()
 			{
 				v_Position = a_Position;
@@ -105,65 +107,88 @@ public:
 			}
 		)";
 
-		std::string blueShaderFragmentSrc = R"(
+		std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 
 			layout(location = 0) out vec4 color;
 			in vec3 v_Position;
+
+			uniform vec3 u_Color;
+
 			void main()
 			{
-				color = vec4(0.3, 0.3, 0.3, 1.0);
+				color = vec4(u_Color, 1.0);
 			}
 		)";
 
-		m_BlueShader.reset(new CraftNow::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
+		m_FloatShader = CraftNow::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 		//--------暂时shader---------
 	}
 
 	virtual void OnImGuiRender() override
 	{
-		
+		ImGui::Begin("ColorSetting");
+		ImGui::ColorEdit3("Color", glm::value_ptr(m_SQColor));
+		ImGui::End();
 	}
 
 	void OnUpdate(CraftNow::Timestep ts) override
 	{
 		//CN_INFO("ExampleLayer::Update");
-		CN_TRACE("间隔时间：{0}s {1}ms", ts.GetSeconds(), ts.GetMilliseconds());
+		//CN_TRACE("间隔时间：{0}s {1}ms", ts.GetSeconds(), ts.GetMilliseconds());
 
-		if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Left) || CraftNow::Input::IsKeyPressed(CraftNow::Key::A))
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
-				m_CameraPosition.x -= m_CameraMoveSpeed * 0.1f * ts;
-			else
-				m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-		else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Right) || CraftNow::Input::IsKeyPressed(CraftNow::Key::D))
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
-				m_CameraPosition.x += m_CameraMoveSpeed * 0.1f * ts;
-			else
-				m_CameraPosition.x += m_CameraMoveSpeed * ts;
-
-		if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Up) || CraftNow::Input::IsKeyPressed(CraftNow::Key::W))
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
-				m_CameraPosition.y += m_CameraMoveSpeed * 0.1f * ts;
-			else
-				m_CameraPosition.y += m_CameraMoveSpeed * ts;
-		else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Down) || CraftNow::Input::IsKeyPressed(CraftNow::Key::S))
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
-				m_CameraPosition.y -= m_CameraMoveSpeed * 0.1f * ts;
-			else
-				m_CameraPosition.y -= m_CameraMoveSpeed * ts;
-
-		if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Q))
-			m_CameraRotation += m_CameraRotationSpeed * ts;
-		else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::E))
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
-
-		if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Space))
+		//----------鼠标拖动画布事件---------------------
+		ImGuiIO& io = ImGui::GetIO();
+		if (!io.WantCaptureMouse)
 		{
-			m_CameraPosition.x = 0.0f; m_CameraPosition.y = 0.0f;
-			m_CameraRotation = 0.0f;
+			if (CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonLeft))
+			{
+				auto now_Position = CraftNow::Input::GetMousePosition();
+				m_CameraPosition.x -= (now_Position.x - m_mousePositon.x) * 0.12f * ts;
+				m_CameraPosition.y += (now_Position.y - m_mousePositon.y) * 0.12f * ts;
+			}
 		}
+		//----------鼠标拖动画布事件---------------------
 
-		CraftNow::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		//----------键盘相机移动事件---------------------
+		if (!io.WantCaptureKeyboard)
+		{
+			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Left) || CraftNow::Input::IsKeyPressed(CraftNow::Key::A))
+				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+					m_CameraPosition.x -= m_CameraMoveSpeed * 0.1f * ts;
+				else
+					m_CameraPosition.x -= m_CameraMoveSpeed * ts;
+			else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Right) || CraftNow::Input::IsKeyPressed(CraftNow::Key::D))
+				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+					m_CameraPosition.x += m_CameraMoveSpeed * 0.1f * ts;
+				else
+					m_CameraPosition.x += m_CameraMoveSpeed * ts;
+
+			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Up) || CraftNow::Input::IsKeyPressed(CraftNow::Key::W))
+				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+					m_CameraPosition.y += m_CameraMoveSpeed * 0.1f * ts;
+				else
+					m_CameraPosition.y += m_CameraMoveSpeed * ts;
+			else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Down) || CraftNow::Input::IsKeyPressed(CraftNow::Key::S))
+				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+					m_CameraPosition.y -= m_CameraMoveSpeed * 0.1f * ts;
+				else
+					m_CameraPosition.y -= m_CameraMoveSpeed * ts;
+
+			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Q))
+				m_CameraRotation += m_CameraRotationSpeed * ts;
+			else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::E))
+				m_CameraRotation -= m_CameraRotationSpeed * ts;
+			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Space) || CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonRight))
+			{
+				m_CameraPosition.x = 0.0f; m_CameraPosition.y = 0.0f;
+				m_CameraRotation = 0.0f;
+			}
+		}
+		
+		//----------键盘相机移动事件---------------------
+
+		CraftNow::RenderCommand::SetClearColor({ 0.27f, 0.447f, 0.682f, 1 });
 		CraftNow::RenderCommand::Clear();
 
 		m_Camera.SetPosition(m_CameraPosition);
@@ -171,32 +196,40 @@ public:
 
 		CraftNow::Renderer::BeginScene(m_Camera);
 
+		//-----------转换矩阵---------------------------
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		for (int y = 0; y < 20; y++)
+		m_FloatShader->Bind();
+		m_FloatShader->SetFloat3("u_Color", m_SQColor);
+
+
+		for (int y = 0; y < 10; y++)
 		{
-			for (int x = 0; x < 20; x++)
+			for (int x = 0; x < 10; x++)
 			{
-				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+				glm::vec3 pos(x * 0.11f - 0.5f, y * 0.11f -0.5f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				CraftNow::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
+				CraftNow::Renderer::Submit(m_FloatShader, m_SquareVA, transform);
 			}
 		}
+		//-----------转换矩阵---------------------------
 		//CraftNow::Renderer::Submit(m_BlueShader, m_SquareVA);
 		CraftNow::Renderer::Submit(m_Shader, m_VertexArray);
 
 		CraftNow::Renderer::EndScene();
+
+		m_mousePositon = CraftNow::Input::GetMousePosition();
 	}
 
 	void OnEvent(CraftNow::Event& event) override
 	{
-		/*CN_TRACE("{0}:{1}", m_DebugName, event);*/
+		//CN_TRACE("{0}:{1}", m_DebugName, event);
 	}
 private:
 	CraftNow::Ref<CraftNow::Shader> m_Shader;
 	CraftNow::Ref<CraftNow::VertexArray> m_VertexArray;
 
-	CraftNow::Ref<CraftNow::Shader> m_BlueShader;
+	CraftNow::Ref<CraftNow::Shader> m_FloatShader;
 	CraftNow::Ref<CraftNow::VertexArray> m_SquareVA;
 
 	CraftNow::OrthographicCamera m_Camera;
@@ -205,6 +238,11 @@ private:
 
 	float m_CameraRotation = 0.0f;
 	float m_CameraRotationSpeed = 180.0f;
+
+	glm::vec2 m_mousePositon;
+
+	glm::vec3 m_SQColor = { 0.8f, 0.8f, 0.8f };
+
 };
 
 class Sandbox : public CraftNow::Application

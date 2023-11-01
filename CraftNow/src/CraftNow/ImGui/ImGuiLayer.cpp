@@ -1,5 +1,5 @@
 ﻿#include "cnpch.h"
-#include "ImGuiLayer.h"
+#include "CraftNow/ImGui/ImGuiLayer.h"
 
 #include <imgui.h>
 
@@ -64,7 +64,7 @@ namespace CraftNow
         ImGui::DestroyContext();
     }
 
-    void ImGuiLayer::OnImGuiRender()
+	void ImGuiLayer::OnImGuiRender()
     {
         static bool show = true;
         ImGui::ShowDemoWindow(&show);
