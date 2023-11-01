@@ -12,11 +12,6 @@ namespace CraftNow {
 
 	static bool s_GLFWInitialized = false;
 
-	Window* Window::Create(const WindowProps& props)
-	{
-		return new WindowsWindow(props);
-	}
-
 	static void GLFWErrorCallback(int error, const char* description)
 	{
 		CN_CORE_ERROR("GLFW Error ({0}): {1}", error, description);

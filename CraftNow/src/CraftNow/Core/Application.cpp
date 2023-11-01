@@ -20,7 +20,7 @@ namespace CraftNow
 		CN_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = Window::Create();
 		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
 		//默认开启ImGui Demo
@@ -57,7 +57,12 @@ namespace CraftNow
 		overlay->OnAttach();
 	}
 
-	void Application::Draw()
+	void Application::Close()
+	{
+
+	}
+
+	void Application::SubmitToMainThread(const std::function<void()>& function)
 	{
 
 	}
@@ -95,4 +100,10 @@ namespace CraftNow
 	{	
 		return false;
 	}
+
+	void Application::ExecuteMainThreadQueue()
+	{
+
+	}
+
 }
