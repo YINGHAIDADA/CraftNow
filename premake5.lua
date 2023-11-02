@@ -15,10 +15,14 @@ IncludeDir["GLFW"] = "CraftNow/vendor/GLFW/include"
 IncludeDir["Glad"] = "CraftNow/vendor/Glad/include"
 IncludeDir["ImGui"] = "CraftNow/vendor/imgui"
 IncludeDir["glm"] = "CraftNow/vendor/glm"
+IncludeDir["stb_image"] = "CraftNow/vendor/stb_image"
 
-include "CraftNow/vendor/GLFW"
-include "CraftNow/vendor/Glad"
-include "CraftNow/vendor/imgui"
+group "Dependencies"
+	include "CraftNow/vendor/GLFW"
+	include "CraftNow/vendor/Glad"
+	include "CraftNow/vendor/imgui"
+	
+group ""
 
 project "CraftNow"
 	location "CraftNow"
@@ -39,6 +43,8 @@ project "CraftNow"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 	}
 
 	includedirs
@@ -48,7 +54,8 @@ project "CraftNow"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}",
 	}
 
 	links

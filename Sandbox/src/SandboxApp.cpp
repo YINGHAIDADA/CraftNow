@@ -14,9 +14,9 @@ public:
 		m_VertexArray = CraftNow::VertexArray::Create();
 
 		float vertices[3 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
+			-0.5f, -0.5f, 1.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+			 0.5f, -0.5f, 1.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+			 0.0f,  0.5f, 1.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
 		CraftNow::Ref<CraftNow::VertexBuffer> vertexBuffer = CraftNow::VertexBuffer::Create(vertices, sizeof(vertices));
@@ -34,17 +34,18 @@ public:
 
 
 		m_SquareVA = CraftNow::VertexArray::Create();
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
 		};
 
 		CraftNow::Ref<CraftNow::VertexBuffer> squareVB = CraftNow::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
 		squareVB->SetLayout({
-			{ CraftNow::ShaderDataType::Float3, "a_Position" }
+			{ CraftNow::ShaderDataType::Float3, "a_Position" },
+			{ CraftNow::ShaderDataType::Float2, "a_TexCoord" }
 			});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
@@ -122,6 +123,42 @@ public:
 		)";
 
 		m_FloatShader = CraftNow::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+
+		std::string textureShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);	
+			}
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec2 v_TexCoord;
+			
+			uniform sampler2D u_Texture;
+
+			void main()
+			{
+				color = texture(u_Texture, v_TexCoord);
+			}
+		)";
+
+		m_TextureShader = CraftNow::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc);
+
 		//--------暂时shader---------
 	}
 
@@ -203,18 +240,26 @@ public:
 		m_FloatShader->SetFloat3("u_Color", m_SQColor);
 
 
-		for (int y = 0; y < 10; y++)
+		/*for (int y = 0; y < 10; y++)
 		{
 			for (int x = 0; x < 10; x++)
 			{
-				glm::vec3 pos(x * 0.11f - 0.5f, y * 0.11f -0.5f, 0.0f);
+				glm::vec3 pos(x * 0.11f - 0.5f, y * 0.11f - 0.5f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
 				CraftNow::Renderer::Submit(m_FloatShader, m_SquareVA, transform);
 			}
-		}
+		}*/
 		//-----------转换矩阵---------------------------
-		//CraftNow::Renderer::Submit(m_BlueShader, m_SquareVA);
-		CraftNow::Renderer::Submit(m_Shader, m_VertexArray);
+		m_Texture = CraftNow::Texture2D::Create("assets/textures/yinghai_alpha.png");
+
+		m_TextureShader->Bind();
+		//TODO:对于纹理插槽后续需要完善，现在暂时设为0
+		m_TextureShader->SetInt("u_Texture", 0);
+		m_Texture->Bind();
+		CraftNow::Renderer::Submit(m_TextureShader, m_SquareVA);
+
+
+		//CraftNow::Renderer::Submit(m_Shader, m_VertexArray);
 
 		CraftNow::Renderer::EndScene();
 
@@ -229,11 +274,14 @@ private:
 	CraftNow::Ref<CraftNow::Shader> m_Shader;
 	CraftNow::Ref<CraftNow::VertexArray> m_VertexArray;
 
-	CraftNow::Ref<CraftNow::Shader> m_FloatShader;
+	CraftNow::Ref<CraftNow::Shader> m_FloatShader, m_TextureShader;
 	CraftNow::Ref<CraftNow::VertexArray> m_SquareVA;
 
+	CraftNow::Ref<CraftNow::Texture2D> m_Texture;
+
 	CraftNow::OrthographicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
+
+	glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 	float m_CameraMoveSpeed = 4.0f;
 
 	float m_CameraRotation = 0.0f;

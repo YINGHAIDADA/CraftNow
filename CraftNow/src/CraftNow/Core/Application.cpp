@@ -23,6 +23,8 @@ namespace CraftNow
 		m_Window = Window::Create();
 		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
+		Renderer::Init();
+
 		//默认开启ImGui Demo
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);

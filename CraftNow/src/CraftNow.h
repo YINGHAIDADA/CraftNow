@@ -13,8 +13,10 @@
 
 //----------Renderer-----------
 #include "CraftNow/Renderer/Renderer.h"
-
+#include "CraftNow/Renderer/RenderCommand.h"
 #include "CraftNow/Renderer/Buffer.h"
+#include "CraftNow/Renderer/Shader.h"
+#include "CraftNow/Renderer/Texture.h"
 #include "CraftNow/Renderer/VertexArray.h"
 
 #include "CraftNow/Renderer/OrthographicCamera.h"
