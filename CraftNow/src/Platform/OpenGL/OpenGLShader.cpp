@@ -110,22 +110,11 @@ namespace CraftNow {
 		m_Name = filepath.substr(lastSlash, count);
 	}
 
-	//OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
-	//	: m_Name(name)
-	//{
-	//	//CN_PROFILE_FUNCTION();
-
-	//	std::unordered_map<GLenum, std::string> sources;
-	//	sources[GL_VERTEX_SHADER] = vertexSrc;
-	//	sources[GL_FRAGMENT_SHADER] = fragmentSrc;
-
-	//	CompileOrGetVulkanBinaries(sources);
-	//	CompileOrGetOpenGLBinaries();
-	//	CreateProgram();
-	//}
-
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+		: m_Name(name)
 	{
+		//CN_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> source;
 		source[GL_VERTEX_SHADER] = vertexSrc;
 		source[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -134,6 +123,10 @@ namespace CraftNow {
 			Compile(source);
 			CN_CORE_WARN("Shader creation took {0} ms", timer.ElapsedMillis());
 		}
+
+		//CompileOrGetVulkanBinaries(sources);
+		//CompileOrGetOpenGLBinaries();
+		//CreateProgram();
 	}
 
 	OpenGLShader::~OpenGLShader()
@@ -203,7 +196,9 @@ namespace CraftNow {
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(shaderSources.size());
+		CN_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIDIndex = 0;
 		for (auto& kv : shaderSources)
 		{
 			GLenum type = kv.first;
@@ -234,7 +229,7 @@ namespace CraftNow {
 			}
 
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDIndex++] = shader;
 		}
 
 		m_RendererID = program;
