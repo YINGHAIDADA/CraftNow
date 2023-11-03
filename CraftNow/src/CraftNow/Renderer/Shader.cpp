@@ -7,7 +7,7 @@
 
 namespace CraftNow {
 
-	/*Ref<Shader> Shader::Create(const std::string& filepath)
+	Ref<Shader> Shader::Create(const std::string& filepath)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -17,7 +17,7 @@ namespace CraftNow {
 
 		CN_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
-	}*/
+	}
 
 	Ref<Shader> Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
