@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include "CraftNow/Core/Log.h"
+
+#include "CraftNow/Core/PlatformDetection.h"
 
 #include <memory>
 
@@ -16,6 +17,9 @@
 #else
 	#define CN_DEBUGBREAK()
 #endif
+
+#define CN_EXPAND_MACRO(x) x
+#define CN_STRINGIFY_MACRO(x) #x
 
 #ifdef CN_ENABLE_ASSERTS
 	#define CN_ASSERT(x, ...) { if(!(x)) { CN_ERROR("Assertion Failed: {0}",__VA_ARGS__); __debugbreak(); } }
@@ -48,3 +52,5 @@ namespace CraftNow {
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 }
+
+#include "CraftNow/Core/Log.h"
