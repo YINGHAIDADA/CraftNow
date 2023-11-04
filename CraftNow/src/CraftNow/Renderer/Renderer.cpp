@@ -1,5 +1,6 @@
 ﻿#include "cnpch.h"
 #include "CraftNow/Renderer/Renderer.h"
+#include "CraftNow/Renderer/Renderer2D.h"
 
 namespace CraftNow {
 
@@ -10,12 +11,12 @@ namespace CraftNow {
 		//CN_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
-		//Renderer2D::Init();
+		Renderer2D::Init();
 	}
 
 	void Renderer::Shutdown()
 	{
-		//Renderer2D::Shutdown();
+		Renderer2D::Shutdown();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
