@@ -8,7 +8,7 @@ class ExampleLayer : public CraftNow::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f)
+		:Layer("Example"), m_CameraController(1600.0f / 900.0f, false)
 	{
 		////--------暂时渲染三角形---------
 		m_VertexArray = CraftNow::VertexArray::Create();
@@ -92,73 +92,73 @@ public:
 
 	void OnUpdate(CraftNow::Timestep ts) override
 	{
-		//CN_INFO("ExampleLayer::Update");
-		//CN_TRACE("间隔时间：{0}s {1}ms", ts.GetSeconds(), ts.GetMilliseconds());
+		m_CameraController.OnUpdate(ts);
+		////CN_INFO("ExampleLayer::Update");
+		////CN_TRACE("间隔时间：{0}s {1}ms", ts.GetSeconds(), ts.GetMilliseconds());
 
-		//----------鼠标拖动画布事件---------------------
-		ImGuiIO& io = ImGui::GetIO();
-		if (!io.WantCaptureMouse)
-		{
-			if (CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonLeft))
-			{
-				m_mousePositon = CraftNow::Input::GetMousePosition();
-				//TODO: 鼠标拖拽事件要保证与相机视角同步，还需要考虑一个相机与物体距离的系数，就目前来看，0.002可以在当前情况完美绑定鼠标，但这个 数字 能否由某种 已知数据 计算得到 是在添加相机远近移动后 能否 保持现有效果的关键
-				m_CameraPosition.x = m_LastCameraPosition.x - (m_mousePositon.x - m_lastMousePosition.x) * 0.2f * 0.01f;
-				m_CameraPosition.y = m_LastCameraPosition.y + (m_mousePositon.y - m_lastMousePosition.y) * 0.2f * 0.01f;
-			}
-			else
-			{
-				m_lastMousePosition = CraftNow::Input::GetMousePosition();
-				m_LastCameraPosition = m_CameraPosition;
-			}
-		}
-		//----------鼠标拖动画布事件---------------------
+		////----------鼠标拖动画布事件---------------------
+		//ImGuiIO& io = ImGui::GetIO();
+		//if (!io.WantCaptureMouse)
+		//{
+		//	if (CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonLeft))
+		//	{
+		//		auto mousePositon = CraftNow::Input::GetMousePosition();
+		//		//TODO: 鼠标拖拽事件要保证与相机视角同步，还需要考虑一个相机与物体距离的系数，就目前来看，0.002可以在当前情况完美绑定鼠标，但这个 数字 能否由某种 已知数据 计算得到 是在添加相机远近移动后 能否 保持现有效果的关键
+		//		m_CameraPosition.x = m_LastCameraPosition.x - (mousePositon.x - m_lastMousePosition.x) * 0.2f * 0.01f;
+		//		m_CameraPosition.y = m_LastCameraPosition.y + (mousePositon.y - m_lastMousePosition.y) * 0.2f * 0.01f;
+		//	}
+		//	else
+		//	{
+		//		m_lastMousePosition = CraftNow::Input::GetMousePosition();
+		//		m_LastCameraPosition = m_CameraPosition;
+		//	}
+		//}
+		////----------鼠标拖动画布事件---------------------
 
-		//----------键盘相机移动事件---------------------
-		if (!io.WantCaptureKeyboard)
-		{
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Left) || CraftNow::Input::IsKeyPressed(CraftNow::Key::A))
-				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
-					m_CameraPosition.x -= m_CameraMoveSpeed * 0.1f * ts;
-				else
-					m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-			else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Right) || CraftNow::Input::IsKeyPressed(CraftNow::Key::D))
-				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
-					m_CameraPosition.x += m_CameraMoveSpeed * 0.1f * ts;
-				else
-					m_CameraPosition.x += m_CameraMoveSpeed * ts;
+		////----------键盘相机移动事件---------------------
+		//if (!io.WantCaptureKeyboard)
+		//{
+		//	if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Left) || CraftNow::Input::IsKeyPressed(CraftNow::Key::A))
+		//		if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+		//			m_CameraPosition.x -= m_CameraMoveSpeed * 0.1f * ts;
+		//		else
+		//			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
+		//	else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Right) || CraftNow::Input::IsKeyPressed(CraftNow::Key::D))
+		//		if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+		//			m_CameraPosition.x += m_CameraMoveSpeed * 0.1f * ts;
+		//		else
+		//			m_CameraPosition.x += m_CameraMoveSpeed * ts;
 
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Up) || CraftNow::Input::IsKeyPressed(CraftNow::Key::W))
-				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
-					m_CameraPosition.y += m_CameraMoveSpeed * 0.1f * ts;
-				else
-					m_CameraPosition.y += m_CameraMoveSpeed * ts;
-			else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Down) || CraftNow::Input::IsKeyPressed(CraftNow::Key::S))
-				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
-					m_CameraPosition.y -= m_CameraMoveSpeed * 0.1f * ts;
-				else
-					m_CameraPosition.y -= m_CameraMoveSpeed * ts;
+		//	if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Up) || CraftNow::Input::IsKeyPressed(CraftNow::Key::W))
+		//		if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+		//			m_CameraPosition.y += m_CameraMoveSpeed * 0.1f * ts;
+		//		else
+		//			m_CameraPosition.y += m_CameraMoveSpeed * ts;
+		//	else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Down) || CraftNow::Input::IsKeyPressed(CraftNow::Key::S))
+		//		if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+		//			m_CameraPosition.y -= m_CameraMoveSpeed * 0.1f * ts;
+		//		else
+		//			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Q))
-				m_CameraRotation += m_CameraRotationSpeed * ts;
-			else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::E))
-				m_CameraRotation -= m_CameraRotationSpeed * ts;
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Space) || CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonRight))
-			{
-				m_CameraPosition.x = 0.0f; m_CameraPosition.y = 0.0f;
-				m_CameraRotation = 0.0f;
-			}
-		}
-		
-		//----------键盘相机移动事件---------------------
+		//	if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Q))
+		//		m_CameraRotation += m_CameraRotationSpeed * ts;
+		//	else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::E))
+		//		m_CameraRotation -= m_CameraRotationSpeed * ts;
+		//	if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Space) || CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonRight))
+		//	{
+		//		m_CameraPosition.x = 0.0f; m_CameraPosition.y = 0.0f;
+		//		m_CameraRotation = 0.0f;
+		//	}
+		//}
+		//
+		////----------键盘相机移动事件---------------------
 
+
+		//--------------渲染-----------------
 		CraftNow::RenderCommand::SetClearColor({ 0.27f, 0.447f, 0.682f, 1 });
 		CraftNow::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		CraftNow::Renderer::BeginScene(m_Camera);
+		CraftNow::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		//-----------转换矩阵---------------------------
 
@@ -198,6 +198,7 @@ public:
 	void OnEvent(CraftNow::Event& event) override
 	{
 		//CN_TRACE("{0}:{1}", m_DebugName, event);
+		m_CameraController.OnEvent(event);
 	}
 private:
 	CraftNow::ShaderLibrary m_ShaderLibrary;
@@ -208,17 +209,17 @@ private:
 
 	CraftNow::Ref<CraftNow::Texture2D> m_Texture;
 
-	CraftNow::OrthographicCamera m_Camera;
+	//CraftNow::OrthographicCamera m_Camera;
+	CraftNow::OrthographicCameraController m_CameraController;
 
-	glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
+	/*glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 m_LastCameraPosition = { 0.0f, 0.0f, 0.0f };
 	float m_CameraMoveSpeed = 4.0f;
 
 	float m_CameraRotation = 0.0f;
 	float m_CameraRotationSpeed = 180.0f;
 
-	glm::vec2 m_mousePositon;
-	glm::vec2 m_lastMousePosition;
+	glm::vec2 m_lastMousePosition;*/
 
 	glm::vec3 m_SQColor = { 0.8f, 0.8f, 0.8f };
 

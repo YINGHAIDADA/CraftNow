@@ -35,7 +35,7 @@ namespace CraftNow
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
-		//dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
 
 		// 从最上层开始迭代检查事件触发
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
@@ -80,14 +80,25 @@ namespace CraftNow
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			// 从最底开始层更新每一层
-			for (Layer *layer : m_LayerStack)
-				layer->OnUpdate(timestep);
+			if (!m_Minimized)
+			{
+				{
+					CN_PROFILE_SCOPE("LayerStack OnUpdate");
+					// 从最底开始层更新每一层
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
 
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
+				m_ImGuiLayer->Begin();
+				{
+					CN_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
+			}
+
 
 			m_Window->OnUpdate();
 		}
@@ -100,6 +111,15 @@ namespace CraftNow
 	}
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{	
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
 		return false;
 	}
 

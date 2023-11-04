@@ -5,6 +5,7 @@
 #include "CraftNow/Core/Input.h"
 #include "CraftNow/Core/Layer.h"
 #include "CraftNow/Core/Log.h"
+#include "CraftNow/Renderer/OrthographicCameraController.h"
 
 #include "CraftNow/ImGui/ImGuiLayer.h"
 
