@@ -1,4 +1,5 @@
 <p align="center">
+  <img width="auto" src="docs/imgs/banner.png" >
   <h1 align="center" style="margin: 0 auto 0 auto;">CraftNow</h1>
 </p>
 <br>
