@@ -22,6 +22,8 @@ private:
 	CraftNow::Ref<CraftNow::Shader> m_FlatColorShader;
 
 	CraftNow::Ref<CraftNow::Texture2D> m_CheckerboardTexture;
+	CraftNow::Ref<CraftNow::Texture2D> m_Tail_mapTexture;
+	CraftNow::Ref<CraftNow::SubTexture2D> m_Sub1, m_Sub2;
 
 	CraftNow::Ref<CraftNow::Framebuffer> m_Framebuffer;
 

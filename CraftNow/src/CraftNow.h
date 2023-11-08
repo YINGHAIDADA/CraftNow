@@ -28,6 +28,7 @@
 #include "CraftNow/Renderer/Shader.h"
 #include "CraftNow/Renderer/Framebuffer.h"
 #include "CraftNow/Renderer/Texture.h"
+#include "CraftNow/Renderer/SubTexture2D.h"
 #include "CraftNow/Renderer/VertexArray.h"
 
 #include "CraftNow/Renderer/OrthographicCamera.h"
