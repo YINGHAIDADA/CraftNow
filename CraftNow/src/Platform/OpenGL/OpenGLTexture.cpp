@@ -36,7 +36,7 @@ namespace CraftNow {
 	OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& specification)
 		: m_Specification(specification), m_Width(m_Specification.Width), m_Height(m_Specification.Height)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		m_InternalFormat = Utils::CraftNowImageFormatToGLInternalFormat(m_Specification.Format);
 		m_DataFormat = Utils::CraftNowImageFormatToGLDataFormat(m_Specification.Format);
@@ -55,7 +55,7 @@ namespace CraftNow {
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
 		: m_Path(path)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		int width, height, channels;
 		//因为stb和opengl的对上下左右的差异，做反转
@@ -63,7 +63,7 @@ namespace CraftNow {
 
 		stbi_uc* data = nullptr;
 		{
-			//CN_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const std::string&)");
+			CN_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const std::string&)");
 			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 			CN_CORE_ASSERT(data, "加载纹理图像失败!");
 		}
@@ -110,14 +110,14 @@ namespace CraftNow {
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glDeleteTextures(1, &m_RendererID);
 	}
 
 	void OpenGLTexture2D::SetData(void* data, uint32_t size)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
 		CN_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
@@ -126,7 +126,7 @@ namespace CraftNow {
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glBindTextureUnit(slot, m_RendererID);
 	}

@@ -5,6 +5,7 @@ Intermediates/
 
 # CraftNow files
 *.log
+*.json
 
 #imgui file
 **.ini

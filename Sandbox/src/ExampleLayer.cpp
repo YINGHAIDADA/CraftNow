@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 ExampleLayer::ExampleLayer()
-	:Layer("Example"), m_CameraController(1600.0f / 900.0f, false)
+	:Layer("Example"), m_CameraController(1280.0f / 720.0f, false)
 {
 	////--------暂时渲染三角形---------
 	m_VertexArray = CraftNow::VertexArray::Create();
@@ -96,7 +96,7 @@ void ExampleLayer::OnUpdate(CraftNow::Timestep ts)
 	////CN_TRACE("间隔时间：{0}s {1}ms", ts.GetSeconds(), ts.GetMilliseconds());
 
 	//--------------渲染-----------------
-	CraftNow::RenderCommand::SetClearColor({ 0.27f, 0.447f, 0.682f, 1 });
+	CraftNow::RenderCommand::SetClearColor({ 0.27f, 0.447f, 0.682f, 1.0f });
 	CraftNow::RenderCommand::Clear();
 
 	CraftNow::Renderer::BeginScene(m_CameraController.GetCamera());

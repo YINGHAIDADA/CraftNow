@@ -26,6 +26,7 @@
 
 #include "CraftNow/Renderer/Buffer.h"
 #include "CraftNow/Renderer/Shader.h"
+#include "CraftNow/Renderer/Framebuffer.h"
 #include "CraftNow/Renderer/Texture.h"
 #include "CraftNow/Renderer/VertexArray.h"
 

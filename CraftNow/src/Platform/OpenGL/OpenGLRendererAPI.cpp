@@ -27,7 +27,7 @@ namespace CraftNow {
 
 	void OpenGLRendererAPI::Init()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		//#ifdef CN_DEBUG
 		//glEnable(GL_DEBUG_OUTPUT);

@@ -119,7 +119,7 @@ namespace CraftNow {
 
 	void Renderer2D::Init()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION(); 
 
 		s_Data.QuadVertexArray = VertexArray::Create();
 
@@ -202,9 +202,11 @@ namespace CraftNow {
 		uint32_t whiteTextureData = 0xffffffff;
 		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-		int32_t samplers[s_Data.MaxTextureSlots];
+		//----------what for?----------------
+		/*int32_t samplers[s_Data.MaxTextureSlots];
 		for (uint32_t i = 0; i < s_Data.MaxTextureSlots; i++)
-			samplers[i] = i;
+			samplers[i] = i;*/
+		//------------------------------------
 
 		s_Data.QuadShader = Shader::Create("assets/shaders/Renderer2D_Quad.glsl");
 		s_Data.CircleShader = Shader::Create("assets/shaders/Renderer2D_Circle.glsl");
@@ -224,14 +226,14 @@ namespace CraftNow {
 
 	void Renderer2D::Shutdown()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		delete[] s_Data.QuadVertexBufferBase;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
 		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
@@ -241,7 +243,7 @@ namespace CraftNow {
 
 	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * glm::inverse(transform);
 		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
@@ -251,7 +253,7 @@ namespace CraftNow {
 
 	//void Renderer2D::BeginScene(const EditorCamera& camera)
 	//{
-	//	//CN_PROFILE_FUNCTION();
+	//	CN_PROFILE_FUNCTION();
 
 	//	s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
 	//	s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
@@ -261,7 +263,7 @@ namespace CraftNow {
 
 	void Renderer2D::EndScene()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		Flush();
 	}
@@ -347,7 +349,7 @@ namespace CraftNow {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
@@ -362,7 +364,7 @@ namespace CraftNow {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
@@ -372,7 +374,7 @@ namespace CraftNow {
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		constexpr size_t quadVertexCount = 4;
 		const float textureIndex = 0.0f; // White Texture
@@ -400,7 +402,7 @@ namespace CraftNow {
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		constexpr size_t quadVertexCount = 4;
 		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -451,7 +453,7 @@ namespace CraftNow {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
@@ -467,7 +469,7 @@ namespace CraftNow {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
@@ -478,7 +480,7 @@ namespace CraftNow {
 
 	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness /*= 1.0f*/, float fade /*= 0.005f*/, int entityID /*= -1*/)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		// TODO: implement for circles
 		// if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)

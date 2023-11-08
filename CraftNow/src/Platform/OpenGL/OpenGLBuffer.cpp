@@ -11,7 +11,7 @@ namespace CraftNow {
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 		CN_CORE_INFO("创建OpenGLVertexBuffer");
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -20,7 +20,7 @@ namespace CraftNow {
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 		CN_CORE_INFO("创建OpenGLVertexBuffer");
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -29,21 +29,21 @@ namespace CraftNow {
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Bind() const
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Unbind() const
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -61,7 +61,7 @@ namespace CraftNow {
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
 		: m_Count(count)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 		CN_CORE_INFO("创建OpenGLIndexBuffer");
 		glCreateBuffers(1, &m_RendererID);
 
@@ -73,21 +73,21 @@ namespace CraftNow {
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Bind() const
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Unbind() const
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}

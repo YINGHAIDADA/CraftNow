@@ -19,21 +19,21 @@ namespace CraftNow {
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		Init(props);
 	}
 
 	WindowsWindow::~WindowsWindow()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		Shutdown();
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;

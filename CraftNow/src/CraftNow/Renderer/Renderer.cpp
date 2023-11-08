@@ -8,7 +8,7 @@ namespace CraftNow {
 
 	void Renderer::Init()
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
 		Renderer2D::Init();

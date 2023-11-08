@@ -23,5 +23,7 @@ private:
 
 	CraftNow::Ref<CraftNow::Texture2D> m_CheckerboardTexture;
 
-	glm::vec4 m_SquareColor = { 0.8f, 0.8f, 0.8f, 1.0f };
+	CraftNow::Ref<CraftNow::Framebuffer> m_Framebuffer;
+
+	glm::vec4 m_SquareColor = { 0.0f, 0.8f, 0.0f, 0.7f };
 };

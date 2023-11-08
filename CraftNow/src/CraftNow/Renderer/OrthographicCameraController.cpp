@@ -14,12 +14,12 @@ namespace CraftNow {
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		//----------鼠标拖动画布事件---------------------
 		ImGuiIO& io = ImGui::GetIO();
 
-		if (!io.WantCaptureMouse)
+		if (true)
 		{
 			if (CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonMiddle))
 			{
@@ -37,7 +37,7 @@ namespace CraftNow {
 		//----------鼠标拖动画布事件---------------------
 
 		//----------键盘相机移动事件---------------------
-		if (!io.WantCaptureKeyboard)
+		if (true)
 		{
 			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Left) || CraftNow::Input::IsKeyPressed(CraftNow::Key::A))
 				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
@@ -120,7 +120,7 @@ namespace CraftNow {
 
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
@@ -139,7 +139,7 @@ namespace CraftNow {
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		m_ZoomLevel -= e.GetYOffset() * 0.15f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
@@ -149,7 +149,7 @@ namespace CraftNow {
 
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
-		//CN_PROFILE_FUNCTION();
+		CN_PROFILE_FUNCTION();
 
 		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 		return false;

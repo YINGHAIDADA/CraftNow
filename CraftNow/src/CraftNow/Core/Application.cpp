@@ -61,7 +61,7 @@ namespace CraftNow
 
 	void Application::Close()
 	{
-
+		m_Running = false;
 	}
 
 	void Application::SubmitToMainThread(const std::function<void()>& function)
@@ -106,7 +106,7 @@ namespace CraftNow
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
-		m_Running = false;
+		Close();
 		return true;
 	}
 	bool Application::OnWindowResize(WindowResizeEvent& e)
