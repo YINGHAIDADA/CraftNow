@@ -16,7 +16,7 @@ int main(int argc, char** argv);
 
 namespace CraftNow {
 
-	/*struct ApplicationCommandLineArgs
+	struct ApplicationCommandLineArgs
 	{
 		int Count = 0;
 		char** Args = nullptr;
@@ -33,7 +33,7 @@ namespace CraftNow {
 		std::string Name = "Hazel Application";
 		std::string WorkingDirectory;
 		ApplicationCommandLineArgs CommandLineArgs;
-	};*/
+	};
 
 	class Application
 	{

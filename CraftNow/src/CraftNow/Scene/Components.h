@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-//#include "CraftNow/Scene/SceneCamera.h"
+#include "CraftNow/Scene/SceneCamera.h"
 #include "CraftNow/Core/UUID.h"
 #include "CraftNow/Renderer/Texture.h"
 //#include "CraftNow/Renderer/Font.h"
@@ -76,15 +76,18 @@ namespace CraftNow {
 		CircleRendererComponent(const CircleRendererComponent&) = default;
 	};
 
-	//struct CameraComponent
-	//{
-	//	SceneCamera Camera;
-	//	bool Primary = true; // TODO: think about moving to Scene
-	//	bool FixedAspectRatio = false;
+	struct CameraComponent
+	{
+		Camera Camera;
+		bool Primary = true; // TODO: think about moving to Scene
+		bool FixedAspectRatio = false;
 
-	//	CameraComponent() = default;
-	//	CameraComponent(const CameraComponent&) = default;
-	//};
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		//Temp
+		CameraComponent(const glm::mat4& projection)
+			: Camera(projection) {}
+	};
 
 	struct ScriptComponent
 	{
@@ -179,7 +182,7 @@ namespace CraftNow {
 
 	using AllComponents =
 		ComponentGroup<TransformComponent, SpriteRendererComponent,
-		CircleRendererComponent, /*CameraComponent,*/ ScriptComponent,
+		CircleRendererComponent, CameraComponent, ScriptComponent,
 		NativeScriptComponent, Rigidbody2DComponent, BoxCollider2DComponent,
 		CircleCollider2DComponent/*, TextComponent*/>;
 

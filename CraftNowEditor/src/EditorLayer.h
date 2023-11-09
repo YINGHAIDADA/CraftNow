@@ -34,6 +34,10 @@ namespace CraftNow {
 
 		Ref<Scene> m_ActiveScene;
 		Entity m_SquareEntity;
+		Entity m_CameraEntity;
+		Entity m_SecondCamera;
+
+		bool m_PrimaryCamera = true;
 
 		glm::vec4 m_SquareColor = { 0.0f, 0.8f, 0.0f, 0.7f };
 	};
