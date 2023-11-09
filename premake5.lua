@@ -1,5 +1,6 @@
 ﻿workspace "CraftNow"
 	architecture "x64"
+	startproject "CraftNowEditor"
 
 	configurations
 	{
@@ -98,6 +99,59 @@ project "CraftNow"
 
 project "Sandbox"
 	location "Sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"CraftNow/vendor/spdlog/include",
+		"CraftNow/src",
+		"CraftNow/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"CraftNow"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"CN_PLATFORM_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines "CN_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "CN_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "CN_DIST"
+		runtime "Release"
+		optimize "on"
+
+
+project "CraftNowEditor"
+	location "CraftNowEditor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"

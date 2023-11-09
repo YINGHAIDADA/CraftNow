@@ -131,7 +131,7 @@ namespace CraftNow {
 	{
 		m_mouseScale = 900.0f / height;
 
-		CN_CORE_TRACE("mouseScale{0}", m_mouseScale);
+		//CN_CORE_TRACE("mouseScale{0}", m_mouseScale);
 
 		m_AspectRatio = width / height;
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);

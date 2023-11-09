@@ -38,12 +38,11 @@ namespace CraftNow
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
 
 		// 从最上层开始迭代检查事件触发
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
-			//TODO:最顶层收不到事件
-			(*--it)->OnEvent(e);
 			if (e.Handled)
 				break;
+			(*it)->OnEvent(e);
 		}
 	}
 
