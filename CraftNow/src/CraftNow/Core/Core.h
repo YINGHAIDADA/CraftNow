@@ -21,15 +21,6 @@
 #define CN_EXPAND_MACRO(x) x
 #define CN_STRINGIFY_MACRO(x) #x
 
-#ifdef CN_ENABLE_ASSERTS
-	#define CN_ASSERT(x, ...) { if(!(x)) { CN_ERROR("Assertion Failed: {0}",__VA_ARGS__); __debugbreak(); } }
-	#define CN_CORE_ASSERT(x, ...) { if(!(x)) { CN_CORE_ERROR("Assertion Failed: {0}",__VA_ARGS__); __debugbreak(); } }
-#else
-	#define CN_ASSERT(x, ...)
-	#define CN_CORE_ASSERT(x, ...)
-#endif // 
-
-
 #define BIT(x) (1 << x)
 
 //#define BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
@@ -55,3 +46,4 @@ namespace CraftNow {
 }
 
 #include "CraftNow/Core/Log.h"
+#include "CraftNow/Core/Assert.h"
