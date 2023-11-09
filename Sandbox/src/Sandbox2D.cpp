@@ -48,39 +48,39 @@ void Sandbox2D::OnUpdate(CraftNow::Timestep ts)
 
 		CN_PROFILE_SCOPE("Renderer Draw");
 
-		//CraftNow::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		////CraftNow::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
-		////CraftNow::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		////画纹理阵列，设置深度靠后
-		//CraftNow::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
-		////旋转纹理阵列
-		//CraftNow::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
+		CraftNow::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		//CraftNow::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
+		//CraftNow::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+		//画纹理阵列，设置深度靠后
+		CraftNow::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
+		//旋转纹理阵列
+		CraftNow::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
+		CraftNow::Renderer2D::EndScene();
+
+		CraftNow::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		//画可变颜色的长方形，但透明通道存在问题,
+		//透明通道需要按顺序执行？最上层的渲染代码应该放最后执行
+		CraftNow::Renderer2D::DrawQuad({ 0.5f, -0.0f , 0.1f}, { 0.5f, 0.75f }, m_SquareColor);
 		//CraftNow::Renderer2D::EndScene();
 
 		//CraftNow::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		////画可变颜色的长方形，但透明通道存在问题,
-		////透明通道需要按顺序执行？最上层的渲染代码应该放最后执行
-		//CraftNow::Renderer2D::DrawQuad({ 0.5f, -0.0f , 0.1f}, { 0.5f, 0.75f }, m_SquareColor);
-		////CraftNow::Renderer2D::EndScene();
-
-		////CraftNow::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		//for (float y = -5.0f; y < 5.0f; y += 0.5f)
-		//{
-		//	for (float x = -5.0f; x < 5.0f; x += 0.5f)
-		//	{
-		//		glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f };
-		//		CraftNow::Renderer2D::DrawQuad({ x, y ,0.2f }, { 0.45f, 0.45f }, color);
-		//	}
-		//}
-		//CraftNow::Renderer2D::EndScene();
+		for (float y = -5.0f; y < 5.0f; y += 0.5f)
+		{
+			for (float x = -5.0f; x < 5.0f; x += 0.5f)
+			{
+				glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f };
+				CraftNow::Renderer2D::DrawQuad({ x, y ,0.2f }, { 0.45f, 0.45f }, color);
+			}
+		}
+		CraftNow::Renderer2D::EndScene();
 
 
 		//------------testing subtexture-------------
-		CraftNow::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		CraftNow::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_Tail_mapTexture);
-		//CraftNow::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_Sub1);
-		//CraftNow::Renderer2D::DrawQuad({ 2.0f, 0.0f }, { 1.0f, 2.0f }, m_Sub2);
-		CraftNow::Renderer2D::EndScene();
+		//CraftNow::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		//CraftNow::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_Tail_mapTexture);
+		////CraftNow::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_Sub1);
+		////CraftNow::Renderer2D::DrawQuad({ 2.0f, 0.0f }, { 1.0f, 2.0f }, m_Sub2);
+		//CraftNow::Renderer2D::EndScene();
 	}
 }
 

@@ -26,6 +26,8 @@ namespace CraftNow {
 		void DestroyEntity(Entity entity);
 
 		void OnUpdate(Timestep ts);
+
+		void OnViewportResize(uint32_t width, uint32_t height);
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);

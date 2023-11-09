@@ -4,8 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace CraftNow {
-	SceneCamera::SceneCamera(const glm::mat4& projection)
-		:Camera(projection)
+	SceneCamera::SceneCamera()
 	{
 		RecalculateProjection();
 	}

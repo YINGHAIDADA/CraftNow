@@ -8,7 +8,7 @@ namespace CraftNow {
 	public:
 		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
 	public:
-		SceneCamera(const glm::mat4& projection);
+		SceneCamera();
 		virtual ~SceneCamera() = default;
 
 		void SetPerspective(float verticalFOV, float nearClip, float farClip);

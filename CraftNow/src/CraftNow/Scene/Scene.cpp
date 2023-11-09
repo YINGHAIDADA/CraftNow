@@ -118,10 +118,10 @@ namespace CraftNow {
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;
 		{
-			auto group = m_Registry.view<TransformComponent, CameraComponent>();
-			for (auto entity : group)
+			auto view = m_Registry.view<TransformComponent, CameraComponent>();
+			for (auto entity : view)
 			{
-				auto& [transform, camera] = group.get<TransformComponent, CameraComponent>(entity);
+				auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 
 				if (camera.Primary)
 				{
@@ -147,6 +147,24 @@ namespace CraftNow {
 
 	}
 
+	void Scene::OnViewportResize(uint32_t width, uint32_t height)
+	{
+		if (m_ViewportWidth == width && m_ViewportHeight == height)
+			return;
+
+		m_ViewportWidth = width;
+		m_ViewportHeight = height;
+
+		// Resize our non-FixedAspectRatio cameras
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			auto& cameraComponent = view.get<CameraComponent>(entity);
+			if (!cameraComponent.FixedAspectRatio)
+				cameraComponent.Camera.SetViewportSize(width, height);
+		}
+	}
+
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
@@ -166,8 +184,8 @@ namespace CraftNow {
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{
-		/*if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
-			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);*/
+		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
+			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 	}
 
 	template<>
