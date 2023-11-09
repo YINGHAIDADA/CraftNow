@@ -32,6 +32,9 @@ namespace CraftNow {
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize;
 
+		Ref<Scene> m_ActiveScene;
+		Entity m_SquareEntity;
+
 		glm::vec4 m_SquareColor = { 0.0f, 0.8f, 0.0f, 0.7f };
 	};
 }

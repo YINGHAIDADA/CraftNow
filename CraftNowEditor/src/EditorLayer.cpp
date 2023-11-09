@@ -23,10 +23,20 @@ namespace CraftNow {
 		m_Sub1 = SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 5, 10 }, { 16,16 }, { 1,1 });
 		m_Sub2 = SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 4, 9 }, { 16,16 }, { 1,2 });
 
+		//Framebuffer
 		FramebufferSpecification fbSpec;
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
+
+		//------Scene---------
+
+		m_ActiveScene = CreateRef<Scene>();
+
+		auto square = m_ActiveScene->CreateEntity("YINGHAI");
+		square.AddComponent<SpriteRendererComponent>(m_CheckerboardTexture);
+
+		m_SquareEntity = square;
 	}
 
 	void EditorLayer::OnDetach()
@@ -55,14 +65,11 @@ namespace CraftNow {
 
 		// Render
 		Renderer2D::ResetStats();
-
-		{
-			CN_PROFILE_SCOPE("Renderer Prep");
-			m_Framebuffer->Bind();
-			RenderCommand::SetClearColor({ 0.27f, 0.447f, 0.682f, 1.0f });
-			RenderCommand::Clear();
-		}
-
+		m_Framebuffer->Bind();
+		RenderCommand::SetClearColor({ 0.27f, 0.447f, 0.682f, 1.0f });
+		RenderCommand::Clear();
+		
+		if(false)
 		{
 			static float rotation = 0.0f;
 			rotation += ts * 50.0f;
@@ -103,8 +110,15 @@ namespace CraftNow {
 			//Renderer2D::DrawQuad({ 2.0f, 0.0f }, { 1.0f, 2.0f }, m_Sub2);
 			Renderer2D::EndScene();
 
-			m_Framebuffer->Unbind();
 		}
+
+		//Scene testing
+		Renderer2D::BeginScene(m_CameraController.GetCamera());
+		// Update scene
+		m_ActiveScene->OnUpdate(ts);
+		Renderer2D::EndScene();
+
+		m_Framebuffer->Unbind();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -179,7 +193,17 @@ namespace CraftNow {
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+		if (m_SquareEntity)
+		{
+			ImGui::Separator();
+			auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
+			ImGui::Text("%s", tag.c_str());
+
+			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
+			ImGui::Separator();
+		}
+		/*ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));*/
 		ImGui::End();
 
 

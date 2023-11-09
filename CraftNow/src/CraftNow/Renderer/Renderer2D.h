@@ -9,7 +9,7 @@
 //#include "CraftNow/Renderer/EditorCamera.h"
 //#include "CraftNow/Renderer/Font.h"
 
-//#include "CraftNow/Scene/Components.h"
+#include "CraftNow/Scene/Components.h"
 
 namespace CraftNow {
 
@@ -51,7 +51,7 @@ namespace CraftNow {
 		static void DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, int entityID = -1);
 		static void DrawRect(const glm::mat4& transform, const glm::vec4& color, int entityID = -1);
 
-		//static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID);
+		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID = -1);
 
 		struct TextParams
 		{

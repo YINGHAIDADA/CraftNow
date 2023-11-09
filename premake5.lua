@@ -17,6 +17,7 @@ IncludeDir["Glad"] = "CraftNow/vendor/Glad/include"
 IncludeDir["ImGui"] = "CraftNow/vendor/imgui"
 IncludeDir["glm"] = "CraftNow/vendor/glm"
 IncludeDir["stb_image"] = "CraftNow/vendor/stb_image"
+IncludeDir["entt"] = "CraftNow/vendor/entt/include"
 
 group "Dependencies"
 	include "CraftNow/vendor/GLFW"
@@ -57,6 +58,7 @@ project "CraftNow"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}",
 	}
 
 	links
@@ -118,7 +120,8 @@ project "Sandbox"
 		"CraftNow/vendor/spdlog/include",
 		"CraftNow/src",
 		"CraftNow/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}",
 	}
 
 	links
@@ -171,7 +174,8 @@ project "CraftNowEditor"
 		"CraftNow/vendor/spdlog/include",
 		"CraftNow/src",
 		"CraftNow/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}",
 	}
 
 	links

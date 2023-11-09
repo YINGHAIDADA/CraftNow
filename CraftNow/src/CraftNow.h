@@ -17,7 +17,9 @@
 
 #include "CraftNow/ImGui/ImGuiLayer.h"
 
-
+#include "CraftNow/Scene/Scene.h"
+#include "CraftNow/Scene/Entity.h"
+#include "CraftNow/Scene/Components.h"
 
 //----------Renderer-----------
 #include "CraftNow/Renderer/Renderer.h"

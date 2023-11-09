@@ -620,13 +620,13 @@ namespace CraftNow {
 		DrawLine(lineVertices[3], lineVertices[0], color, entityID);
 	}
 
-	//void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
-	//{
-	//	if (src.Texture)
-	//		DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
-	//	else
-	//		DrawQuad(transform, src.Color, entityID);
-	//}
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
+	{
+		if (src.Texture)
+			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+		else
+			DrawQuad(transform, src.Color, entityID);
+	}
 
 	//void Renderer2D::DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const TextParams& textParams, int entityID)
 	//{
