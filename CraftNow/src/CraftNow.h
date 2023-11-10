@@ -6,6 +6,7 @@
 #include "CraftNow/Core/Application.h"
 #include "CraftNow/Core/Layer.h"
 #include "CraftNow/Core/Log.h"
+#include "CraftNow/Core/Assert.h"
 
 #include "CraftNow/Core/Timestep.h"
 
@@ -19,6 +20,7 @@
 
 #include "CraftNow/Scene/Scene.h"
 #include "CraftNow/Scene/Entity.h"
+#include "CraftNow/Scene/ScriptableEntity.h"
 #include "CraftNow/Scene/Components.h"
 
 //----------Renderer-----------
@@ -35,4 +37,4 @@
 
 #include "CraftNow/Renderer/OrthographicCamera.h"
 
-//----------Renderer-----------
+//---------------------------------

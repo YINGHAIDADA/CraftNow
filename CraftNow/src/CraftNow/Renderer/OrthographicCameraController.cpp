@@ -21,16 +21,16 @@ namespace CraftNow {
 
 		if (true)
 		{
-			if (CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonMiddle))
+			if (Input::IsMouseButtonPressed(Mouse::ButtonMiddle))
 			{
-				auto mousePositon = CraftNow::Input::GetMousePosition();
+				auto mousePositon = Input::GetMousePosition();
 				
 				m_CameraPosition.x = m_LastCameraPosition.x - (mousePositon.x - m_lastMousePosition.x) * 0.2222f * 0.01f * m_CameraTranslationSpeed * m_mouseScale;
 				m_CameraPosition.y = m_LastCameraPosition.y + (mousePositon.y - m_lastMousePosition.y) * 0.2222f * 0.01f * m_CameraTranslationSpeed * m_mouseScale;
 			}
 			else
 			{
-				m_lastMousePosition = CraftNow::Input::GetMousePosition();
+				m_lastMousePosition = Input::GetMousePosition();
 				m_LastCameraPosition = m_CameraPosition;
 			}
 		}
@@ -39,8 +39,8 @@ namespace CraftNow {
 		//----------键盘相机移动事件---------------------
 		if (true)
 		{
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Left) || CraftNow::Input::IsKeyPressed(CraftNow::Key::A))
-				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+			if (Input::IsKeyPressed(Key::Left) || Input::IsKeyPressed(Key::A))
+				if (Input::IsKeyPressed(Key::LeftShift))
 				{
 					m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * 0.1f * ts;
 					m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * 0.1f * ts;
@@ -50,8 +50,8 @@ namespace CraftNow {
 					m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 					m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 				}
-			else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Right) || CraftNow::Input::IsKeyPressed(CraftNow::Key::D))
-				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+			else if (Input::IsKeyPressed(Key::Right) || Input::IsKeyPressed(Key::D))
+				if (Input::IsKeyPressed(Key::LeftShift))
 				{
 					m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * 0.1f * ts;
 					m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * 0.1f * ts;
@@ -62,8 +62,8 @@ namespace CraftNow {
 					m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 				}
 
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Up) || CraftNow::Input::IsKeyPressed(CraftNow::Key::W))
-				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+			if (Input::IsKeyPressed(Key::Up) || Input::IsKeyPressed(Key::W))
+				if (Input::IsKeyPressed(Key::LeftShift))
 				{
 					m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * 0.1f * ts;
 					m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * 0.1f * ts;
@@ -73,8 +73,8 @@ namespace CraftNow {
 					m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 					m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 				}
-			else if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Down) || CraftNow::Input::IsKeyPressed(CraftNow::Key::S))
-				if (CraftNow::Input::IsKeyPressed(CraftNow::Key::LeftShift))
+			else if (Input::IsKeyPressed(Key::Down) || Input::IsKeyPressed(Key::S))
+				if (Input::IsKeyPressed(Key::LeftShift))
 				{
 					m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * 0.1f * ts;
 					m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * 0.1f * ts;
@@ -85,7 +85,7 @@ namespace CraftNow {
 					m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 				}
 
-			if (CraftNow::Input::IsKeyPressed(CraftNow::Key::Space) || CraftNow::Input::IsMouseButtonPressed(CraftNow::Mouse::ButtonRight))
+			if (Input::IsKeyPressed(Key::Space) || Input::IsMouseButtonPressed(Mouse::ButtonRight))
 			{
 				m_CameraPosition.x = 0.0f; m_CameraPosition.y = 0.0f;
 				m_CameraRotation = 0.0f;

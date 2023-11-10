@@ -1,6 +1,8 @@
 ﻿#pragma once
 
-#include "cnpch.h"
+#include <functional>
+
+#include "CraftNow/Debug/Instrumentor.h"
 #include "CraftNow/Core/Core.h"
 
 

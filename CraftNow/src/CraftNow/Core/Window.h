@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <sstream>
+
 #include "CraftNow/Core/Core.h"
 #include "CraftNow/Events/Event.h"
 
