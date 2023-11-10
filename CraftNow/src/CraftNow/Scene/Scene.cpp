@@ -3,6 +3,7 @@
 #include "Entity.h"
 
 #include "Components.h"
+#include "ScriptableEntity.h"
 #include "CraftNow/Renderer/Renderer2D.h"
 
 #include <glm/glm.hpp>
@@ -115,13 +116,31 @@ namespace CraftNow {
 
 	void Scene::OnUpdate(Timestep ts)
 	{
+		// Update scripts
+		{
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+
+				{
+					// TODO: Move to Scene::OnScenePlay
+					if (!nsc.Instance)
+					{
+						nsc.Instance = nsc.InstantiateScript();
+						nsc.Instance->m_Entity = Entity{ entity, this };
+						nsc.Instance->OnCreate();
+					}
+
+					nsc.Instance->OnUpdate(ts);
+				});
+		}
+
+		//Render2D
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
 			{
-				auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
+				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 
 				if (camera.Primary)
 				{
@@ -138,7 +157,7 @@ namespace CraftNow {
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group)
 			{
-				auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
 				Renderer2D::DrawSprite(transform.GetTransform(), sprite);
 			}

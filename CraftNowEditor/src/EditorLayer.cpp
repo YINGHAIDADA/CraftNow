@@ -42,6 +42,38 @@ namespace CraftNow {
 		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
+
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			void OnCreate()
+			{
+				auto& translation = GetComponent<TransformComponent>().Translation;
+				translation[0] = rand() % 10 - 5.0f;
+			}
+
+			void OnDestroy()
+			{
+			}
+			void OnUpdate(Timestep ts)
+			{
+				auto& translation = GetComponent<TransformComponent>().Translation;
+
+				float speed = 5.0f;
+
+				if (Input::IsKeyPressed(Key::A))
+					translation[0] -= speed * ts;
+				if (Input::IsKeyPressed(Key::D))
+					translation[0] += speed * ts;
+				if (Input::IsKeyPressed(Key::W))
+					translation[1] += speed * ts;
+				if (Input::IsKeyPressed(Key::S))
+					translation[1] -= speed * ts;
+			}
+		};
+
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 	}
 
 	void EditorLayer::OnDetach()
@@ -214,8 +246,13 @@ namespace CraftNow {
 		/*ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));*/
 
 		//---------------SceneCamera-------------
-		ImGui::DragFloat3("Camera Transform",
-			glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Translation));
+		if (m_PrimaryCamera) {
+			ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Translation));
+		}
+		else
+		{
+			ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_SecondCamera.GetComponent<TransformComponent>().Translation));
+		}
 
 		if (ImGui::Checkbox("Camera A", &m_PrimaryCamera))
 		{
@@ -244,8 +281,8 @@ namespace CraftNow {
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		
-		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 } );
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 } );
 		ImGui::End();
 		ImGui::PopStyleVar();
 
