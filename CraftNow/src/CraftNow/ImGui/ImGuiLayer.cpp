@@ -40,9 +40,10 @@ namespace CraftNow
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
-		//float fontSize = 18.0f;// *2.0f;
-		//io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Bold.ttf", fontSize);
-		//io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Regular.ttf", fontSize);
+		float fontSize = 18.0f;// *2.0f;
+		io.Fonts->AddFontFromFileTTF("assets/fonts/MC.TTF", fontSize);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/FZXS.TTF", fontSize, nullptr,
+			io.Fonts->GetGlyphRangesChineseFull());
 
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();

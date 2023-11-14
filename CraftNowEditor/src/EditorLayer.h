@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CraftNow.h"
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace CraftNow {
 
@@ -40,5 +41,12 @@ namespace CraftNow {
 		bool m_PrimaryCamera = true;
 
 		glm::vec4 m_SquareColor = { 0.0f, 0.8f, 0.0f, 0.7f };
+
+		// Editor resources
+		Ref<Texture2D> m_IconPlay, m_IconPause, m_IconStep, m_IconSimulate, m_IconStop;
+
+		// Panels
+		SceneHierarchyPanel m_SceneHierarchyPanel;
+		//Scope<ContentBrowserPanel> m_ContentBrowserPanel;
 	};
 }

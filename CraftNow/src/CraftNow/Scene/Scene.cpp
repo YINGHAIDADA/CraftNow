@@ -166,6 +166,31 @@ namespace CraftNow {
 
 	}
 
+	void Scene::OnRuntimeStart()
+	{
+		
+	}
+
+	void Scene::OnRuntimeStop()
+	{
+
+	}
+
+	void Scene::OnSimulationStart()
+	{
+		OnPhysics2DStart();
+	}
+
+	void Scene::OnSimulationStop()
+	{
+		OnPhysics2DStop();
+	}
+
+	void Scene::OnUpdateRuntime(Timestep ts)
+	{
+
+	}
+
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
 		if (m_ViewportWidth == width && m_ViewportHeight == height)
@@ -182,6 +207,63 @@ namespace CraftNow {
 			if (!cameraComponent.FixedAspectRatio)
 				cameraComponent.Camera.SetViewportSize(width, height);
 		}
+	}
+
+	CraftNow::Entity Scene::DuplicateEntity(Entity entity)
+	{
+		// Copy name because we're going to modify component data structure
+		std::string name = entity.GetName();
+		Entity newEntity = CreateEntity(name);
+		CopyComponentIfExists(AllComponents{}, newEntity, entity);
+		return newEntity;
+	}
+
+	CraftNow::Entity Scene::FindEntityByName(std::string_view name)
+	{
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entity : view)
+		{
+			const TagComponent& tc = view.get<TagComponent>(entity);
+			if (tc.Tag == name)
+				return Entity{ entity, this };
+		}
+		return {};
+	}
+
+	CraftNow::Entity Scene::GetEntityByUUID(UUID uuid)
+	{
+		// TODO: Maybe should be assert
+		if (m_EntityMap.find(uuid) != m_EntityMap.end())
+			return { m_EntityMap.at(uuid), this };
+
+		return {};
+	}
+
+	CraftNow::Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			const auto& camera = view.get<CameraComponent>(entity);
+			if (camera.Primary)
+				return Entity{ entity, this };
+		}
+		return {};
+	}
+
+	void Scene::Step(int frames)
+	{
+
+	}
+
+	void Scene::OnPhysics2DStart()
+	{
+
+	}
+
+	void Scene::OnPhysics2DStop()
+	{
+
 	}
 
 	template<typename T>

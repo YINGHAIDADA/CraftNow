@@ -1,4 +1,6 @@
 ﻿#include "EditorLayer.h"
+#include "CraftNow/Utils/ChineseUtils.h"
+
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -74,6 +76,9 @@ namespace CraftNow {
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+		//Panel
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::OnDetach()
@@ -212,26 +217,29 @@ namespace CraftNow {
 
 		if (ImGui::BeginMenuBar())
 		{
-			if (ImGui::BeginMenu("File"))
+			if (ImGui::BeginMenu(u8"文件"))
 			{
 				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
-				if (ImGui::MenuItem("Exit")) Application::Get().Close();
+				if (ImGui::MenuItem(u8"退出")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
 
 			ImGui::EndMenuBar();
 		}
 
-		ImGui::Begin("Settings");
+		//Panel
+		m_SceneHierarchyPanel.OnImGuiRender();
+
+		ImGui::Begin(u8"设置");
 		auto stats = Renderer2D::GetStats();
-		ImGui::Text("Renderer2D Stats:");
-		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-		ImGui::Text("Quads: %d", stats.QuadCount);
-		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+		ImGui::Text(u8"Renderer2D 状态:");
+		ImGui::Text(u8"Draw Calls: %d", stats.DrawCalls);
+		ImGui::Text(u8"Quads: %d", stats.QuadCount);
+		ImGui::Text(u8"Vertices: %d", stats.GetTotalVertexCount());
+		ImGui::Text(u8"Indices: %d", stats.GetTotalIndexCount());
 
 		if (m_SquareEntity)
 		{
@@ -240,21 +248,21 @@ namespace CraftNow {
 			ImGui::Text("%s", tag.c_str());
 
 			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
-			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
+			ImGui::ColorEdit4(u8"方块颜色", glm::value_ptr(squareColor));
 			ImGui::Separator();
 		}
 		/*ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));*/
 
 		//---------------SceneCamera-------------
 		if (m_PrimaryCamera) {
-			ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Translation));
+			ImGui::DragFloat3(u8"相机变换", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Translation));
 		}
 		else
 		{
-			ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_SecondCamera.GetComponent<TransformComponent>().Translation));
+			ImGui::DragFloat3(u8"相机变换", glm::value_ptr(m_SecondCamera.GetComponent<TransformComponent>().Translation));
 		}
 
-		if (ImGui::Checkbox("Camera A", &m_PrimaryCamera))
+		if (ImGui::Checkbox(u8"相机 A", &m_PrimaryCamera))
 		{
 			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
 			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
@@ -272,7 +280,7 @@ namespace CraftNow {
 
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
-		ImGui::Begin("Viewport");
+		ImGui::Begin(u8"视窗");
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
