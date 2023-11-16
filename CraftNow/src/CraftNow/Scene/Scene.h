@@ -21,8 +21,8 @@ namespace CraftNow {
 
 		static Ref<Scene> Copy(Ref<Scene> other);
 
-		Entity CreateEntity(const std::string& name = std::string());
-		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
+		Entity CreateEntity(const std::string& name = std::string(), const glm::vec3& translation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& rotation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& scale = { 1.0f, 1.0f, 1.0f });
+		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string(), const glm::vec3& translation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& rotation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& scale = { 0.0f, 0.0f, 0.0f });
 		void DestroyEntity(Entity entity);
 
 		void OnUpdate(Timestep ts);

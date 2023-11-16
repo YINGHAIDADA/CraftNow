@@ -20,7 +20,7 @@ namespace CraftNow {
 		CN_PROFILE_FUNCTION();
 
 		m_CheckerboardTexture = Texture2D::Create("assets/textures/yinghai_alpha.png");
-		m_Tail_mapTexture = Texture2D::Create("assets/textures/tilemap_packed.png");
+		m_Tail_mapTexture = Texture2D::Create("../Sandbox/assets/textures/Legend_of_Zelda/maps/Legend_of_Zelda.png");
 
 		m_Sub1 = SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 5, 10 }, { 16,16 }, { 1,1 });
 		m_Sub2 = SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 4, 9 }, { 16,16 }, { 1,2 });
@@ -35,13 +35,16 @@ namespace CraftNow {
 
 		m_ActiveScene = CreateRef<Scene>();
 
-		m_SquareEntity = m_ActiveScene->CreateEntity("YINGHAI");
-		m_SquareEntity.AddComponent<SpriteRendererComponent>(m_CheckerboardTexture);
+		auto redSquare = m_ActiveScene->CreateEntity("YINGHAI");
+		redSquare.AddComponent<SpriteRendererComponent>(m_CheckerboardTexture);
 
-		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
+		m_SquareEntity = m_ActiveScene->CreateEntity("Map", { 4.96f, 3.84f, -0.1f }, { 0.0f, 0.0f, 0.0f }, { 49.92f, 31.68f, 1.0f });
+		m_SquareEntity.AddComponent<SpriteRendererComponent>(m_Tail_mapTexture);
+
+		m_CameraEntity = m_ActiveScene->CreateEntity(u8"相机A");
 		m_CameraEntity.AddComponent<CameraComponent>();
 
-		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
+		m_SecondCamera = m_ActiveScene->CreateEntity(u8"相机B");
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
 
@@ -233,7 +236,7 @@ namespace CraftNow {
 		//Panel
 		m_SceneHierarchyPanel.OnImGuiRender();
 
-		ImGui::Begin(u8"设置");
+		ImGui::Begin(u8"状态");
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text(u8"Renderer2D 状态:");
 		ImGui::Text(u8"Draw Calls: %d", stats.DrawCalls);
@@ -241,38 +244,14 @@ namespace CraftNow {
 		ImGui::Text(u8"Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text(u8"Indices: %d", stats.GetTotalIndexCount());
 
-		if (m_SquareEntity)
-		{
-			ImGui::Separator();
-			auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
-			ImGui::Text("%s", tag.c_str());
-
-			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
-			ImGui::ColorEdit4(u8"方块颜色", glm::value_ptr(squareColor));
-			ImGui::Separator();
-		}
 		/*ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));*/
 
 		//---------------SceneCamera-------------
-		if (m_PrimaryCamera) {
-			ImGui::DragFloat3(u8"相机变换", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Translation));
-		}
-		else
-		{
-			ImGui::DragFloat3(u8"相机变换", glm::value_ptr(m_SecondCamera.GetComponent<TransformComponent>().Translation));
-		}
 
 		if (ImGui::Checkbox(u8"相机 A", &m_PrimaryCamera))
 		{
 			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
 			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
-		}
-
-		{
-			auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
-			float orthoSize = camera.GetOrthographicSize();
-			if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize))
-				camera.SetOrthographicSize(orthoSize);
 		}
 
 		//---------------------------------

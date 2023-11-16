@@ -90,16 +90,16 @@ namespace CraftNow {
 		return newScene;
 	}
 
-	Entity Scene::CreateEntity(const std::string& name)
+	Entity Scene::CreateEntity(const std::string& name, const glm::vec3& translation, const glm::vec3& rotation, const glm::vec3& scale)
 	{
-		return CreateEntityWithUUID(UUID(), name);
+		return CreateEntityWithUUID(UUID(), name, translation, rotation, scale);
 	}
 
-	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
+	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name, const glm::vec3& translation, const glm::vec3& rotation, const glm::vec3& scale)
 	{
 		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<IDComponent>(uuid);
-		entity.AddComponent<TransformComponent>();
+		entity.AddComponent<TransformComponent>(translation, rotation, scale);
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
 
@@ -135,7 +135,7 @@ namespace CraftNow {
 
 		//Render2D
 		Camera* mainCamera = nullptr;
-		glm::mat4* cameraTransform = nullptr;
+		glm::mat4 cameraTransform;
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
@@ -145,7 +145,7 @@ namespace CraftNow {
 				if (camera.Primary)
 				{
 					mainCamera = &(camera.Camera);
-					cameraTransform = &transform.GetTransform();
+					cameraTransform = transform.GetTransform();
 					break;
 				}
 			}
@@ -153,14 +153,20 @@ namespace CraftNow {
 
 		if(mainCamera)
 		{
-			Renderer2D::BeginScene(mainCamera->GetProjection(), *cameraTransform);
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group)
-			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+			Renderer2D::BeginScene(*mainCamera/*->GetProjection()*/, cameraTransform);
 
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite);
+			// Draw sprites
+			{
+				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+				for (auto entity : group)
+				{
+					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				}
 			}
+
+
 			Renderer2D::EndScene();
 		}
 
@@ -269,6 +275,7 @@ namespace CraftNow {
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
+		//防止传入未知模板
 		static_assert(sizeof(T) == 0);
 	}
 
