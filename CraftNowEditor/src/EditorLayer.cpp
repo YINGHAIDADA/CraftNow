@@ -306,11 +306,11 @@ namespace CraftNow {
 
 		//---------------SceneCamera-------------
 
-		if (ImGui::Checkbox(u8"相机 A", &m_PrimaryCamera))
+		/*if (ImGui::Checkbox(u8"相机 A", &m_PrimaryCamera))
 		{
 			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
 			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
-		}
+		}*/
 
 		//---------------------------------
 		ImGui::End();

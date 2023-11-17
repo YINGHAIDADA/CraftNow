@@ -274,15 +274,19 @@ namespace CraftNow {
 				DrawVec3Control(u8"缩放", component.Scale, 1.0f);
 			});
 
-		DrawComponent<CameraComponent>("Camera", entity, [](auto& component)
+		DrawComponent<CameraComponent>(u8"相机设置", entity, [](auto& component)
 			{
 				auto& camera = component.Camera;
 
-				ImGui::Checkbox("Primary", &component.Primary);
+				ImGui::Checkbox(u8"主相机", &component.Primary);
+				if (component.Primary)
+				{
+					//TODO: 清除其他相机的Primary设置
+				}
 
-				const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
+				const char* projectionTypeStrings[] = { u8"透视", u8"正交" };
 				const char* currentProjectionTypeString = projectionTypeStrings[(int)camera.GetProjectionType()];
-				if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
+				if (ImGui::BeginCombo(u8"相机类型", currentProjectionTypeString))
 				{
 					for (int i = 0; i < 2; i++)
 					{
@@ -303,30 +307,30 @@ namespace CraftNow {
 				if (camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective)
 				{
 					float perspectiveVerticalFov = glm::degrees(camera.GetPerspectiveVerticalFOV());
-					if (ImGui::DragFloat("Vertical FOV", &perspectiveVerticalFov))
+					if (ImGui::DragFloat(u8"垂直FOV", &perspectiveVerticalFov))
 						camera.SetPerspectiveVerticalFOV(glm::radians(perspectiveVerticalFov));
 
 					float perspectiveNear = camera.GetPerspectiveNearClip();
-					if (ImGui::DragFloat("Near", &perspectiveNear))
+					if (ImGui::DragFloat(u8"最近距离", &perspectiveNear))
 						camera.SetPerspectiveNearClip(perspectiveNear);
 
 					float perspectiveFar = camera.GetPerspectiveFarClip();
-					if (ImGui::DragFloat("Far", &perspectiveFar))
+					if (ImGui::DragFloat(u8"最远距离", &perspectiveFar))
 						camera.SetPerspectiveFarClip(perspectiveFar);
 				}
 
 				if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
 				{
 					float orthoSize = camera.GetOrthographicSize();
-					if (ImGui::DragFloat("Size", &orthoSize))
+					if (ImGui::DragFloat(u8"尺寸", &orthoSize))
 						camera.SetOrthographicSize(orthoSize);
 
 					float orthoNear = camera.GetOrthographicNearClip();
-					if (ImGui::DragFloat("Near", &orthoNear))
+					if (ImGui::DragFloat(u8"最近距离", &orthoNear))
 						camera.SetOrthographicNearClip(orthoNear);
 
 					float orthoFar = camera.GetOrthographicFarClip();
-					if (ImGui::DragFloat("Far", &orthoFar))
+					if (ImGui::DragFloat(u8"最远距离", &orthoFar))
 						camera.SetOrthographicFarClip(orthoFar);
 
 					ImGui::Checkbox(u8"固定纵横比", &component.FixedAspectRatio);

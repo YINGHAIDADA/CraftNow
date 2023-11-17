@@ -42,8 +42,8 @@ namespace CraftNow
 
 		float fontSize = 18.0f;// *2.0f;
 		io.Fonts->AddFontFromFileTTF("assets/fonts/MC.TTF", fontSize-4.0f);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/LanaPixel-9px.ttf", fontSize+4.0f, nullptr,
-			io.Fonts->GetGlyphRangesChineseFull());
+		//io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/LanaPixel-9px.ttf", fontSize+4.0f, nullptr, io.Fonts->GetGlyphRangesChineseFull());
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/FP-10px.ttf", fontSize, nullptr, io.Fonts->GetGlyphRangesChineseFull());
 
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
