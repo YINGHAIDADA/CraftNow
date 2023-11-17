@@ -385,6 +385,7 @@ namespace CraftNow {
 		#pragma warning(suppress : 4996)
 		m_Scene->m_Registry.each([&](auto entityID)
 			{
+				//TODO: Entity中Scence的类型目前为原始指针考虑后续是否更改为智能指针
 				Entity entity = { entityID, m_Scene.get() };
 				if (!entity)
 					return;

@@ -42,8 +42,12 @@ namespace CraftNow {
 		m_ActiveScene = CreateRef<Scene>();
 
 		#if 0
-		auto redSquare = m_ActiveScene->CreateEntity("YINGHAI");
-		redSquare.AddComponent<SpriteRendererComponent>(m_CheckerboardTexture);
+
+		auto yinghai = m_ActiveScene->CreateEntity("YINGHAI");
+		yinghai.AddComponent<SpriteRendererComponent>(m_CheckerboardTexture);
+
+		auto redSquare = m_ActiveScene->CreateEntity("red");
+		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 0.6f });
 
 		m_SquareEntity = m_ActiveScene->CreateEntity("Map", { 4.96f, 3.84f, -0.1f }, { 0.0f, 0.0f, 0.0f }, { 49.92f, 31.68f, 1.0f });
 		m_SquareEntity.AddComponent<SpriteRendererComponent>(m_Tail_mapTexture);
@@ -245,13 +249,13 @@ namespace CraftNow {
 				if (ImGui::MenuItem(u8"序列化"))
 				{
 					SceneSerializer serializer(m_ActiveScene);
-					serializer.Serialize("assets/scenes/Example.craft");
+					serializer.Serialize("assets/scenes/AlphaTest.craft");
 				}
 
 				if (ImGui::MenuItem(u8"解析序列"))
 				{
 					SceneSerializer serializer(m_ActiveScene);
-					serializer.Deserialize("assets/scenes/Example.craft");
+					serializer.Deserialize("assets/scenes/AlphaTest.craft");
 				}
 
 

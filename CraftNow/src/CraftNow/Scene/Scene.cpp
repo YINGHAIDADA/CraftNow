@@ -157,13 +157,25 @@ namespace CraftNow {
 
 			// Draw sprites
 			{
+				
+
 				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
+				//TODO: 目前按纹理Z-index顺序渲染, 但存在一个问题，原本index相同的该如何排列保证能正常层次渲染；
+				group.sort([&](const entt::entity lhs, const entt::entity rhs) {
+					double l_z = std::get<0>(group.get<TransformComponent, SpriteRendererComponent>(lhs)).Translation[2];
+					double r_z = std::get<0>(group.get<TransformComponent, SpriteRendererComponent>(rhs)).Translation[2];
+					return l_z < r_z;
+					});
+
 				for (auto entity : group)
 				{
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-
 					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 				}
+
+
+				
 			}
 
 
