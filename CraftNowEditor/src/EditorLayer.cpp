@@ -1,5 +1,11 @@
 ﻿#include "EditorLayer.h"
-#include "CraftNow/Utils/ChineseUtils.h"
+#include "CraftNow/Scene/SceneSerializer.h"
+#include "CraftNow/Math/Math.h"
+//#include "CraftNow/Scripting/ScriptEngine.h"
+//#include "CraftNow/Renderer/Font.h"
+#include "CraftNow/Utils/PlatformUtils.h"
+
+//#include "CraftNow/Utils/ChineseUtils.h"
 
 #include <imgui/imgui.h>
 
@@ -35,6 +41,7 @@ namespace CraftNow {
 
 		m_ActiveScene = CreateRef<Scene>();
 
+		#if 0
 		auto redSquare = m_ActiveScene->CreateEntity("YINGHAI");
 		redSquare.AddComponent<SpriteRendererComponent>(m_CheckerboardTexture);
 
@@ -79,6 +86,7 @@ namespace CraftNow {
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		#endif
 
 		//Panel
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
@@ -212,11 +220,19 @@ namespace CraftNow {
 
 		// DockSpace
 		ImGuiIO& io = ImGui::GetIO();
+
+		//设置最小宽度 
+		ImGuiStyle& style = ImGui::GetStyle();
+		float minWinSizeX = style.WindowMinSize.x;
+		style.WindowMinSize.x = 350.0f;
+
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
+
+		//style.WindowMinSize.x = minWinSizeX;
 
 		if (ImGui::BeginMenuBar())
 		{
@@ -225,6 +241,19 @@ namespace CraftNow {
 				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+
+				if (ImGui::MenuItem(u8"序列化"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Serialize("assets/scenes/Example.craft");
+				}
+
+				if (ImGui::MenuItem(u8"解析序列"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Deserialize("assets/scenes/Example.craft");
+				}
+
 
 				if (ImGui::MenuItem(u8"退出")) Application::Get().Close();
 				ImGui::EndMenu();

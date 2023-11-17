@@ -1,0 +1,60 @@
+Scene: Untitled
+Entities:
+  - Entity: 12767820411553667526
+    TagComponent:
+      Tag: 相机B
+    TransformComponent:
+      Translation: [-0.159999996, -0.319999993, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 12
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: false
+      FixedAspectRatio: false
+  - Entity: 15240000957070625669
+    TagComponent:
+      Tag: 相机A
+    TransformComponent:
+      Translation: [-0.158536911, -0.319999993, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 5
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 5594780700416495482
+    TagComponent:
+      Tag: Map
+    TransformComponent:
+      Translation: [4.96000004, 3.83999991, -0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [49.9199982, 31.6800003, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: ../Sandbox/assets/textures/Legend_of_Zelda/maps/Legend_of_Zelda.png
+      TilingFactor: 1
+  - Entity: 15733811995800404829
+    TagComponent:
+      Tag: YINGHAI
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: assets/textures/yinghai_alpha.png
+      TilingFactor: 1

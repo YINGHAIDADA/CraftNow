@@ -121,7 +121,7 @@ namespace CraftNow {
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
 
 				{
-					// TODO: Move to Scene::OnScenePlay
+					// TODO: 迁移到  Scene::OnScenePlay
 					if (!nsc.Instance)
 					{
 						nsc.Instance = nsc.InstantiateScript();

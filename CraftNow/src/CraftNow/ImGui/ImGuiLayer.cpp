@@ -42,7 +42,7 @@ namespace CraftNow
 
 		float fontSize = 18.0f;// *2.0f;
 		io.Fonts->AddFontFromFileTTF("assets/fonts/MC.TTF", fontSize-4.0f);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/FZXS.TTF", fontSize, nullptr,
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/LanaPixel-9px.ttf", fontSize+4.0f, nullptr,
 			io.Fonts->GetGlyphRangesChineseFull());
 
 		// Setup Dear ImGui style

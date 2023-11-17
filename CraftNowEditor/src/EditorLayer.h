@@ -20,7 +20,7 @@ namespace CraftNow {
 	private:
 		OrthographicCameraController m_CameraController;
 
-		// Temp
+		// ----------Temp----------------------
 		Ref<VertexArray> m_SquareVA;
 		Ref<Shader> m_FlatColorShader;
 
@@ -41,6 +41,8 @@ namespace CraftNow {
 		bool m_PrimaryCamera = true;
 
 		glm::vec4 m_SquareColor = { 0.0f, 0.8f, 0.0f, 0.7f };
+		//-----------------------------------
+
 
 		// Editor resources
 		Ref<Texture2D> m_IconPlay, m_IconPause, m_IconStep, m_IconSimulate, m_IconStop;

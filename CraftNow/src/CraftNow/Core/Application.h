@@ -30,7 +30,7 @@ namespace CraftNow {
 
 	struct ApplicationSpecification
 	{
-		std::string Name = "Hazel Application";
+		std::string Name = "CraftNow Application";
 		std::string WorkingDirectory;
 		ApplicationCommandLineArgs CommandLineArgs;
 	};

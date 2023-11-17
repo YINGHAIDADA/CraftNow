@@ -34,6 +34,8 @@ namespace CraftNow {
 
 		if (m_Context)
 		{
+			//消除4996警告
+			#pragma warning(suppress : 4996)
 			m_Context->m_Registry.each([&](auto entityID)
 				{
 					Entity entity{ entityID , m_Context.get() };
@@ -44,7 +46,7 @@ namespace CraftNow {
 				m_SelectionContext = {};
 
 			// 右键空白区域
-			if (ImGui::BeginPopupContextWindow(0, 1))
+			if (ImGui::BeginPopupContextWindow())
 			{
 				if (ImGui::MenuItem(u8"创建 空实体"))
 					m_Context->CreateEntity(u8"空");
@@ -335,8 +337,11 @@ namespace CraftNow {
 			{
 				ImGui::ColorEdit4(u8"颜色", glm::value_ptr(component.Color));
 
-				//TODO:打开文件加载纹理
-				ImGui::Button(u8"加载纹理", ImVec2(100.0f, 0.0f));
+				
+				if (ImGui::Button(u8"加载纹理", ImVec2(80.0f, 0.0f)))
+				{
+					//TODO:打开文件加载纹理
+				}
 
 				if (ImGui::BeginDragDropTarget())
 				{
