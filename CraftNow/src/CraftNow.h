@@ -23,6 +23,8 @@
 #include "CraftNow/Scene/ScriptableEntity.h"
 #include "CraftNow/Scene/Components.h"
 
+#include "CraftNow/Project/Project.h"
+
 //----------Renderer-----------
 #include "CraftNow/Renderer/Renderer.h"
 #include "CraftNow/Renderer/Renderer2D.h"

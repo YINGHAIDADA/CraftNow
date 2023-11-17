@@ -6,6 +6,7 @@
 namespace CraftNow {
 	Ref<Project> Project::New()
 	{
+		//TODO: 初始化 m_Config
 		s_ActiveProject = CreateRef<Project>();
 		return s_ActiveProject;
 	}

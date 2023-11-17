@@ -245,6 +245,21 @@ namespace CraftNow {
 				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+				if (ImGui::MenuItem(u8"打开工程...", "Ctrl+O"))
+					OpenProject();
+
+				ImGui::Separator();
+
+				if (ImGui::MenuItem(u8"新 场景", "Ctrl+N"))
+					NewScene();
+
+				if (ImGui::MenuItem(u8"保存 场景", "Ctrl+S"))
+					SaveScene();
+
+				if (ImGui::MenuItem(u8"保存 场景 到...", "Ctrl+Shift+S"))
+					SaveSceneAs();
+
+				ImGui::Separator();
 
 				if (ImGui::MenuItem(u8"序列化"))
 				{
@@ -260,6 +275,16 @@ namespace CraftNow {
 
 
 				if (ImGui::MenuItem(u8"退出")) Application::Get().Close();
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu(u8"脚本"))
+			{
+				if (ImGui::MenuItem(u8"重新加载部件", "Ctrl+R"))
+				{
+					//ScriptEngine::ReloadAssembly();
+				}
+
 				ImGui::EndMenu();
 			}
 
@@ -313,6 +338,223 @@ namespace CraftNow {
 	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
+		if (m_SceneState == SceneState::Edit)
+		{
+			//m_EditorCamera.OnEvent(e);
+		}
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+	}
+
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		// Shortcuts
+		if (e.IsRepeat())
+			return false;
+
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+
+		switch (e.GetKeyCode())
+		{
+		case Key::N:
+		{
+			if (control)
+				NewScene();
+
+			break;
+		}
+		case Key::O:
+		{
+			if (control)
+				OpenProject();
+
+			break;
+		}
+		case Key::S:
+		{
+			if (control)
+			{
+				if (shift)
+					SaveSceneAs();
+				else
+					SaveScene();
+			}
+
+			break;
+		}
+
+		// Scene Commands
+		case Key::D:
+		{
+			if (control)
+				OnDuplicateEntity();
+
+			break;
+		}
+
+		// Gizmos
+		/*case Key::Q:
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = -1;
+			break;
+		}
+		case Key::W:
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		}
+		case Key::E:
+		{
+			if (!ImGuizmo::IsUsing())
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		}
+		case Key::R:
+		{
+			if (control)
+			{
+				ScriptEngine::ReloadAssembly();
+			}
+			else
+			{
+				if (!ImGuizmo::IsUsing())
+					m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			}
+			break;
+		}*/
+		case Key::Delete:
+		{
+			if (Application::Get().GetImGuiLayer()->GetActiveWidgetID() == 0)
+			{
+				Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+				if (selectedEntity)
+				{
+					m_SceneHierarchyPanel.SetSelectedEntity({});
+					m_ActiveScene->DestroyEntity(selectedEntity);
+				}
+			}
+			break;
+		}
+		}
+
+		return false;
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		/*if (e.GetMouseButton() == Mouse::ButtonLeft)
+		{
+			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+		}*/
+		return false;
+	}
+
+	void EditorLayer::NewProject()
+	{
+		Project::New();
+	}
+
+	bool EditorLayer::OpenProject()
+	{
+		std::string filepath = FileDialogs::OpenFile("CraftNow Project (*.cnproj)\0*.cnproj\0");
+		if (filepath.empty())
+			return false;
+
+		OpenProject(filepath);
+		return true;
+	}
+
+
+	void EditorLayer::OpenProject(const std::filesystem::path& path)
+	{
+		/*if (Project::Load(path))
+		{
+			ScriptEngine::Init();
+
+			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
+			OpenScene(startScenePath);
+			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
+
+		}*/
+	}
+
+	void EditorLayer::SaveProject()
+	{
+		// Project::SaveActive();
+	}
+
+	void EditorLayer::NewScene()
+	{
+		m_ActiveScene = CreateRef<Scene>();
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		m_EditorScenePath = std::filesystem::path();
+	}
+
+	void EditorLayer::OpenScene()
+	{
+		std::string filepath = FileDialogs::OpenFile("CraftNow Scene (*.craft)\0*.craft\0");
+		if (!filepath.empty())
+			OpenScene(filepath);
+	}
+
+	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	{
+		if (m_SceneState != SceneState::Edit)
+			//OnSceneStop();
+
+		if (path.extension().string() != ".craft")
+		{
+			CN_WARN("Could not load {0} - not a scene file", path.filename().string());
+			return;
+		}
+
+		Ref<Scene> newScene = CreateRef<Scene>();
+		SceneSerializer serializer(newScene);
+		if (serializer.Deserialize(path.string()))
+		{
+			m_EditorScene = newScene;
+			m_SceneHierarchyPanel.SetContext(m_EditorScene);
+
+			m_ActiveScene = m_EditorScene;
+			m_EditorScenePath = path;
+		}
+	}
+
+	void EditorLayer::SaveScene()
+	{
+		if (!m_EditorScenePath.empty())
+			SerializeScene(m_ActiveScene, m_EditorScenePath);
+		else
+			SaveSceneAs();
+	}
+
+	void EditorLayer::SaveSceneAs()
+	{
+		std::string filepath = FileDialogs::SaveFile("Hazel Scene (*.craft)\0*.craft\0");
+		if (!filepath.empty())
+		{
+			SerializeScene(m_ActiveScene, filepath);
+			m_EditorScenePath = filepath;
+		}
+	}
+
+	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
+	{
+		SceneSerializer serializer(scene);
+		serializer.Serialize(path.string());
+	}
+
+
+	void EditorLayer::OnDuplicateEntity()
+	{
+
 	}
 
 }
