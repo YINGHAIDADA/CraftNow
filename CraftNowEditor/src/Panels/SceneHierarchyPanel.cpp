@@ -46,7 +46,7 @@ namespace CraftNow {
 				m_SelectionContext = {};
 
 			// 右键空白区域
-			if (ImGui::BeginPopupContextWindow())
+			if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
 			{
 				if (ImGui::MenuItem(u8"创建 空实体"))
 					m_Context->CreateEntity(u8"空");
@@ -203,7 +203,7 @@ namespace CraftNow {
 			ImGui::PopStyleVar(
 			);
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
-			if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
+			if (ImGui::Button("-", ImVec2{ lineHeight, lineHeight }))
 			{
 				ImGui::OpenPopup(u8"组件设置");
 			}
