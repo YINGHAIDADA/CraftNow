@@ -62,6 +62,8 @@ namespace CraftNow {
 		void PushOverlay(Layer *overlay);
 
 		Window &GetWindow() { return *m_Window; }
+		bool IsTitleBarHovered() const { return m_TitleBarHovered; }
+
 		void Close();
 
 		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
@@ -88,6 +90,8 @@ namespace CraftNow {
 		bool m_Minimized = false;
 		LayerStack m_LayerStack;
 		float m_LastFrameTime = 0.0f;
+
+		bool m_TitleBarHovered = false;
 
 	private:
 		static Application *s_Instance;

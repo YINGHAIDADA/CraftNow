@@ -8,6 +8,7 @@
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 
 #include <GLFW/glfw3.h>
+#include <stb_image.h>
 
 namespace CraftNow
 {
@@ -31,16 +32,67 @@ namespace CraftNow
 
 	void Application::Init()
 	{
-
 		m_Window = Window::Create();
 		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 
-		//默认开启ImGui Demo
+		//------------自定义标题栏-----------
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+		if (m_Specification.CustomTitlebar)
+		{
+			glfwWindowHint(GLFW_TITLEBAR, false);
+
+			// NOTE: Undecorated windows are probably
+			//       also desired, so make this an option
+			// glfwWindowHint(GLFW_DECORATED, false);
+		}
+		//-------------------------------------------
+
+		//---------------窗口居中显示---------------------
+		GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode* videoMode = glfwGetVideoMode(primaryMonitor);
+
+		int monitorX, monitorY;
+		glfwGetMonitorPos(primaryMonitor, &monitorX, &monitorY);
+
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+
+		if (m_Specification.CenterWindow)
+		{
+			glfwSetWindowPos((GLFWwindow*)m_Window->GetNativeWindow(),
+				monitorX + (videoMode->width - m_Specification.Width) / 2,
+				monitorY + (videoMode->height - m_Specification.Height) / 2);
+
+			glfwSetWindowAttrib((GLFWwindow*)m_Window->GetNativeWindow(), GLFW_RESIZABLE, m_Specification.WindowResizeable ? GLFW_TRUE : GLFW_FALSE);
+		}
+
+		glfwShowWindow((GLFWwindow*)m_Window->GetNativeWindow());
+		//-----------------------------------------------------------
+
+		// 设置图标
+		GLFWimage icon;
+		int channels;
+		if (!m_Specification.IconPath.empty())
+		{
+			std::string iconPathStr = m_Specification.IconPath.string();
+			icon.pixels = stbi_load(iconPathStr.c_str(), &icon.width, &icon.height, &channels, 4);
+			glfwSetWindowIcon((GLFWwindow*)m_Window->GetNativeWindow(), 1, &icon);
+			stbi_image_free(icon.pixels);
+		}
+
+		//标题栏点击检测
+		/*glfwSetWindowUserPointer((GLFWwindow*)m_Window->GetNativeWindow(), this);
+		glfwSetTitlebarHitTestCallback((GLFWwindow*)m_Window->GetNativeWindow(), [](GLFWwindow* window, int x, int y, int* hit)
+			{
+				Application* app = (Application*)glfwGetWindowUserPointer(window);
+				*hit = app->IsTitleBarHovered();
+			});*/
+
+		//初始化ImGui
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
 	}
 
 	void Application::OnEvent(Event &e)
