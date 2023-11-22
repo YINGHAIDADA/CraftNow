@@ -62,7 +62,9 @@ namespace CraftNow {
 		//------------自定义标题栏-----------
 
 		auto& specification = Application::Get().GetSpecification();
-		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+		//会使得点击事件失效报错
+		//glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
 		if (specification.CustomTitlebar)
 		{
@@ -75,26 +77,26 @@ namespace CraftNow {
 		//-------------------------------------------
 
 		//---------------窗口居中显示---------------------
-		GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
-		const GLFWvidmode* videoMode = glfwGetVideoMode(primaryMonitor);
-
-		int monitorX, monitorY;
-		glfwGetMonitorPos(primaryMonitor, &monitorX, &monitorY);
-
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-
-
-
 		if (specification.CenterWindow)
 		{
+			GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+			const GLFWvidmode* videoMode = glfwGetVideoMode(primaryMonitor);
+
+			int monitorX, monitorY;
+			glfwGetMonitorPos(primaryMonitor, &monitorX, &monitorY);
+
+			glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+
+
+
 			glfwSetWindowPos(m_Window,
 				monitorX + (videoMode->width - specification.Width) / 2,
 				monitorY + (videoMode->height - specification.Height) / 2);
 
 			glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, specification.WindowResizeable ? GLFW_TRUE : GLFW_FALSE);
-		}
 
-		glfwShowWindow(m_Window);
+			glfwShowWindow(m_Window);
+		}
 		//-----------------------------------------------------------
 
 		// 设置图标
