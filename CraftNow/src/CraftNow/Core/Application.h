@@ -63,6 +63,7 @@ namespace CraftNow {
 
 		Window &GetWindow() { return *m_Window; }
 		bool IsTitleBarHovered() const { return m_TitleBarHovered; }
+		void SetTitleBarHovered(bool in) { m_TitleBarHovered = in; }
 
 		void Close();
 
@@ -82,6 +83,9 @@ namespace CraftNow {
 
 		void ExecuteMainThreadQueue();
 
+		// For custom titlebars
+		/*void UI_DrawTitlebar(float& outTitlebarHeight);
+		void UI_DrawMenubar();*/
 	private:
 		ApplicationSpecification m_Specification;
 		Scope<Window> m_Window;

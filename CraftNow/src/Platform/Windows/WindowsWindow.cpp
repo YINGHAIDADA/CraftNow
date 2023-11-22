@@ -8,6 +8,9 @@
 
 #include "Platform/OpenGL/OpenGLContext.h"
 
+#include "CraftNow/Core/Application.h"
+#include <stb_image.h>
+
 namespace CraftNow {
 
 	static bool s_GLFWInitialized = false;
@@ -52,15 +55,75 @@ namespace CraftNow {
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		
 		//根据平台不同抽象出渲染API
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();
 
+		//------------自定义标题栏-----------
+
+		auto& specification = Application::Get().GetSpecification();
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+		if (specification.CustomTitlebar)
+		{
+			glfwWindowHint(GLFW_TITLEBAR, false);
+
+			// NOTE: Undecorated windows are probably
+			//       also desired, so make this an option
+			// glfwWindowHint(GLFW_DECORATED, false);
+		}
+		//-------------------------------------------
+
+		//---------------窗口居中显示---------------------
+		GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode* videoMode = glfwGetVideoMode(primaryMonitor);
+
+		int monitorX, monitorY;
+		glfwGetMonitorPos(primaryMonitor, &monitorX, &monitorY);
+
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+
+
+
+		if (specification.CenterWindow)
+		{
+			glfwSetWindowPos(m_Window,
+				monitorX + (videoMode->width - specification.Width) / 2,
+				monitorY + (videoMode->height - specification.Height) / 2);
+
+			glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, specification.WindowResizeable ? GLFW_TRUE : GLFW_FALSE);
+		}
+
+		glfwShowWindow(m_Window);
+		//-----------------------------------------------------------
+
+		// 设置图标
+		GLFWimage icon;
+		int channels;
+		if (!specification.IconPath.empty())
+		{
+			std::string iconPathStr = specification.IconPath.string();
+			icon.pixels = stbi_load(iconPathStr.c_str(), &icon.width, &icon.height, &channels, 4);
+			glfwSetWindowIcon(m_Window, 1, &icon);
+			stbi_image_free(icon.pixels);
+		}
+
+
+		//标题栏点击检测
+		if(specification.CustomTitlebar)
+		{
+			glfwSetWindowUserPointer(m_Window, &(Application::Get()));
+			glfwSetTitlebarHitTestCallback(m_Window, [](GLFWwindow* window, int x, int y, int* hit)
+				{
+					Application* app = (Application*)glfwGetWindowUserPointer(window);
+					*hit = app->IsTitleBarHovered();
+				});
+		}
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
-		// Set GLFW callbacks
+		// 设置 GLFW 回调函数
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 		{
 			WindowData& data = *( (WindowData*)glfwGetWindowUserPointer(window) );
