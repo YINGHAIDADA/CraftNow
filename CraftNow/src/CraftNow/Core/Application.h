@@ -31,6 +31,21 @@ namespace CraftNow {
 	struct ApplicationSpecification
 	{
 		std::string Name = "CraftNow Application";
+		uint32_t Width = 1600;
+		uint32_t Height = 900;
+
+		std::filesystem::path IconPath;
+
+		bool WindowResizeable = true;
+
+		// Uses custom Walnut titlebar instead
+		// of Windows default
+		bool CustomTitlebar = false;
+
+		// Window will be created in the center
+		// of primary monitor
+		bool CenterWindow = true;
+
 		std::string WorkingDirectory;
 		ApplicationCommandLineArgs CommandLineArgs;
 	};
@@ -38,8 +53,8 @@ namespace CraftNow {
 	class Application
 	{
 	public:
-		Application();
-		virtual ~Application() = default;
+		Application(const ApplicationSpecification& applicationSpecification = ApplicationSpecification());
+		~Application();
 
 		void OnEvent(Event &e);
 
@@ -53,11 +68,12 @@ namespace CraftNow {
 
 		static Application &Get() { return *s_Instance; }
 
-		//const ApplicationSpecification& GetSpecification() const { return m_Specification; }
+		const ApplicationSpecification& GetSpecification() const { return m_Specification; }
 
 		void SubmitToMainThread(const std::function<void()>& function);
 
 	private:
+		void Init();
 		void Run();
 		bool OnWindowClose(WindowCloseEvent &e);
 		bool OnWindowResize(WindowResizeEvent& e);
@@ -65,7 +81,7 @@ namespace CraftNow {
 		void ExecuteMainThreadQueue();
 
 	private:
-		//ApplicationSpecification m_Specification;
+		ApplicationSpecification m_Specification;
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;

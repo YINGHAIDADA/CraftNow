@@ -17,6 +17,11 @@ namespace CraftNow {
 			//TODO:不添加任何层，imgui会出现渲染残影错误
 			PushLayer(new EditorLayer());
 		}
+		CraftNowEditor(const ApplicationSpecification& applicationSpecification)
+			:Application(applicationSpecification)
+		{
+
+		}
 		~CraftNowEditor()
 		{
 
