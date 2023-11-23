@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "CraftNow/Core/Application.h"
 #include "CraftNow/Core/Window.h"
 #include "CraftNow/Renderer/GraphicsContext.h"
 
@@ -40,6 +41,9 @@ namespace CraftNow {
 			bool VSync;
 
 			EventCallbackFn EventCallback;
+
+			//为了自定义标题栏的点击检测回调函数
+			Application* instance;
 		};
 
 		WindowData m_Data;

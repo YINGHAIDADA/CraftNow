@@ -110,20 +110,22 @@ namespace CraftNow {
 			stbi_image_free(icon.pixels);
 		}
 
+		m_Data.instance = &Application::Get();
+
+		glfwSetWindowUserPointer(m_Window, &m_Data);
+		SetVSync(true);
 
 		//标题栏点击检测
 		if(specification.CustomTitlebar)
 		{
-			glfwSetWindowUserPointer(m_Window, &(Application::Get()));
+			//glfwSetWindowUserPointer(m_Window, &(Application::Get()));
 			glfwSetTitlebarHitTestCallback(m_Window, [](GLFWwindow* window, int x, int y, int* hit)
 				{
-					Application* app = (Application*)glfwGetWindowUserPointer(window);
-					*hit = app->IsTitleBarHovered();
+					WindowData& data = *((WindowData*)glfwGetWindowUserPointer(window));
+					*hit = data.instance->IsTitleBarHovered();
 				});
 		}
 
-		glfwSetWindowUserPointer(m_Window, &m_Data);
-		SetVSync(true);
 
 		// 设置 GLFW 回调函数
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
