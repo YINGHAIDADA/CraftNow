@@ -76,6 +76,11 @@ namespace CraftNow
 		m_Running = false;
 	}
 
+	bool Application::IsMaximized() const
+	{
+		return (bool)glfwGetWindowAttrib(static_cast<GLFWwindow*>(m_Window->GetNativeWindow()), GLFW_MAXIMIZED);
+	}
+
 	void Application::SubmitToMainThread(const std::function<void()>& function)
 	{
 

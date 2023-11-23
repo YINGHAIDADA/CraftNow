@@ -5,7 +5,7 @@
 #include <imgui_internal.h>
 
 #include <backends/imgui_impl_glfw.h>
-#include "backends/imgui_impl_opengl3.h"
+#include <backends/imgui_impl_opengl3.h>
 
 #include "CraftNow/Core/Application.h"
 
@@ -51,15 +51,25 @@ namespace CraftNow
 		ImGui::StyleColorsDark();
 		//ImGui::StyleColorsClassic();
 
-		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+		SetDarkThemeColors();
+
+		// Style
 		ImGuiStyle& style = ImGui::GetStyle();
+		//style.WindowPadding = ImVec2(10.0f, 10.0f);
+		//style.FramePadding = ImVec2(8.0f, 6.0f);
+		style.ItemSpacing = ImVec2(6.0f, 6.0f);
+		style.ChildRounding = 6.0f;
+		style.PopupRounding = 6.0f;
+		style.FrameRounding = 6.0f;
+		//style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+
+		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			style.WindowRounding = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
-		SetDarkThemeColors();
 
 		Application& app = Application::Get();
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());

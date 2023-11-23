@@ -50,5 +50,6 @@ namespace CraftNow {
 	public:
 		static Ref<Texture2D> Create(const std::string& path);
 		static Ref<Texture2D> Create(const TextureSpecification& specification);
+		static void* Decode(const void* buffer, uint64_t length, uint32_t& outWidth, uint32_t& outHeight);
 	};
 }

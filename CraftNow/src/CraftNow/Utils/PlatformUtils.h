@@ -16,6 +16,6 @@ namespace CraftNow {
 	class Time
 	{
 	public:
-		static float GetTime();
+		static double GetTime();
 	};
 }

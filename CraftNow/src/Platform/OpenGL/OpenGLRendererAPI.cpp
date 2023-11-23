@@ -63,6 +63,7 @@ namespace CraftNow {
 	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
 	{
 		vertexArray->Bind();
+		//TODO: 如果为0，则使用 IndexBuffer ()-> getCount ()。也就是说，如果你没有在一个帧中绘制任何四边形(indexcount = = 0) ，Indexed 将获取存储的索引缓冲区的值，并将索引计数(IndexBuffer ()-> getCount ())(这在内存中仍然有效)以及先前存储的顶点数据(因为它已经被缓冲到 gpu，导致最后存储的“帧”被重新渲染。
 		uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}

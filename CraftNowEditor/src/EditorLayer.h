@@ -37,6 +37,9 @@ namespace CraftNow {
 
 		void OnDuplicateEntity();
 
+		// For custom titlebars
+		void UI_DrawTitlebar(float& outTitlebarHeight);
+		void UI_DrawMenubar();
 	private:
 		OrthographicCameraController m_CameraController;
 
@@ -78,6 +81,13 @@ namespace CraftNow {
 		Ref<Scene> m_EditorScene;
 		std::filesystem::path m_EditorScenePath;
 
+
+		//TODO: 图标资源, 按理来说应该为静态，后续如果为运行时单独创建Application，需要考虑移出
+		Ref<Texture> m_AppHeaderIcon;
+		Ref<Texture> m_IconClose;
+		Ref<Texture> m_IconMinimize;
+		Ref<Texture> m_IconMaximize;
+		Ref<Texture> m_IconRestore;
 
 		// Editor resources
 		Ref<Texture2D> m_IconPlay, m_IconPause, m_IconStep, m_IconSimulate, m_IconStop;

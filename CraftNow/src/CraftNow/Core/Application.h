@@ -66,6 +66,7 @@ namespace CraftNow {
 		void SetTitleBarHovered(bool in) { m_TitleBarHovered = in; }
 
 		void Close();
+		bool IsMaximized() const;
 
 		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 
