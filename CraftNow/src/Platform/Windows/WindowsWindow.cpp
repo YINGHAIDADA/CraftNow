@@ -8,12 +8,16 @@
 
 #include "Platform/OpenGL/OpenGLContext.h"
 
+#include "CraftNow/Renderer/Renderer.h"
+
 #include "CraftNow/Core/Application.h"
 #include <stb_image.h>
 
 namespace CraftNow {
 
-	static bool s_GLFWInitialized = false;
+	float Window::s_HighDPIScaleFactor = 1.0f;
+
+	static uint8_t s_GLFWWindowCount = 0;
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
@@ -44,17 +48,38 @@ namespace CraftNow {
 
 		CN_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-		if (!s_GLFWInitialized)
+		if (s_GLFWWindowCount == 0)
 		{
-			//CN_PROFILE_SCOPE("glfwInit");
+			CN_PROFILE_SCOPE("glfwInit");
 			int success = glfwInit();
 			CN_CORE_ASSERT(success, "GLFW初始化失败!");
 			glfwSetErrorCallback(GLFWErrorCallback);
-
-			s_GLFWInitialized = true;
 		}
 
-		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		{
+			CN_PROFILE_SCOPE("glfwCreateWindow");
+
+			//---------适配分辨率缩放---------------
+			#if 1
+			GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+			float xscale, yscale;
+			glfwGetMonitorContentScale(monitor, &xscale, &yscale);
+
+			if (xscale > 1.0f || yscale > 1.0f)
+			{
+				s_HighDPIScaleFactor = xscale;
+				glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+			}
+			#endif
+			//--------------------------------
+
+			#if defined(CN_DEBUG)
+			if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
+				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+			#endif
+			m_Window  = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+			++s_GLFWWindowCount;
+		}
 		//根据平台不同抽象出渲染API
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();

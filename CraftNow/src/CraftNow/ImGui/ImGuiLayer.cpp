@@ -43,9 +43,9 @@ namespace CraftNow
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
 		float fontSize = 18.0f;// *2.0f;
-		io.Fonts->AddFontFromFileTTF("assets/fonts/MC.TTF", fontSize-4.0f);
+		io.Fonts->AddFontFromFileTTF("assets/fonts/MC.TTF", (fontSize-4.0f) * Window::s_HighDPIScaleFactor);
 		//io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/LanaPixel-9px.ttf", fontSize+4.0f, nullptr, io.Fonts->GetGlyphRangesChineseFull());
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/FP-10px.ttf", fontSize, nullptr, io.Fonts->GetGlyphRangesChineseFull());
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/FP-10px.ttf", fontSize * Window::s_HighDPIScaleFactor, nullptr, io.Fonts->GetGlyphRangesChineseFull());
 
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
@@ -55,6 +55,9 @@ namespace CraftNow
 
 		// Style
 		ImGuiStyle& style = ImGui::GetStyle();
+
+		style.ScaleAllSizes(Window::s_HighDPIScaleFactor);
+
 		//style.WindowPadding = ImVec2(10.0f, 10.0f);
 		//style.FramePadding = ImVec2(8.0f, 6.0f);
 		style.ItemSpacing = ImVec2(6.0f, 6.0f);
