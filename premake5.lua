@@ -24,6 +24,7 @@ IncludeDir["glm"] = "%{wks.location}/CraftNow/vendor/glm"
 IncludeDir["stb_image"] = "%{wks.location}/CraftNow/vendor/stb_image"
 IncludeDir["entt"] = "%{wks.location}/CraftNow/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "%{wks.location}/CraftNow/vendor/yaml-cpp/include"
+IncludeDir["ImGuizmo"] = "%{wks.location}/CraftNow/vendor/ImGuizmo"
 
 group "Dependencies"
 	include "Vendor/premake"

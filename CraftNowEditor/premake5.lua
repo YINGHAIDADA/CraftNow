@@ -20,6 +20,7 @@
 		"%{wks.location}/CraftNow/vendor",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}",
 	}
 
 	links
