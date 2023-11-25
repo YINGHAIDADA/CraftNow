@@ -114,7 +114,7 @@ namespace CraftNow {
 		m_Registry.destroy(entity);
 	}
 
-	void Scene::OnUpdate(Timestep ts)
+	void Scene::OnUpdateRuntime(Timestep ts)
 	{
 		// Update scripts
 		{
@@ -184,6 +184,11 @@ namespace CraftNow {
 
 	}
 
+	void Scene::OnUpdateEditor(EditorCamera& camera)
+	{
+		RenderScene(camera);
+	}
+
 	void Scene::OnRuntimeStart()
 	{
 		
@@ -202,11 +207,6 @@ namespace CraftNow {
 	void Scene::OnSimulationStop()
 	{
 		OnPhysics2DStop();
-	}
-
-	void Scene::OnUpdateRuntime(Timestep ts)
-	{
-
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
@@ -282,6 +282,55 @@ namespace CraftNow {
 	void Scene::OnPhysics2DStop()
 	{
 
+	}
+
+
+	void Scene::RenderScene(EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		// Draw sprites
+		{
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
+			// 目前按纹理Z-index顺序渲染, 但存在一个问题，原本index相同的该如何排列保证能正常层次渲染；每次渲染都排序可能存在性能问题
+			group.sort([&](const entt::entity lhs, const entt::entity rhs) {
+				double l_z = std::get<0>(group.get<TransformComponent, SpriteRendererComponent>(lhs)).Translation[2];
+				double r_z = std::get<0>(group.get<TransformComponent, SpriteRendererComponent>(rhs)).Translation[2];
+				return l_z < r_z;
+				});
+
+			for (auto entity : group)
+			{
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			}
+		}
+
+		// Draw circles
+		{
+			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
+				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+			}
+		}
+
+		// Draw text
+		/*{
+			auto view = m_Registry.view<TransformComponent, TextComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, text] = view.get<TransformComponent, TextComponent>(entity);
+
+				Renderer2D::DrawString(text.TextString, transform.GetTransform(), text, (int)entity);
+			}
+		}*/
+
+		Renderer2D::EndScene();
 	}
 
 	template<typename T>

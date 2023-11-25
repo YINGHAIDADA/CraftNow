@@ -2,7 +2,7 @@
 
 #include "CraftNow/Core/Timestep.h"
 #include "CraftNow/Core/UUID.h"
-//#include "CraftNow/Renderer/EditorCamera.h"
+#include "CraftNow/Renderer/EditorCamera.h"
 
 
 #include "entt.hpp"
@@ -25,8 +25,6 @@ namespace CraftNow {
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string(), const glm::vec3& translation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& rotation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& scale = { 0.0f, 0.0f, 0.0f });
 		void DestroyEntity(Entity entity);
 
-		void OnUpdate(Timestep ts);
-
 		void OnRuntimeStart();
 		void OnRuntimeStop();
 
@@ -34,8 +32,8 @@ namespace CraftNow {
 		void OnSimulationStop();
 
 		void OnUpdateRuntime(Timestep ts);
+		void OnUpdateEditor(EditorCamera& camera);
 		//void OnUpdateSimulation(Timestep ts, EditorCamera& camera);
-		//void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 
 		void OnViewportResize(uint32_t width, uint32_t height);
 
@@ -65,7 +63,7 @@ namespace CraftNow {
 		void OnPhysics2DStart();
 		void OnPhysics2DStop();
 
-		//void RenderScene(EditorCamera& camera);
+		void RenderScene(EditorCamera& camera);
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;

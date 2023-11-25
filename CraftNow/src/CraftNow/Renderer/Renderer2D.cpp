@@ -251,15 +251,15 @@ namespace CraftNow {
 		StartBatch();
 	}
 
-	//void Renderer2D::BeginScene(const EditorCamera& camera)
-	//{
-	//	CN_PROFILE_FUNCTION();
+	void Renderer2D::BeginScene(const EditorCamera& camera)
+	{
+		CN_PROFILE_FUNCTION();
 
-	//	s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
-	//	s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
-	//	StartBatch();
-	//}
+		StartBatch();
+	}
 
 	void Renderer2D::EndScene()
 	{

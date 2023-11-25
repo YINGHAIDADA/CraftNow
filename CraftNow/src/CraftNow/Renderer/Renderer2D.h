@@ -6,7 +6,7 @@
 #include "CraftNow/Renderer/SubTexture2D.h"
 
 #include "CraftNow/Renderer/Camera.h"
-//#include "CraftNow/Renderer/EditorCamera.h"
+#include "CraftNow/Renderer/EditorCamera.h"
 //#include "CraftNow/Renderer/Font.h"
 
 #include "CraftNow/Scene/Components.h"
@@ -20,7 +20,7 @@ namespace CraftNow {
 		static void Shutdown();
 
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
-		//static void BeginScene(const EditorCamera& camera);
+		static void BeginScene(const EditorCamera& camera);
 		static void BeginScene(const OrthographicCamera& camera); // TODO: Remove
 		static void EndScene();
 		static void Flush();

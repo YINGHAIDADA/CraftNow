@@ -3,6 +3,8 @@
 #include "CraftNow.h"
 #include "Panels/SceneHierarchyPanel.h"
 
+#include "CraftNow/Renderer/EditorCamera.h"
+
 namespace CraftNow {
 
 	class EditorLayer : public Layer
@@ -80,6 +82,8 @@ namespace CraftNow {
 		Ref<Scene> m_ActiveScene;
 		Ref<Scene> m_EditorScene;
 		std::filesystem::path m_EditorScenePath;
+
+		EditorCamera m_EditorCamera;
 
 
 		//TODO: 图标资源, 按理来说应该为静态，后续如果为运行时单独创建Application，需要考虑移出
