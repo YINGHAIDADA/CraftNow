@@ -420,13 +420,19 @@ namespace CraftNow {
 
 			m_ViewportFocused = ImGui::IsWindowFocused();
 			m_ViewportHovered = ImGui::IsWindowHovered();
-			Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+
+			// 修复 对视图窗口的监听事件阻塞
+			if (!ImGui::IsAnyItemActive())
+				Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+			else
+				Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+			
 
 			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
 			uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-			ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
+			ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
 
 			// Gizmos
 			Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -449,10 +455,10 @@ namespace CraftNow {
 				auto& tc = selectedEntity.GetComponent<TransformComponent>();
 				glm::mat4 transform = tc.GetTransform();
 
-				// Snapping
+				// 步长变化
 				bool snap = Input::IsKeyPressed(Key::LeftControl);
 				float snapValue = 0.5f; // Snap to 0.5m for translation/scale
-				// Snap to 45 degrees for rotation
+				// 如果在旋转模式，步长改为角度
 				if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
 					snapValue = 45.0f;
 
@@ -530,6 +536,11 @@ namespace CraftNow {
 				else
 					SaveScene();
 			}
+			else
+			{
+				if (!ImGuizmo::IsUsing())
+					m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			}
 
 			break;
 		}
@@ -550,7 +561,7 @@ namespace CraftNow {
 				m_GizmoType = -1;
 			break;
 		}
-		case Key::W:
+		case Key::G:
 		{
 			if (!ImGuizmo::IsUsing())
 				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
@@ -558,8 +569,7 @@ namespace CraftNow {
 		}
 		case Key::E:
 		{
-			if (!ImGuizmo::IsUsing())
-				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			
 			break;
 		}
 		case Key::R:
@@ -571,7 +581,7 @@ namespace CraftNow {
 			else
 			{
 				if (!ImGuizmo::IsUsing())
-					m_GizmoType = ImGuizmo::OPERATION::SCALE;
+					m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 			}
 			break;
 		}

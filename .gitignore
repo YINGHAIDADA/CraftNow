@@ -8,7 +8,7 @@ Intermediates/
 *.json
 
 #imgui file
-**.ini
+
 
 # Visual Studio files and folder
 .vscode/
