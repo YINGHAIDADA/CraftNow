@@ -86,6 +86,8 @@ namespace CraftNow {
 
 		EditorCamera m_EditorCamera;
 
+		Entity m_HoveredEntity;
+
 
 		//TODO: 图标资源, 按理来说应该为静态，后续如果为运行时单独创建Application，需要考虑移出
 		Ref<Texture> m_AppHeaderIcon;
