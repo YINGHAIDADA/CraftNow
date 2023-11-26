@@ -61,6 +61,6 @@ namespace CraftNow {
 		float m_Distance = 10.0f;
 		float m_Pitch = 0.0f, m_Yaw = 0.0f;
 
-		float m_ViewportWidth = 1280, m_ViewportHeight = 720;
+		float m_ViewportWidth = 1600, m_ViewportHeight = 900;
 	};
 }

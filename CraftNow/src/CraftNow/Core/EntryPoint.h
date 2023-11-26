@@ -4,7 +4,7 @@
 
 #ifdef CN_PLATFORM_WINDOWS
 
-extern CraftNow::Application* CraftNow::CreateApplication();
+extern CraftNow::Application* CraftNow::CreateApplication(ApplicationCommandLineArgs args);
 
 int main(int argc, char** argv)
 {
@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 	CN_INFO("Hello!");
 
 	CN_PROFILE_BEGIN_SESSION("Startup", "CraftNowProfile-Startup.json");
-	auto app = CraftNow::CreateApplication();
+	auto app = CraftNow::CreateApplication({ argc, argv });
 	CN_PROFILE_END_SESSION();
 
 	CN_PROFILE_BEGIN_SESSION("Runtime", "CraftNowProfile-Runtime.json");

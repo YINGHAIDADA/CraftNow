@@ -98,11 +98,14 @@ namespace CraftNow {
 
 		bool m_TitleBarHovered = false;
 
+		std::vector<std::function<void()>> m_MainThreadQueue;
+		std::mutex m_MainThreadQueueMutex;
+
 	private:
 		static Application *s_Instance;
 		friend int ::main(int argc, char** argv);
 	};
 
 	// To be defined in Client
-	Application *CreateApplication();
+	Application* CreateApplication(ApplicationCommandLineArgs args);
 }

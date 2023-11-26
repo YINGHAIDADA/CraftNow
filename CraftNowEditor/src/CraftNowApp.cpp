@@ -12,15 +12,11 @@ namespace CraftNow {
 	class CraftNowEditor : public Application
 	{
 	public:
-		CraftNowEditor()
-		{
-			//TODO:不添加任何层，imgui会出现渲染残影错误
-			PushLayer(new EditorLayer());
-		}
 		CraftNowEditor(const ApplicationSpecification& applicationSpecification)
 			:Application(applicationSpecification)
 		{
-
+			//TODO:不添加任何层，imgui会出现渲染残影错误
+			PushLayer(new EditorLayer());
 		}
 		~CraftNowEditor()
 		{
@@ -32,9 +28,13 @@ namespace CraftNow {
 	};
 
 
-	Application* CreateApplication() 
+	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new CraftNowEditor();
+		ApplicationSpecification spec;
+		spec.Name = "CraftNow";
+		spec.CommandLineArgs = args;
+
+		return new CraftNowEditor(spec);
 	}
 
 }

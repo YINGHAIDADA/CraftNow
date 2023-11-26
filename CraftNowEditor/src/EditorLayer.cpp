@@ -23,7 +23,7 @@ namespace CraftNow {
 	#include "CraftNow/Embed/WindowImages.embed"
 
 	EditorLayer::EditorLayer()
-		: Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f), m_ViewportSize({1280, 720})
+		: Layer("EditorLayer"), m_CameraController(1600.0f / 900.0f), m_ViewportSize({1600, 900})
 	{
 	}
 
@@ -40,8 +40,8 @@ namespace CraftNow {
 		//Framebuffer
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
-		fbSpec.Width = 1280;
-		fbSpec.Height = 720;
+		fbSpec.Width = 1600;
+		fbSpec.Height = 900;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
 
