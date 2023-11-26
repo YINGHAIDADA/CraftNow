@@ -1,0 +1,5 @@
+Project:
+  Name: Sandbox
+  StartScene: "Scenes/3DExample.craft"
+  AssetDirectory: "Assets"
+  ScriptModulePath: "Scripts/"

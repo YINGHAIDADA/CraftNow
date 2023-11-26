@@ -2,6 +2,7 @@
 
 #include "CraftNow.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
 #include "CraftNow/Renderer/EditorCamera.h"
 
@@ -102,6 +103,6 @@ namespace CraftNow {
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
-		//Scope<ContentBrowserPanel> m_ContentBrowserPanel;
+		Scope<ContentBrowserPanel> m_ContentBrowserPanel;
 	};
 }

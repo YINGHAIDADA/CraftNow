@@ -44,43 +44,71 @@ namespace CraftNow {
 		fbSpec.Height = 900;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
+		//默认创建场景
+		m_EditorScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditorScene;
+
+		//-------------默认运行要求打开工程文件-----------------
+		auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
+		if (commandLineArgs.Count > 1)
+		{
+			auto projectFilePath = commandLineArgs[1];
+			OpenProject(projectFilePath);
+		}
+		else
+		{
+			// TODO(Yan): prompt the user to select a directory
+			// NewProject();
+
+			// If no project is opened, close Hazelnut
+			// NOTE: this is while we don't have a new project path
+			if (!OpenProject())
+				Application::Get().Close();
+
+		}
+		//--------------------------------------------------
 
 		//加载图标
+		if (Application::Get().GetSpecification().CustomTitlebar)
 		{
-			uint32_t w, h;
-			void* data = Texture2D::Decode(g_Icon, sizeof(g_Icon), w, h);
-			m_AppHeaderIcon = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-			m_AppHeaderIcon->SetData(data, w * h * 4);
-			free(data);
+			CN_TRACE("加载自定义标题栏图标资源");
+			{
+				uint32_t w, h;
+				void* data = Texture2D::Decode(g_Icon, sizeof(g_Icon), w, h);
+				m_AppHeaderIcon = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
+				m_AppHeaderIcon->SetData(data, w * h * 4);
+				free(data);
+			}
+			{
+				uint32_t w, h;
+				void* data = Texture2D::Decode(g_WindowMinimizeIcon, sizeof(g_WindowMinimizeIcon), w, h);
+				m_IconMinimize = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
+				m_IconMinimize->SetData(data, w * h * 4);
+				free(data);
+			}
+			{
+				uint32_t w, h;
+				void* data = Texture2D::Decode(g_WindowMaximizeIcon, sizeof(g_WindowMaximizeIcon), w, h);
+				m_IconMaximize = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
+				m_IconMaximize->SetData(data, w * h * 4);
+				free(data);
+			}
+			{
+				uint32_t w, h;
+				void* data = Texture2D::Decode(g_WindowRestoreIcon, sizeof(g_WindowRestoreIcon), w, h);
+				m_IconRestore = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
+				m_IconRestore->SetData(data, w * h * 4);
+				free(data);
+			}
+			{
+				uint32_t w, h;
+				void* data = Texture2D::Decode(g_WindowCloseIcon, sizeof(g_WindowCloseIcon), w, h);
+				m_IconClose = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
+				m_IconClose->SetData(data, w * h * 4);
+				free(data);
+			}
 		}
-		{
-			uint32_t w, h;
-			void* data = Texture2D::Decode(g_WindowMinimizeIcon, sizeof(g_WindowMinimizeIcon), w, h);
-			m_IconMinimize = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-			m_IconMinimize->SetData(data, w * h * 4);
-			free(data);
-		}
-		{
-			uint32_t w, h;
-			void* data = Texture2D::Decode(g_WindowMaximizeIcon, sizeof(g_WindowMaximizeIcon), w, h);
-			m_IconMaximize = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-			m_IconMaximize->SetData(data, w * h * 4);
-			free(data);
-		}
-		{
-			uint32_t w, h;
-			void* data = Texture2D::Decode(g_WindowRestoreIcon, sizeof(g_WindowRestoreIcon), w, h);
-			m_IconRestore = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-			m_IconRestore->SetData(data, w * h * 4);
-			free(data);
-		}
-		{
-			uint32_t w, h;
-			void* data = Texture2D::Decode(g_WindowCloseIcon, sizeof(g_WindowCloseIcon), w, h);
-			m_IconClose = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-			m_IconClose->SetData(data, w * h * 4);
-			free(data);
-		}
+		
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
@@ -342,7 +370,7 @@ namespace CraftNow {
 		//设置最小宽度 
 		ImGuiStyle& style = ImGui::GetStyle();
 		float minWinSizeX = style.WindowMinSize.x;
-		style.WindowMinSize.x = 350.0f;
+		style.WindowMinSize.x = 200.0f;
 
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
@@ -413,6 +441,7 @@ namespace CraftNow {
 
 		//Panel
 		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ContentBrowserPanel->OnImGuiRender();
 
 
 		{
@@ -653,7 +682,11 @@ namespace CraftNow {
 		{
 			//操控摄像机时不选择
 			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+			{
 				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+				if (m_GizmoType == -1)
+					m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			}
 		}
 		return false;
 	}
@@ -676,15 +709,15 @@ namespace CraftNow {
 
 	void EditorLayer::OpenProject(const std::filesystem::path& path)
 	{
-		/*if (Project::Load(path))
+		if (Project::Load(path))
 		{
-			ScriptEngine::Init();
+			//ScriptEngine::Init();
 
 			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
 			OpenScene(startScenePath);
 			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
 
-		}*/
+		}
 	}
 
 	void EditorLayer::SaveProject()
