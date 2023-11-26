@@ -927,56 +927,7 @@ namespace CraftNow {
 			if (UI::BeginMenubar(menuBarRect))
 			{
 				//m_MenubarCallback();
-				if (ImGui::BeginMenu(u8"文件"))
-				{
-					// Disabling fullscreen would allow the window to be moved to the front of other windows, 
-					// which we can't undo at the moment without finer window depth/z control.
-					//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
-					if (ImGui::MenuItem(u8"打开工程...", "Ctrl+O"))
-						OpenProject();
-
-					ImGui::Separator();
-
-					if (ImGui::MenuItem(u8"新 场景", "Ctrl+N"))
-						NewScene();
-
-					if (ImGui::MenuItem(u8"打开 场景"))
-						OpenScene();
-
-					if (ImGui::MenuItem(u8"保存 场景", "Ctrl+S"))
-						SaveScene();
-
-					if (ImGui::MenuItem(u8"保存 场景 到...", "Ctrl+Shift+S"))
-						SaveSceneAs();
-
-					ImGui::Separator();
-
-					/*if (ImGui::MenuItem(u8"序列化"))
-					{
-						SceneSerializer serializer(m_ActiveScene);
-						serializer.Serialize("assets/scenes/AlphaTest.craft");
-					}
-
-					if (ImGui::MenuItem(u8"解析序列"))
-					{
-						SceneSerializer serializer(m_ActiveScene);
-						serializer.Deserialize("assets/scenes/AlphaTest.craft");
-					}*/
-
-
-					if (ImGui::MenuItem(u8"退出")) Application::Get().Close();
-					ImGui::EndMenu();
-				}
-
-				if (ImGui::BeginMenu(u8"脚本"))
-				{
-					if (ImGui::MenuItem(u8"重新加载部件", "Ctrl+R"))
-					{
-						//ScriptEngine::ReloadAssembly();
-					}
-
-					ImGui::EndMenu();
-				}
+				Menubar();
 
 				UI::EndMenubar();
 			}
@@ -989,60 +940,75 @@ namespace CraftNow {
 			if (ImGui::BeginMenuBar())
 			{
 				//m_MenubarCallback();
-				if (ImGui::BeginMenu(u8"文件"))
-				{
-					// Disabling fullscreen would allow the window to be moved to the front of other windows, 
-					// which we can't undo at the moment without finer window depth/z control.
-					//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
-					if (ImGui::MenuItem(u8"打开工程...", "Ctrl+O"))
-						OpenProject();
-
-					ImGui::Separator();
-
-					if (ImGui::MenuItem(u8"新 场景", "Ctrl+N"))
-						NewScene();
-
-					if (ImGui::MenuItem(u8"打开 场景"))
-						OpenScene();
-
-					if (ImGui::MenuItem(u8"保存 场景", "Ctrl+S"))
-						SaveScene();
-
-					if (ImGui::MenuItem(u8"保存 场景 到...", "Ctrl+Shift+S"))
-						SaveSceneAs();
-
-					ImGui::Separator();
-
-					/*if (ImGui::MenuItem(u8"序列化"))
-					{
-						SceneSerializer serializer(m_ActiveScene);
-						serializer.Serialize("assets/scenes/AlphaTest.craft");
-					}
-
-					if (ImGui::MenuItem(u8"解析序列"))
-					{
-						SceneSerializer serializer(m_ActiveScene);
-						serializer.Deserialize("assets/scenes/AlphaTest.craft");
-					}*/
-
-
-					if (ImGui::MenuItem(u8"退出")) Application::Get().Close();
-					ImGui::EndMenu();
-				}
-
-				if (ImGui::BeginMenu(u8"脚本"))
-				{
-					if (ImGui::MenuItem(u8"重新加载部件", "Ctrl+R"))
-					{
-						//ScriptEngine::ReloadAssembly();
-					}
-
-					ImGui::EndMenu();
-				}
+				Menubar();
 
 				ImGui::EndMenuBar();
 			}
 		}
 		#endif
+	}
+
+	void EditorLayer::Menubar()
+	{
+		if (ImGui::BeginMenu(u8"文件"))
+		{
+			// Disabling fullscreen would allow the window to be moved to the front of other windows, 
+			// which we can't undo at the moment without finer window depth/z control.
+			//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+			if (ImGui::MenuItem(u8"打开工程...", "Ctrl+O"))
+				OpenProject();
+
+			if (ImGui::BeginMenu(u8"打开最近工程 ..."))
+			{
+				//TODO: 记录最近打开的工程路径
+				if (ImGui::MenuItem(u8"待添加...."))
+				{
+
+				}
+				ImGui::EndMenu();
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem(u8"新 场景", "Ctrl+N"))
+				NewScene();
+
+			if (ImGui::MenuItem(u8"打开 场景"))
+				OpenScene();
+
+			if (ImGui::MenuItem(u8"保存 场景", "Ctrl+S"))
+				SaveScene();
+
+			if (ImGui::MenuItem(u8"保存 场景 到...", "Ctrl+Shift+S"))
+				SaveSceneAs();
+
+			ImGui::Separator();
+
+			/*if (ImGui::MenuItem(u8"序列化"))
+			{
+				SceneSerializer serializer(m_ActiveScene);
+				serializer.Serialize("assets/scenes/AlphaTest.craft");
+			}
+
+			if (ImGui::MenuItem(u8"解析序列"))
+			{
+				SceneSerializer serializer(m_ActiveScene);
+				serializer.Deserialize("assets/scenes/AlphaTest.craft");
+			}*/
+
+
+			if (ImGui::MenuItem(u8"退出")) Application::Get().Close();
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu(u8"脚本"))
+		{
+			if (ImGui::MenuItem(u8"重新加载部件", "Ctrl+R"))
+			{
+				//ScriptEngine::ReloadAssembly();
+			}
+
+			ImGui::EndMenu();
+		}
 	}
 }

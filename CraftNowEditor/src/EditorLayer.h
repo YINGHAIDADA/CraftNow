@@ -42,6 +42,7 @@ namespace CraftNow {
 		// For custom titlebars
 		void UI_DrawTitlebar(float& outTitlebarHeight);
 		void UI_DrawMenubar();
+		void Menubar();
 	private:
 		OrthographicCameraController m_CameraController;
 

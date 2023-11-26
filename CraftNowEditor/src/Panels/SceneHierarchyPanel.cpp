@@ -48,8 +48,30 @@ namespace CraftNow {
 			// 右键空白区域
 			if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
 			{
-				if (ImGui::MenuItem(u8"创建 空实体"))
-					m_Context->CreateEntity(u8"空");
+				if (ImGui::BeginMenu(u8"创建 ..."))
+				{
+					if (ImGui::MenuItem(u8"创建 空"))
+					{
+						m_Context->CreateEntity(u8"空");
+					}
+					if (ImGui::MenuItem(u8"创建 相机"))
+					{
+						auto& cameraT = m_Context->CreateEntity(u8"相机");
+						cameraT.AddComponent<CameraComponent>();
+					}
+					if (ImGui::MenuItem(u8"创建 精灵"))
+					{
+						auto& spriteT = m_Context->CreateEntity(u8"精灵");
+						spriteT.AddComponent<SpriteRendererComponent>();
+					}
+
+					ImGui::EndMenu();
+				}
+				/*if (ImGui::MenuItem(u8"创建 ..."))
+				{
+					if (ImGui::MenuItem(u8"创建 空实体"))
+						m_Context->CreateEntity(u8"空");
+				}*/
 
 				ImGui::EndPopup();
 			}
