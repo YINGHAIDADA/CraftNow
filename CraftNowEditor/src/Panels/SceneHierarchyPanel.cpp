@@ -378,7 +378,7 @@ namespace CraftNow {
 						if (texture->IsLoaded())
 							component.Texture = texture;
 						else
-							CN_WARN("Could not load texture {0}", texturePath.filename().string());
+							CN_WARN("无法加载纹理 {0}", texturePath.filename().string());
 					}
 					ImGui::EndDragDropTarget();
 				}

@@ -1,15 +1,15 @@
-Scene: 3DExample
+Scene: Untitled
 EditorCamera:
   Fov: 30
-  AspectRatio: 1.77397263
+  AspectRatio: 1.88363636
   NearClip: 0.100000001
   FarClip: 1000
   FocalPoint: [0, 0, 0]
-  Distance: 10
-  Pitch: 0.333600312
-  Yaw: 0.0143999998
+  Distance: 6.68270445
+  Pitch: 0.309599668
+  Yaw: 0.0288000107
   ViewportWidth: 1036
-  ViewportHeight: 584
+  ViewportHeight: 550
 Entities:
   - Entity: 9235617827118161440
     TagComponent:

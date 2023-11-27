@@ -705,6 +705,12 @@ namespace CraftNow {
 
 	void EditorLayer::OpenProject(const std::filesystem::path& path)
 	{
+		if (path.extension().string() != ".cnproj")
+		{
+			CN_WARN("Could not load {0} - not a project file", path.filename().string());
+			return;
+		}
+
 		if (Project::Load(path))
 		{
 			//ScriptEngine::Init();
