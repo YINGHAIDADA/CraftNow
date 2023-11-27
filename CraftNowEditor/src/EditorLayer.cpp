@@ -493,7 +493,7 @@ namespace CraftNow {
 
 			// Gizmos
 			Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
-			if (selectedEntity && m_GizmoType != -1)
+			if (selectedEntity && m_GizmoType != -1 && m_SceneState == SceneState::Edit)
 			{
 				ImGuizmo::SetOrthographic(false);
 				ImGuizmo::SetDrawlist();

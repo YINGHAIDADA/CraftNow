@@ -7,7 +7,7 @@
 
 #include "entt.hpp"
 
-//class b2World;
+class b2World;
 
 namespace CraftNow {
 
@@ -77,7 +77,7 @@ namespace CraftNow {
 
 		EditorCamera m_EditorCamera;
 
-		//b2World* m_PhysicsWorld = nullptr;
+		b2World* m_PhysicsWorld = nullptr;
 
 		std::unordered_map<UUID, entt::entity> m_EntityMap;
 

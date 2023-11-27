@@ -296,7 +296,7 @@ namespace CraftNow {
 				DrawVec3Control(u8"缩放", component.Scale, 1.0f);
 			});
 
-		DrawComponent<CameraComponent>(u8"相机设置", entity, [](auto& component)
+		DrawComponent<CameraComponent>(u8"相机", entity, [](auto& component)
 			{
 				auto& camera = component.Camera;
 
@@ -359,7 +359,7 @@ namespace CraftNow {
 				}
 			});
 
-		DrawComponent<SpriteRendererComponent>(u8"精灵渲染设置", entity, [](auto& component)
+		DrawComponent<SpriteRendererComponent>(u8"精灵", entity, [](auto& component)
 			{
 				ImGui::ColorEdit4(u8"颜色", glm::value_ptr(component.Color));
 
@@ -385,6 +385,144 @@ namespace CraftNow {
 
 				ImGui::DragFloat(u8"平铺系数", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
 			});
+
+		//DrawComponent<ScriptComponent>("Script", entity, [entity, scene = m_Context](auto& component) mutable
+		//	{
+		//		bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
+
+		//		static char buffer[64];
+		//		strcpy_s(buffer, sizeof(buffer), component.ClassName.c_str());
+
+		//		UI::ScopedStyleColor textColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f), !scriptClassExists);
+
+		//		if (ImGui::InputText("Class", buffer, sizeof(buffer)))
+		//		{
+		//			component.ClassName = buffer;
+		//			return;
+		//		}
+
+		//		// Fields
+		//		bool sceneRunning = scene->IsRunning();
+		//		if (sceneRunning)
+		//		{
+		//			Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity.GetUUID());
+		//			if (scriptInstance)
+		//			{
+		//				const auto& fields = scriptInstance->GetScriptClass()->GetFields();
+		//				for (const auto& [name, field] : fields)
+		//				{
+		//					if (field.Type == ScriptFieldType::Float)
+		//					{
+		//						float data = scriptInstance->GetFieldValue<float>(name);
+		//						if (ImGui::DragFloat(name.c_str(), &data))
+		//						{
+		//							scriptInstance->SetFieldValue(name, data);
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
+		//		else
+		//		{
+		//			if (scriptClassExists)
+		//			{
+		//				Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(component.ClassName);
+		//				const auto& fields = entityClass->GetFields();
+
+		//				auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+		//				for (const auto& [name, field] : fields)
+		//				{
+		//					// Field has been set in editor
+		//					if (entityFields.find(name) != entityFields.end())
+		//					{
+		//						ScriptFieldInstance& scriptField = entityFields.at(name);
+
+		//						// Display control to set it maybe
+		//						if (field.Type == ScriptFieldType::Float)
+		//						{
+		//							float data = scriptField.GetValue<float>();
+		//							if (ImGui::DragFloat(name.c_str(), &data))
+		//								scriptField.SetValue(data);
+		//						}
+		//					}
+		//					else
+		//					{
+		//						// Display control to set it maybe
+		//						if (field.Type == ScriptFieldType::Float)
+		//						{
+		//							float data = 0.0f;
+		//							if (ImGui::DragFloat(name.c_str(), &data))
+		//							{
+		//								ScriptFieldInstance& fieldInstance = entityFields[name];
+		//								fieldInstance.Field = field;
+		//								fieldInstance.SetValue(data);
+		//							}
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
+		//	});
+
+		/*DrawComponent<CircleRendererComponent>("Circle Renderer", entity, [](auto& component)
+			{
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+				ImGui::DragFloat("Thickness", &component.Thickness, 0.025f, 0.0f, 1.0f);
+				ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
+			});*/
+
+		DrawComponent<Rigidbody2DComponent>(u8"2D刚体", entity, [](auto& component)
+			{
+				const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
+				const char* currentBodyTypeString = bodyTypeStrings[(int)component.Type];
+				if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
+				{
+					for (int i = 0; i < 2; i++)
+					{
+						bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
+						if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
+						{
+							currentBodyTypeString = bodyTypeStrings[i];
+							component.Type = (Rigidbody2DComponent::BodyType)i;
+						}
+
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
+
+					ImGui::EndCombo();
+				}
+
+				ImGui::Checkbox(u8"固定旋转", &component.FixedRotation);
+			});
+
+		DrawComponent<BoxCollider2DComponent>(u8"2D Box碰撞体", entity, [](auto& component)
+			{
+				ImGui::DragFloat2(u8"偏移", glm::value_ptr(component.Offset));
+				ImGui::DragFloat2(u8"尺寸", glm::value_ptr(component.Size));
+				ImGui::DragFloat(u8"密度", &component.Density, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"摩擦系数", &component.Friction, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"弹力系数", &component.Restitution, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"弹力门限", &component.RestitutionThreshold, 0.01f, 0.0f);
+			});
+
+		/*DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entity, [](auto& component)
+			{
+				ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
+				ImGui::DragFloat("Radius", &component.Radius);
+				ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+			});*/
+
+		/*DrawComponent<TextComponent>("Text Renderer", entity, [](auto& component)
+			{
+				ImGui::InputTextMultiline("Text String", &component.TextString);
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+				ImGui::DragFloat("Kerning", &component.Kerning, 0.025f);
+				ImGui::DragFloat("Line Spacing", &component.LineSpacing, 0.025f);
+			});*/
 	}
 
 }

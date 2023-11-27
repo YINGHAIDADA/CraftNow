@@ -1,0 +1,81 @@
+Scene: Untitled
+EditorCamera:
+  Fov: 30
+  AspectRatio: 1.88363636
+  NearClip: 0.100000001
+  FarClip: 1000
+  FocalPoint: [0.961603343, -0.0498807505, -0.458435893]
+  Distance: 12.9833336
+  Pitch: 0.1344001
+  Yaw: -0.451199651
+  ViewportWidth: 1036
+  ViewportHeight: 550
+Entities:
+  - Entity: 6322450473710003994
+    TagComponent:
+      Tag: 背景
+    TransformComponent:
+      Translation: [0, 0, -1]
+      Rotation: [0, 0, 0]
+      Scale: [9.89999962, 5.4000001, 1]
+    SpriteRendererComponent:
+      Color: [0.220077217, 0.220077217, 0.220077217, 1]
+      TilingFactor: 1
+  - Entity: 12837192831275
+    TagComponent:
+      Tag: 相机
+    TransformComponent:
+      Translation: [0, 0, 4.99711323]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 12837192831274
+    TagComponent:
+      Tag: 刚体方块
+    TransformComponent:
+      Translation: [0.205780998, 0.923703551, 0.0225147791]
+      Rotation: [0, 0, -0.235084534]
+      Scale: [0.361159712, 0.375572056, 0.848135769]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 0.730000019
+      Friction: 0.170000002
+      Restitution: 0.589999974
+      RestitutionThreshold: 0.5
+  - Entity: 12837192831273
+    TagComponent:
+      Tag: 地板
+    TransformComponent:
+      Translation: [0, -1.41280007, 0]
+      Rotation: [0, 0, 0]
+      Scale: [6.7419672, 0.460678041, 1]
+    SpriteRendererComponent:
+      Color: [0.949806929, 0.455301404, 0.0660097376, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
