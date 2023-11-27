@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 ExampleLayer::ExampleLayer()
-	:Layer("Example"), m_CameraController(1280.0f / 720.0f, false)
+	:Layer("Example"), m_CameraController(1600.0f / 900.0f, false)
 {
 	////--------暂时渲染三角形---------
 	m_VertexArray = CraftNow::VertexArray::Create();

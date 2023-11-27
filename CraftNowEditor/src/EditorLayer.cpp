@@ -57,11 +57,11 @@ namespace CraftNow {
 		}
 		else
 		{
-			// TODO(Yan): prompt the user to select a directory
+			// TODO: 提示用户选择一个文件夹
 			// NewProject();
 
-			// If no project is opened, close Hazelnut
-			// NOTE: this is while we don't have a new project path
+			// 如果没有打开工程则关闭
+			// NOTE: 这是因为我们没有新的项目路径
 			if (!OpenProject())
 				Application::Get().Close();
 
@@ -694,6 +694,7 @@ namespace CraftNow {
 	void EditorLayer::NewProject()
 	{
 		Project::New();
+		m_EditorProjectPath = std::filesystem::path();
 	}
 
 	bool EditorLayer::OpenProject()
@@ -722,7 +723,23 @@ namespace CraftNow {
 
 	void EditorLayer::SaveProject()
 	{
-		// Project::SaveActive();
+		if (!m_EditorProjectPath.empty())
+			Project::SaveActive(m_EditorProjectPath);
+		else
+			SaveProjectAs();
+		 
+	}
+
+	void EditorLayer::SaveProjectAs()
+	{
+		//TODO: 设置Project Config
+		std::string filepath = FileDialogs::SaveFile("CraftNow Scene (*.craft)\0*.craft\0");
+		if (!filepath.empty())
+		{
+			Project::SaveActive(m_EditorProjectPath);
+			m_EditorProjectPath = filepath;
+		}
+
 	}
 
 	void EditorLayer::NewScene()
@@ -897,7 +914,7 @@ namespace CraftNow {
 			const float padY = (buttonHeight - (float)iconHeight) / 2.0f;
 			if (ImGui::InvisibleButton("Minimize", ImVec2(buttonWidth, buttonHeight)))
 			{
-				// TODO: move this stuff to a better place, like Window class
+				// TODO: 把这些东西转移到更好的地方, 比如 Window class
 				/*if (m_WindowHandle)
 				{
 					Application::Get().QueueEvent([windowHandle = m_WindowHandle]() { glfwIconifyWindow(windowHandle); });

@@ -29,6 +29,7 @@ namespace CraftNow {
 		bool OpenProject();
 		void OpenProject(const std::filesystem::path& path);
 		void SaveProject();
+		void SaveProjectAs();
 
 		void NewScene();
 		void OpenScene();
@@ -85,7 +86,9 @@ namespace CraftNow {
 		Ref<Scene> m_ActiveScene;
 		Ref<Scene> m_EditorScene;
 		std::filesystem::path m_EditorScenePath;
+		std::filesystem::path m_EditorProjectPath;
 
+		//TODO: 应该绑定在场景内，而不应该在编辑器内
 		EditorCamera m_EditorCamera;
 
 		Entity m_HoveredEntity;
