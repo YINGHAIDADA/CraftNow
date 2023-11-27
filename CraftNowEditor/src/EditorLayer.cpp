@@ -507,7 +507,7 @@ namespace CraftNow {
 			uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 			ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
 
-			/*if (ImGui::BeginDragDropTarget())
+			if (ImGui::BeginDragDropTarget())
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 				{
@@ -515,7 +515,7 @@ namespace CraftNow {
 					OpenScene(path);
 				}
 				ImGui::EndDragDropTarget();
-			}*/
+			}
 
 			// Gizmos
 			Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
