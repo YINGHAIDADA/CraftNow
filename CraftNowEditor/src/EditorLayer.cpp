@@ -213,7 +213,7 @@ namespace CraftNow {
 
 		//m_EditorCamera.OnUpdate(ts);
 		// 如果在编辑状态且存在激活的场景，场景通过编辑器相机更新
-		if (m_ActiveScene)
+		if (m_ActiveScene && m_SceneState == SceneState::Edit)
 			m_ActiveScene->OnUpdateEditor(ts);
 		
 		#if 0

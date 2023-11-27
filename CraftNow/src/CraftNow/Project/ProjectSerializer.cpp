@@ -22,7 +22,6 @@ namespace CraftNow {
 			out << YAML::Key << "Project" << YAML::Value;
 			{
 				out << YAML::BeginMap;// Project
-				//TODO: 序列化读取工程名称
 				out << YAML::Key << "Name" << YAML::Value << config.Name;
 				out << YAML::Key << "StartScene" << YAML::Value << config.StartScene.string();
 				out << YAML::Key << "AssetDirectory" << YAML::Value << config.AssetDirectory.string();
@@ -68,6 +67,7 @@ namespace CraftNow {
 			return false;
 
 		config.Name = projectNode["Name"].as<std::string>();
+		CN_CORE_TRACE("载入工程: '{0}'", config.Name);
 		config.StartScene = projectNode["StartScene"].as<std::string>();
 		config.AssetDirectory = projectNode["AssetDirectory"].as<std::string>();
 		config.ScriptModulePath = projectNode["ScriptModulePath"].as<std::string>();
