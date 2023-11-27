@@ -192,6 +192,11 @@ namespace CraftNow {
 		RenderScene(m_EditorCamera);
 	}
 
+	void Scene::OnUpdateSimulation(Timestep ts)
+	{
+		m_EditorCamera.OnUpdate(ts);
+	}
+
 	void Scene::OnRuntimeStart()
 	{
 		

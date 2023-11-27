@@ -33,7 +33,7 @@ namespace CraftNow {
 
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateEditor(Timestep ts);
-		//void OnUpdateSimulation(Timestep ts, EditorCamera& camera);
+		void OnUpdateSimulation(Timestep ts);
 
 		void OnViewportResize(float width, float height);
 

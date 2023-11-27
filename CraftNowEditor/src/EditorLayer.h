@@ -25,6 +25,8 @@ namespace CraftNow {
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
+		void OnOverlayRender();
+
 		void NewProject();
 		bool OpenProject();
 		void OpenProject(const std::filesystem::path& path);
@@ -37,11 +39,16 @@ namespace CraftNow {
 		void SaveScene();
 		void SaveSceneAs();
 
-		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
+		void OnScenePlay();
+		void OnSceneStop();
+		void OnSceneSimulate();
+		void OnScenePause();
 
+		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
 		void OnDuplicateEntity();
 
 		// For custom titlebars
+		void UI_Toolbar();
 		void UI_DrawTitlebar(float& outTitlebarHeight);
 		void UI_DrawMenubar();
 		void Menubar();

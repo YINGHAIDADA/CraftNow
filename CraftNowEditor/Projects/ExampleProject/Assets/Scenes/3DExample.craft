@@ -11,7 +11,17 @@ EditorCamera:
   ViewportWidth: 1036
   ViewportHeight: 584
 Entities:
-  - Entity: 12837192831273
+  - Entity: 9235617827118161440
+    TagComponent:
+      Tag: Top
+    TransformComponent:
+      Translation: [0, 0.5, 0]
+      Rotation: [1.57079637, 0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.876447856, 0.874712825, 0.874712825, 1]
+      TilingFactor: 1
+  - Entity: 8244940659429586525
     TagComponent:
       Tag: Left
     TransformComponent:
@@ -21,7 +31,7 @@ Entities:
     SpriteRendererComponent:
       Color: [0.970000029, 0.977980733, 0.979807138, 1]
       TilingFactor: 1
-  - Entity: 12837192831273
+  - Entity: 2335431429201735937
     TagComponent:
       Tag: Right
     TransformComponent:
@@ -31,7 +41,7 @@ Entities:
     SpriteRendererComponent:
       Color: [0.588420272, 0.586872578, 0.586872578, 1]
       TilingFactor: 1
-  - Entity: 12837192831273
+  - Entity: 15355018394736438603
     TagComponent:
       Tag: Camera
     TransformComponent:
@@ -49,13 +59,3 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 12837192831273
-    TagComponent:
-      Tag: Top
-    TransformComponent:
-      Translation: [0, 0.5, 0]
-      Rotation: [1.57079637, 0.785398185, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.876447856, 0.874712825, 0.874712825, 1]
-      TilingFactor: 1

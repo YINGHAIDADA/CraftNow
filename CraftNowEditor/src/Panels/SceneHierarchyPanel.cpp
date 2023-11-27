@@ -364,7 +364,7 @@ namespace CraftNow {
 				ImGui::ColorEdit4(u8"颜色", glm::value_ptr(component.Color));
 
 				
-				if (ImGui::Button(u8"加载纹理", ImVec2(80.0f, 0.0f)))
+				if (ImGui::Button(u8"加载纹理", ImVec2(100.0f, 0.0f)))
 				{
 					//TODO:打开文件路径加载纹理
 				}

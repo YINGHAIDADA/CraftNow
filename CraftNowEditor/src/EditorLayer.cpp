@@ -31,11 +31,18 @@ namespace CraftNow {
 	{
 		CN_PROFILE_FUNCTION();
 
-		m_CheckerboardTexture = Texture2D::Create("assets/textures/yinghai_alpha.png");
+		/*m_CheckerboardTexture = Texture2D::Create("assets/textures/yinghai_alpha.png");
 		m_Tail_mapTexture = Texture2D::Create("../Sandbox/assets/textures/Legend_of_Zelda/maps/Legend_of_Zelda.png");
 
 		m_Sub1 = SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 5, 10 }, { 16,16 }, { 1,1 });
-		m_Sub2 = SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 4, 9 }, { 16,16 }, { 1,2 });
+		m_Sub2 = SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 4, 9 }, { 16,16 }, { 1,2 });*/
+
+		//初始化运行视图图标
+		m_IconPlay = Texture2D::Create("resources/icons/PlayButton.png");
+		m_IconStop = Texture2D::Create("resources/icons/StopButton.png");
+		m_IconPause = Texture2D::Create("resources/icons/PauseButton.png");
+		m_IconSimulate = Texture2D::Create("resources/icons/SimulateButton.png");
+		m_IconStep = Texture2D::Create("resources/icons/StepButton.png");
 
 		//Framebuffer
 		FramebufferSpecification fbSpec;
@@ -197,10 +204,6 @@ namespace CraftNow {
 			}
 		}
 
-		// Update
-		if(m_ViewportFocused)
-			m_CameraController.OnUpdate(ts);
-
 
 		// Render
 		Renderer2D::ResetStats();
@@ -211,10 +214,35 @@ namespace CraftNow {
 		// Clear our entity ID attachment to -1
 		m_Framebuffer->ClearAttachment(1, -1);
 
-		//m_EditorCamera.OnUpdate(ts);
-		// 如果在编辑状态且存在激活的场景，场景通过编辑器相机更新
-		if (m_ActiveScene && m_SceneState == SceneState::Edit)
-			m_ActiveScene->OnUpdateEditor(ts);
+		
+		
+		if (m_ActiveScene)
+		{
+			switch (m_SceneState)
+			{
+				case SceneState::Edit:
+				{
+					if (m_ViewportFocused)
+						m_CameraController.OnUpdate(ts);
+
+					//m_EditorCamera.OnUpdate(ts);
+					// 如果在编辑状态且存在激活的场景，场景通过编辑器相机更新
+
+					m_ActiveScene->OnUpdateEditor(ts);
+					break;
+				}
+				case SceneState::Simulate:
+				{
+					//m_ActiveScene->OnUpdateSimulation(ts);
+					break;
+				}
+				case SceneState::Play:
+				{
+					m_ActiveScene->OnUpdateRuntime(ts);
+					break;
+				}
+			}
+		}
 		
 		#if 0
 		{
@@ -279,6 +307,8 @@ namespace CraftNow {
 			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
 		}
 		//----------------------------------
+
+		OnOverlayRender();
 
 		m_Framebuffer->Unbind();
 	}
@@ -384,62 +414,6 @@ namespace CraftNow {
 
 		if (!Application::Get().GetSpecification().CustomTitlebar)
 			UI_DrawMenubar();
-		//标题栏菜单
-		//if (ImGui::BeginMenuBar())
-		//{
-		//	if (ImGui::BeginMenu(u8"文件"))
-		//	{
-		//		// Disabling fullscreen would allow the window to be moved to the front of other windows, 
-		//		// which we can't undo at the moment without finer window depth/z control.
-		//		//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
-		//		if (ImGui::MenuItem(u8"打开工程...", "Ctrl+O"))
-		//			OpenProject();
-
-		//		ImGui::Separator();
-
-		//		if (ImGui::MenuItem(u8"新 场景", "Ctrl+N"))
-		//			NewScene();
-
-		//		if (ImGui::MenuItem(u8"打开 场景"))
-		//			OpenScene();
-
-		//		if (ImGui::MenuItem(u8"保存 场景", "Ctrl+S"))
-		//			SaveScene();
-
-		//		if (ImGui::MenuItem(u8"保存 场景 到...", "Ctrl+Shift+S"))
-		//			SaveSceneAs();
-
-		//		ImGui::Separator();
-
-		//		/*if (ImGui::MenuItem(u8"序列化"))
-		//		{
-		//			SceneSerializer serializer(m_ActiveScene);
-		//			serializer.Serialize("assets/scenes/AlphaTest.craft");
-		//		}
-
-		//		if (ImGui::MenuItem(u8"解析序列"))
-		//		{
-		//			SceneSerializer serializer(m_ActiveScene);
-		//			serializer.Deserialize("assets/scenes/AlphaTest.craft");
-		//		}*/
-
-
-		//		if (ImGui::MenuItem(u8"退出")) Application::Get().Close();
-		//		ImGui::EndMenu();
-		//	}
-
-		//	if (ImGui::BeginMenu(u8"脚本"))
-		//	{
-		//		if (ImGui::MenuItem(u8"重新加载部件", "Ctrl+R"))
-		//		{
-		//			//ScriptEngine::ReloadAssembly();
-		//		}
-
-		//		ImGui::EndMenu();
-		//	}
-
-		//	ImGui::EndMenuBar();
-		//}
 
 		//Panel
 		m_SceneHierarchyPanel.OnImGuiRender();
@@ -565,9 +539,13 @@ namespace CraftNow {
 			ImGui::PopStyleVar();
 		}
 
+		UI_Toolbar();
+
 		ImGui::End();
 
 	}
+
+
 
 	void EditorLayer::OnEvent(Event& e)
 	{
@@ -703,6 +681,11 @@ namespace CraftNow {
 		return false;
 	}
 
+	void EditorLayer::OnOverlayRender()
+	{
+
+	}
+
 	void EditorLayer::NewProject()
 	{
 		Project::New();
@@ -759,7 +742,8 @@ namespace CraftNow {
 		//TODO: 如果当前存在场景，提醒保存当前场景或者丢弃
 
 		//TODO: 可能存在内存泄露，应该在某处处理
-		m_ActiveScene = CreateRef<Scene>();
+		m_EditorScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditorScene;
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
 		m_EditorScenePath = std::filesystem::path();
@@ -775,7 +759,10 @@ namespace CraftNow {
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
 		if (m_SceneState != SceneState::Edit)
+		{
+
 			//OnSceneStop();
+		}
 
 		if (path.extension().string() != ".craft")
 		{
@@ -818,6 +805,49 @@ namespace CraftNow {
 		}
 	}
 
+	void EditorLayer::OnScenePlay()
+	{
+		if (m_SceneState == SceneState::Simulate)
+			OnSceneStop();
+
+		m_SceneState = SceneState::Play;
+
+		//运行时需要拷贝一份以在结束运行时还原编辑器状态
+		m_ActiveScene = Scene::Copy(m_EditorScene);
+		m_ActiveScene->OnRuntimeStart();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditorLayer::OnSceneStop()
+	{
+		CN_CORE_ASSERT(m_SceneState == SceneState::Play || m_SceneState == SceneState::Simulate);
+
+		if (m_SceneState == SceneState::Play)
+			m_ActiveScene->OnRuntimeStop();
+		else if (m_SceneState == SceneState::Simulate)
+			m_ActiveScene->OnSimulationStop();
+
+		m_SceneState = SceneState::Edit;
+
+		m_ActiveScene = m_EditorScene;
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditorLayer::OnSceneSimulate()
+	{
+
+	}
+
+	void EditorLayer::OnScenePause()
+	{
+		if (m_SceneState == SceneState::Edit)
+			return;
+
+		m_ActiveScene->SetPaused(true);
+	}
+
 	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
 	{
 		SceneSerializer serializer(scene);
@@ -828,6 +858,89 @@ namespace CraftNow {
 	void EditorLayer::OnDuplicateEntity()
 	{
 
+	}
+
+	void EditorLayer::UI_Toolbar()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		auto& colors = ImGui::GetStyle().Colors;
+		const auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f));
+		const auto& buttonActive = colors[ImGuiCol_ButtonActive];
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
+
+		ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+		bool toolbarEnabled = (bool)m_ActiveScene;
+
+		ImVec4 tintColor = ImVec4(1, 1, 1, 1);
+		if (!toolbarEnabled)
+			tintColor.w = 0.5f;
+
+		float size = ImGui::GetWindowHeight() - 4.0f;
+		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+
+		bool hasPlayButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play;
+		bool hasSimulateButton = m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate;
+		bool hasPauseButton = m_SceneState != SceneState::Edit;
+
+		if (hasPlayButton)
+		{
+			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_IconPlay : m_IconStop;
+			if (ImGui::ImageButton((ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+			{
+				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate)
+					OnScenePlay();
+				else if (m_SceneState == SceneState::Play)
+					OnSceneStop();
+			}
+		}
+
+		if (hasSimulateButton)
+		{
+			if (hasPlayButton)
+				ImGui::SameLine();
+
+			Ref<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_IconSimulate : m_IconStop;
+			if (ImGui::ImageButton((ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+			{
+				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play)
+					OnSceneSimulate();
+				else if (m_SceneState == SceneState::Simulate)
+					OnSceneStop();
+			}
+		}
+		if (hasPauseButton)
+		{
+			bool isPaused = m_ActiveScene->IsPaused();
+			ImGui::SameLine();
+			{
+				Ref<Texture2D> icon = m_IconPause;
+				if (ImGui::ImageButton((ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+				{
+					m_ActiveScene->SetPaused(!isPaused);
+				}
+			}
+
+			// Step button
+			if (isPaused)
+			{
+				ImGui::SameLine();
+				{
+					Ref<Texture2D> icon = m_IconStep;
+					bool isPaused = m_ActiveScene->IsPaused();
+					if (ImGui::ImageButton((ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+					{
+						m_ActiveScene->Step();
+					}
+				}
+			}
+		}
+		ImGui::PopStyleVar(2);
+		ImGui::PopStyleColor(3);
+		ImGui::End();
 	}
 
 	void EditorLayer::UI_DrawTitlebar(float& outTitlebarHeight)

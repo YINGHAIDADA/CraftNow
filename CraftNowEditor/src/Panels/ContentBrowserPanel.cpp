@@ -27,7 +27,7 @@ namespace CraftNow {
 		}
 
 		static float padding = 16.0f;
-		static float thumbnailSize = 128.0f;
+		static float thumbnailSize = 70.0f;
 		float cellSize = thumbnailSize + padding;
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;
@@ -69,10 +69,10 @@ namespace CraftNow {
 			ImGui::PopID();
 		}
 
-		ImGui::Columns(1);
+		//ImGui::Columns(1);
 
-		ImGui::SliderFloat(u8"缩略图大小", &thumbnailSize, 16, 512);
-		ImGui::SliderFloat(u8"间距", &padding, 0, 32);
+		/*ImGui::SliderFloat(u8"缩略图大小", &thumbnailSize, 16, 512);
+		ImGui::SliderFloat(u8"间距", &padding, 0, 32);*/
 
 		// TODO: status bar
 		ImGui::End();
