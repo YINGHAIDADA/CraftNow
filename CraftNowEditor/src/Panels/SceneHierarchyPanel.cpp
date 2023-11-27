@@ -366,9 +366,8 @@ namespace CraftNow {
 				
 				if (ImGui::Button(u8"加载纹理", ImVec2(80.0f, 0.0f)))
 				{
-					//TODO:打开文件加载纹理
+					//TODO:打开文件路径加载纹理
 				}
-
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
