@@ -32,10 +32,10 @@ namespace CraftNow {
 		void OnSimulationStop();
 
 		void OnUpdateRuntime(Timestep ts);
-		void OnUpdateEditor(EditorCamera& camera);
+		void OnUpdateEditor(Timestep ts);
 		//void OnUpdateSimulation(Timestep ts, EditorCamera& camera);
 
-		void OnViewportResize(uint32_t width, uint32_t height);
+		void OnViewportResize(float width, float height);
 
 		Entity DuplicateEntity(Entity entity);
 
@@ -43,6 +43,10 @@ namespace CraftNow {
 		Entity GetEntityByUUID(UUID uuid);
 
 		Entity GetPrimaryCameraEntity();
+
+		EditorCamera& LoadEditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
+		EditorCamera& GetEditorCamera() { return m_EditorCamera; }
+
 
 		bool IsRunning() const { return m_IsRunning; }
 		bool IsPaused() const { return m_IsPaused; }
@@ -70,6 +74,8 @@ namespace CraftNow {
 		bool m_IsRunning = false;
 		bool m_IsPaused = false;
 		int m_StepFrames = 0;
+
+		EditorCamera m_EditorCamera;
 
 		//b2World* m_PhysicsWorld = nullptr;
 

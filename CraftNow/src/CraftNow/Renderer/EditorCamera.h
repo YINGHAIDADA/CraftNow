@@ -21,6 +21,7 @@ namespace CraftNow {
 		inline float GetDistance() const { return m_Distance; }
 		inline void SetDistance(float distance) { m_Distance = distance; }
 
+		inline glm::vec2 GetViewportSize() { return { m_ViewportWidth, m_ViewportHeight }; }
 		inline void SetViewportSize(float width, float height) { m_ViewportWidth = width; m_ViewportHeight = height; UpdateProjection(); }
 
 		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
@@ -33,7 +34,20 @@ namespace CraftNow {
 		glm::quat GetOrientation() const;
 
 		float GetPitch() const { return m_Pitch; }
+		void SetPitch(float pitch) { m_Pitch = pitch; }
+
 		float GetYaw() const { return m_Yaw; }
+		void SetYaw(float yaw) { m_Yaw = yaw; }
+	public:
+		float GetFov() const { return m_FOV; }
+		float GetAspectRatio() const { return m_AspectRatio; }
+		float GetNearClip() const { return m_NearClip; }
+		float GetFarClip() const { return m_FarClip; }
+
+		const glm::vec3& GetFocalPoint() const { return m_FocalPoint; }
+		void SetFocalPoint(glm::vec3 focalPoint) { m_FocalPoint = focalPoint; }
+
+		void LoadedEditorCamera() { UpdateView(); }
 	private:
 		void UpdateProjection();
 		void UpdateView();

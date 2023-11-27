@@ -379,7 +379,24 @@ namespace CraftNow {
 	{
 		YAML::Emitter out;
 		out << YAML::BeginMap;
+		//TODO: 序列化读取场景名称
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
+		//TODO: 保存编辑器相机参数
+		out << YAML::Key << "EditorCamera";
+		out << YAML::BeginMap;
+		{
+			out << YAML::Key << "Fov" << YAML::Value << m_Scene->GetEditorCamera().GetFov();
+			out << YAML::Key << "AspectRatio" << YAML::Value << m_Scene->GetEditorCamera().GetAspectRatio();
+			out << YAML::Key << "NearClip" << YAML::Value << m_Scene->GetEditorCamera().GetNearClip();
+			out << YAML::Key << "FarClip" << YAML::Value << m_Scene->GetEditorCamera().GetFarClip();
+			out << YAML::Key << "FocalPoint" << YAML::Value << m_Scene->GetEditorCamera().GetFocalPoint();
+			out << YAML::Key << "Distance" << YAML::Value << m_Scene->GetEditorCamera().GetDistance();
+			out << YAML::Key << "Pitch" << YAML::Value << m_Scene->GetEditorCamera().GetPitch();
+			out << YAML::Key << "Yaw" << YAML::Value << m_Scene->GetEditorCamera().GetYaw();
+			out << YAML::Key << "ViewportWidth" << YAML::Value << m_Scene->GetEditorCamera().GetViewportSize().x;
+			out << YAML::Key << "ViewportHeight" << YAML::Value << m_Scene->GetEditorCamera().GetViewportSize().y;
+			out << YAML::EndMap;
+		}
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		//消除4996警告
 		#pragma warning(suppress : 4996)
@@ -434,6 +451,19 @@ namespace CraftNow {
 
 		std::string sceneName = data["Scene"].as<std::string>();
 		CN_CORE_TRACE("Deserializing scene '{0}'", sceneName);
+
+		auto& ECPara = data["EditorCamera"];
+		if (ECPara)
+		{
+			auto& edCamera = m_Scene->LoadEditorCamera(ECPara["Fov"].as<float>(), ECPara["AspectRatio"].as<float>(), ECPara["NearClip"].as<float>(), ECPara["FarClip"].as<float>());
+			edCamera.SetFocalPoint(ECPara["FocalPoint"].as<glm::vec3>());
+			edCamera.SetDistance(ECPara["Distance"].as<float>());
+			edCamera.SetPitch(ECPara["Pitch"].as<float>());
+			edCamera.SetYaw(ECPara["Yaw"].as<float>());
+			edCamera.SetYaw(ECPara["Yaw"].as<float>());
+			edCamera.SetViewportSize(ECPara["ViewportWidth"].as<float>(), ECPara["ViewportHeight"].as<float>());
+			edCamera.LoadedEditorCamera();
+		}
 
 		auto entities = data["Entities"];
 		if (entities)

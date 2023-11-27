@@ -6,30 +6,20 @@ EditorCamera:
   FarClip: 1000
   FocalPoint: [0, 0, 0]
   Distance: 10
-  Pitch: 0.333600312
-  Yaw: 0.0143999998
+  Pitch: 0.66239959
+  Yaw: -1.01760018
   ViewportWidth: 1036
   ViewportHeight: 584
 Entities:
   - Entity: 12837192831273
     TagComponent:
-      Tag: Left
+      Tag: Top
     TransformComponent:
-      Translation: [-0.354999989, 0, 0.349999994]
-      Rotation: [0, -0.785398185, 0]
-      Scale: [1, 1, 1]
+      Translation: [-0.492753565, 1.33755517, 2.32722688]
+      Rotation: [1.57079613, 0.785398245, -4.21468513e-08]
+      Scale: [0.999999881, 0.999999285, 0.999984026]
     SpriteRendererComponent:
-      Color: [0.970000029, 0.977980733, 0.979807138, 1]
-      TilingFactor: 1
-  - Entity: 12837192831273
-    TagComponent:
-      Tag: Right
-    TransformComponent:
-      Translation: [0.351999998, 0, 0.349999994]
-      Rotation: [0, 0.785398185, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.588420272, 0.586872578, 0.586872578, 1]
+      Color: [0.876447856, 0.874712825, 0.874712825, 1]
       TilingFactor: 1
   - Entity: 12837192831273
     TagComponent:
@@ -51,11 +41,21 @@ Entities:
       FixedAspectRatio: false
   - Entity: 12837192831273
     TagComponent:
-      Tag: Top
+      Tag: Right
     TransformComponent:
-      Translation: [0, 0.5, 0]
-      Rotation: [1.57079637, 0.785398185, 0]
+      Translation: [0.867555797, 0, 1.34836912]
+      Rotation: [0, 0.785398245, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.876447856, 0.874712825, 0.874712825, 1]
+      Color: [0.588420272, 0.586872578, 0.586872578, 1]
+      TilingFactor: 1
+  - Entity: 12837192831273
+    TagComponent:
+      Tag: Left
+    TransformComponent:
+      Translation: [0.547664404, 0, 1.25266457]
+      Rotation: [0, -0.785398245, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.970000029, 0.977980733, 0.979807138, 1]
       TilingFactor: 1

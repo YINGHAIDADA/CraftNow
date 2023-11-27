@@ -18,6 +18,7 @@
 namespace CraftNow {
 	Scene::Scene()
 	{
+		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 	}
 
 	Scene::~Scene()
@@ -184,9 +185,11 @@ namespace CraftNow {
 
 	}
 
-	void Scene::OnUpdateEditor(EditorCamera& camera)
+	void Scene::OnUpdateEditor(Timestep ts)
 	{
-		RenderScene(camera);
+		m_EditorCamera.OnUpdate(ts);
+
+		RenderScene(m_EditorCamera);
 	}
 
 	void Scene::OnRuntimeStart()
@@ -209,13 +212,16 @@ namespace CraftNow {
 		OnPhysics2DStop();
 	}
 
-	void Scene::OnViewportResize(uint32_t width, uint32_t height)
+	void Scene::OnViewportResize(float width, float height)
 	{
+
+		m_EditorCamera.SetViewportSize(width, height);
+
 		if (m_ViewportWidth == width && m_ViewportHeight == height)
 			return;
 
-		m_ViewportWidth = width;
-		m_ViewportHeight = height;
+		m_ViewportWidth = (uint32_t)width;
+		m_ViewportHeight = (uint32_t)height;
 
 		// Resize our non-FixedAspectRatio cameras
 		auto view = m_Registry.view<CameraComponent>();
@@ -227,7 +233,7 @@ namespace CraftNow {
 		}
 	}
 
-	CraftNow::Entity Scene::DuplicateEntity(Entity entity)
+	Entity Scene::DuplicateEntity(Entity entity)
 	{
 		// Copy name because we're going to modify component data structure
 		std::string name = entity.GetName();
@@ -236,7 +242,7 @@ namespace CraftNow {
 		return newEntity;
 	}
 
-	CraftNow::Entity Scene::FindEntityByName(std::string_view name)
+	Entity Scene::FindEntityByName(std::string_view name)
 	{
 		auto view = m_Registry.view<TagComponent>();
 		for (auto entity : view)
@@ -248,7 +254,7 @@ namespace CraftNow {
 		return {};
 	}
 
-	CraftNow::Entity Scene::GetEntityByUUID(UUID uuid)
+	Entity Scene::GetEntityByUUID(UUID uuid)
 	{
 		// TODO: Maybe should be assert
 		if (m_EntityMap.find(uuid) != m_EntityMap.end())
@@ -257,7 +263,7 @@ namespace CraftNow {
 		return {};
 	}
 
-	CraftNow::Entity Scene::GetPrimaryCameraEntity()
+	Entity Scene::GetPrimaryCameraEntity()
 	{
 		auto view = m_Registry.view<CameraComponent>();
 		for (auto entity : view)
@@ -267,6 +273,12 @@ namespace CraftNow {
 				return Entity{ entity, this };
 		}
 		return {};
+	}
+
+	EditorCamera& Scene::LoadEditorCamera(float fov, float aspectRatio, float nearClip, float farClip)
+	{
+		m_EditorCamera = EditorCamera(fov, aspectRatio, nearClip, farClip);
+		return m_EditorCamera;
 	}
 
 	void Scene::Step(int frames)

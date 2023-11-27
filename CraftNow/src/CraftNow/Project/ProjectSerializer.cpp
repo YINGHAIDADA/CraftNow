@@ -22,6 +22,7 @@ namespace CraftNow {
 			out << YAML::Key << "Project" << YAML::Value;
 			{
 				out << YAML::BeginMap;// Project
+				//TODO: 序列化读取工程名称
 				out << YAML::Key << "Name" << YAML::Value << config.Name;
 				out << YAML::Key << "StartScene" << YAML::Value << config.StartScene.string();
 				out << YAML::Key << "AssetDirectory" << YAML::Value << config.AssetDirectory.string();

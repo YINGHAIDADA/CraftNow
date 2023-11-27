@@ -110,7 +110,7 @@ namespace CraftNow {
 		}
 		
 
-		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+		//m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 		//------Scene---------
 
@@ -189,11 +189,11 @@ namespace CraftNow {
 				m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 				m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 
-				m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
+				//m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 
 				//场景相机更新
 				if(m_ActiveScene)
-					m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+					m_ActiveScene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
 			}
 		}
 
@@ -201,7 +201,6 @@ namespace CraftNow {
 		if(m_ViewportFocused)
 			m_CameraController.OnUpdate(ts);
 
-		m_EditorCamera.OnUpdate(ts);
 
 		// Render
 		Renderer2D::ResetStats();
@@ -211,6 +210,11 @@ namespace CraftNow {
 
 		// Clear our entity ID attachment to -1
 		m_Framebuffer->ClearAttachment(1, -1);
+
+		//m_EditorCamera.OnUpdate(ts);
+		// 如果在编辑状态且存在激活的场景，场景通过编辑器相机更新
+		if (m_ActiveScene)
+			m_ActiveScene->OnUpdateEditor(ts);
 		
 		#if 0
 		{
@@ -257,9 +261,7 @@ namespace CraftNow {
 		#endif
 
 
-		// Update scene
-		if(m_ActiveScene)
-			m_ActiveScene->OnUpdateEditor(m_EditorCamera);
+		
 
 		//----测试像素发送实体ID----------
 		auto [mx, my] = ImGui::GetMousePos();
@@ -451,6 +453,8 @@ namespace CraftNow {
 			if (m_HoveredEntity)
 				name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
 			ImGui::Text(u8"鼠标悬浮在 实体: %s", name.c_str());
+			ImGui::Text(u8"ImGuizmo type: %d", m_GizmoType);
+			ImGui::Text(u8"ImGuizmo::IsOver(): %d", ImGuizmo::IsOver());
 
 			auto stats = Renderer2D::GetStats();
 			ImGui::Text(u8"Renderer2D 状态:");
@@ -486,6 +490,10 @@ namespace CraftNow {
 			m_ViewportFocused = ImGui::IsWindowFocused();
 			m_ViewportHovered = ImGui::IsWindowHovered();
 
+			//离开视图窗口清除m_HoveredEntity
+			if (!m_ViewportHovered)
+				m_HoveredEntity = Entity();
+
 			// 修复 对视图窗口的监听事件阻塞
 			if (!ImGui::IsAnyItemActive())
 				Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
@@ -520,8 +528,8 @@ namespace CraftNow {
 
 
 				// Editor camera
-				const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
-				glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
+				const glm::mat4& cameraProjection = m_ActiveScene->GetEditorCamera().GetProjection();
+				glm::mat4 cameraView = m_ActiveScene->GetEditorCamera().GetViewMatrix();
 
 				// Entity transform
 				auto& tc = selectedEntity.GetComponent<TransformComponent>();
@@ -567,7 +575,8 @@ namespace CraftNow {
 
 		if (m_SceneState == SceneState::Edit)
 		{
-			m_EditorCamera.OnEvent(e);
+
+			m_ActiveScene->GetEditorCamera().OnEvent(e);
 		}
 
 		EventDispatcher dispatcher(e);
@@ -631,7 +640,10 @@ namespace CraftNow {
 		case Key::Q:
 		{
 			if (!ImGuizmo::IsUsing())
+			{
 				m_GizmoType = -1;
+				m_SceneHierarchyPanel.SetSelectedEntity({});
+			}
 			break;
 		}
 		case Key::G:
@@ -680,7 +692,7 @@ namespace CraftNow {
 	{
 		if (e.GetMouseButton() == Mouse::ButtonLeft)
 		{
-			//操控摄像机时不选择
+			//操控摄像机时不选择, ImGuizmo::IsOver()判断鼠标是否在ImGuizmo的移动控件上，虽然会引起选择bug
 			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
 			{
 				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
