@@ -110,7 +110,8 @@ namespace CraftNow {
 		{
 			if (ImGui::MenuItem(u8"删除 实体"))
 				entityDeleted = true;
-
+			if (ImGui::MenuItem(u8"复制 实体"))
+				m_Context->DuplicateEntity(entity);
 			ImGui::EndPopup();
 		}
 

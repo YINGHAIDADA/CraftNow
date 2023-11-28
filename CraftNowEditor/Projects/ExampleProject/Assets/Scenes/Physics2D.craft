@@ -4,10 +4,10 @@ EditorCamera:
   AspectRatio: 1.88363636
   NearClip: 0.100000001
   FarClip: 1000
-  FocalPoint: [0.961603343, -0.0498807505, -0.458435893]
-  Distance: 12.9833336
-  Pitch: 0.1344001
-  Yaw: -0.451199651
+  FocalPoint: [0.706214786, -0.0657215118, -0.456987232]
+  Distance: 12.3090658
+  Pitch: 0.124799885
+  Yaw: -0.0623995326
   ViewportWidth: 1036
   ViewportHeight: 550
 Entities:
@@ -25,7 +25,7 @@ Entities:
     TagComponent:
       Tag: 相机
     TransformComponent:
-      Translation: [0, 0, 4.99711323]
+      Translation: [0, 0, 3.79999995]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -48,6 +48,7 @@ Entities:
       Scale: [0.361159712, 0.375572056, 0.848135769]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
+      TexturePath: D:\VS_Projects\CraftNow\CraftNowEditor\Projects\ExampleProject\Assets\Textures\yinghai_alpha.png
       TilingFactor: 1
     Rigidbody2DComponent:
       BodyType: Dynamic
@@ -67,7 +68,7 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [6.7419672, 0.460678041, 1]
     SpriteRendererComponent:
-      Color: [0.949806929, 0.455301404, 0.0660097376, 1]
+      Color: [0.218886822, 0.281853259, 0.00544119114, 1]
       TilingFactor: 1
     Rigidbody2DComponent:
       BodyType: Static
@@ -78,4 +79,24 @@ Entities:
       Density: 1
       Friction: 0.5
       Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 16860485781188885765
+    TagComponent:
+      Tag: 长方体刚体
+    TransformComponent:
+      Translation: [0.654208422, 1.26519966, 0]
+      Rotation: [0, 0, -0.720820963]
+      Scale: [0.959999263, 0.279999912, 0.848134398]
+    SpriteRendererComponent:
+      Color: [0.98455596, 0.592603385, 0.0532192662, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 0.959999979
+      Friction: 0.219999999
+      Restitution: 0.360000014
       RestitutionThreshold: 0.5

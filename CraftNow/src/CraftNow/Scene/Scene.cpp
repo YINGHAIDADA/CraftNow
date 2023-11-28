@@ -324,7 +324,7 @@ namespace CraftNow {
 	Entity Scene::DuplicateEntity(Entity entity)
 	{
 		// Copy name because we're going to modify component data structure
-		std::string name = entity.GetName();
+		std::string name = entity.GetName() + "(copy)";
 		Entity newEntity = CreateEntity(name);
 		CopyComponentIfExists(AllComponents{}, newEntity, entity);
 		return newEntity;
