@@ -35,6 +35,7 @@
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.Box2D}",
 		"%{IncludeDir.VulkanSDK}",
 	}
 
@@ -44,6 +45,7 @@
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
+		"Box2D",
 		
 		"opengl32.lib"
 	}

@@ -134,7 +134,7 @@ namespace CraftNow {
 		glm::vec2 Offset = { 0.0f, 0.0f };
 		glm::vec2 Size = { 0.5f, 0.5f };
 
-		// TODO(Yan): move into physics material in the future maybe
+		// TODO: 可能未来移动到物理材质中
 		float Density = 1.0f;
 		float Friction = 0.5f;
 		float Restitution = 0.0f;

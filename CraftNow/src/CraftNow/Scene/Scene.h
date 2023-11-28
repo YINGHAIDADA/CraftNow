@@ -7,7 +7,7 @@
 
 #include "entt.hpp"
 
-//class b2World;
+class b2World;
 
 namespace CraftNow {
 
@@ -44,8 +44,9 @@ namespace CraftNow {
 
 		Entity GetPrimaryCameraEntity();
 
-		EditorCamera& LoadEditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 		EditorCamera& GetEditorCamera() { return m_EditorCamera; }
+		EditorCamera& LoadEditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
+		EditorCamera& CopyEditorCamera(EditorCamera& other);
 
 
 		bool IsRunning() const { return m_IsRunning; }
@@ -77,7 +78,7 @@ namespace CraftNow {
 
 		EditorCamera m_EditorCamera;
 
-		//b2World* m_PhysicsWorld = nullptr;
+		b2World* m_PhysicsWorld = nullptr;
 
 		std::unordered_map<UUID, entt::entity> m_EntityMap;
 

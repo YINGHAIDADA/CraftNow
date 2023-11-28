@@ -5,15 +5,16 @@
 #include "Components.h"
 #include "ScriptableEntity.h"
 #include "CraftNow/Renderer/Renderer2D.h"
+#include "CraftNow/Physics/Physics2D.h"
 
 #include <glm/glm.hpp>
 
 // Box2D
-//#include "box2d/b2_world.h"
-//#include "box2d/b2_body.h"
-//#include "box2d/b2_fixture.h"
-//#include "box2d/b2_polygon_shape.h"
-//#include "box2d/b2_circle_shape.h"
+#include <box2d/b2_world.h>
+#include <box2d/b2_body.h>
+#include <box2d/b2_fixture.h>
+#include <box2d/b2_polygon_shape.h>
+#include <box2d/b2_circle_shape.h>
 
 namespace CraftNow {
 	Scene::Scene()
@@ -88,6 +89,9 @@ namespace CraftNow {
 		// Copy components (except IDComponent and TagComponent)
 		CopyComponent(AllComponents{}, dstSceneRegistry, srcSceneRegistry, enttMap);
 
+		// 复制编辑器相机参数
+		newScene->CopyEditorCamera(other->GetEditorCamera());
+
 		return newScene;
 	}
 
@@ -117,22 +121,57 @@ namespace CraftNow {
 
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
-		// Update scripts
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+			// Update scripts
+			{
 
+				// C# Entity OnUpdate
+				/*auto view = m_Registry.view<ScriptComponent>();
+				for (auto e : view)
 				{
-					// TODO: 迁移到  Scene::OnScenePlay
-					if (!nsc.Instance)
-					{
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
-						nsc.Instance->OnCreate();
-					}
+					Entity entity = { e, this };
+					ScriptEngine::OnUpdateEntity(entity, ts);
+				}*/
 
-					nsc.Instance->OnUpdate(ts);
-				});
+				m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+					{
+						// TODO: 迁移到  Scene::OnScenePlay
+						if (!nsc.Instance)
+						{
+							nsc.Instance = nsc.InstantiateScript();
+							nsc.Instance->m_Entity = Entity{ entity, this };
+							nsc.Instance->OnCreate();
+						}
+
+						nsc.Instance->OnUpdate(ts);
+					});
+			}
+
+			// Physics
+			{
+				const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
+
+				// Retrieve transform from Box2D
+				auto view = m_Registry.view<Rigidbody2DComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
+
+					const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					transform.Rotation.z = body->GetAngle();
+				}
+			}
 		}
+
 
 		//Render2D
 		Camera* mainCamera = nullptr;
@@ -158,8 +197,6 @@ namespace CraftNow {
 
 			// Draw sprites
 			{
-				
-
 				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 
 				//TODO: 目前按纹理Z-index顺序渲染, 但存在一个问题，原本index相同的该如何排列保证能正常层次渲染；
@@ -174,11 +211,29 @@ namespace CraftNow {
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 				}
-
-
-				
 			}
 
+			// Draw circles
+			{
+				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+				for (auto entity : view)
+				{
+					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
+					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+				}
+			}
+
+			// Draw text
+			/*{
+				auto view = m_Registry.view<TransformComponent, TextComponent>();
+				for (auto entity : view)
+				{
+					auto [transform, text] = view.get<TransformComponent, TextComponent>(entity);
+
+					Renderer2D::DrawString(text.TextString, transform.GetTransform(), text, (int)entity);
+				}
+			}*/
 
 			Renderer2D::EndScene();
 		}
@@ -194,17 +249,61 @@ namespace CraftNow {
 
 	void Scene::OnUpdateSimulation(Timestep ts)
 	{
+		if (!m_IsPaused || m_StepFrames-- > 0)
+		{
+			// Physics
+			{
+				const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
+
+				// Retrieve transform from Box2D
+				auto view = m_Registry.view<Rigidbody2DComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					transform.Rotation.z = body->GetAngle();
+				}
+			}
+		}
 		m_EditorCamera.OnUpdate(ts);
+		RenderScene(m_EditorCamera);
 	}
 
 	void Scene::OnRuntimeStart()
 	{
-		
+		m_IsRunning = true;
+
+		OnPhysics2DStart();
+
+		// Scripting
+		//{
+		//	ScriptEngine::OnRuntimeStart(this);
+		//	// Instantiate all script entities
+
+		//	auto view = m_Registry.view<ScriptComponent>();
+		//	for (auto e : view)
+		//	{
+		//		Entity entity = { e, this };
+		//		ScriptEngine::OnCreateEntity(entity);
+		//	}
+		//}
 	}
 
 	void Scene::OnRuntimeStop()
 	{
+		m_IsRunning = false;
 
+		OnPhysics2DStop();
+
+		//ScriptEngine::OnRuntimeStop();
 	}
 
 	void Scene::OnSimulationStart()
@@ -241,7 +340,7 @@ namespace CraftNow {
 	Entity Scene::DuplicateEntity(Entity entity)
 	{
 		// Copy name because we're going to modify component data structure
-		std::string name = entity.GetName();
+		std::string name = entity.GetName() + "(copy)";
 		Entity newEntity = CreateEntity(name);
 		CopyComponentIfExists(AllComponents{}, newEntity, entity);
 		return newEntity;
@@ -286,19 +385,82 @@ namespace CraftNow {
 		return m_EditorCamera;
 	}
 
+	EditorCamera& Scene::CopyEditorCamera(EditorCamera& other)
+	{
+		m_EditorCamera = EditorCamera(other.GetFov(), other.GetAspectRatio(), other.GetNearClip(), other.GetFarClip());
+		m_EditorCamera.SetFocalPoint(other.GetFocalPoint());
+		m_EditorCamera.SetDistance(other.GetDistance());
+		m_EditorCamera.SetPitch(other.GetPitch());
+		m_EditorCamera.SetYaw(other.GetYaw());
+		m_EditorCamera.SetViewportSize(other.GetViewportSize().x, other.GetViewportSize().y);
+		m_EditorCamera.LoadedEditorCamera();
+		return m_EditorCamera;
+	}
+
 	void Scene::Step(int frames)
 	{
-
+		m_StepFrames = frames;
 	}
 
 	void Scene::OnPhysics2DStart()
 	{
+		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });
 
+		auto view = m_Registry.view<Rigidbody2DComponent>();
+		for (auto e : view)
+		{
+			Entity entity = { e, this };
+			auto& transform = entity.GetComponent<TransformComponent>();
+			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+			b2BodyDef bodyDef;
+			bodyDef.type = Utils::Rigidbody2DTypeToBox2DBody(rb2d.Type);
+			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
+			bodyDef.angle = transform.Rotation.z;
+
+			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+			body->SetFixedRotation(rb2d.FixedRotation);
+			rb2d.RuntimeBody = body;
+
+			if (entity.HasComponent<BoxCollider2DComponent>())
+			{
+				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+
+				b2PolygonShape boxShape;
+				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y, b2Vec2(bc2d.Offset.x, bc2d.Offset.y), 0.0f);
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &boxShape;
+				fixtureDef.density = bc2d.Density;
+				fixtureDef.friction = bc2d.Friction;
+				fixtureDef.restitution = bc2d.Restitution;
+				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				body->CreateFixture(&fixtureDef);
+			}
+
+			if (entity.HasComponent<CircleCollider2DComponent>())
+			{
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+
+				b2CircleShape circleShape;
+				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
+				circleShape.m_radius = transform.Scale.x * cc2d.Radius;
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &circleShape;
+				fixtureDef.density = cc2d.Density;
+				fixtureDef.friction = cc2d.Friction;
+				fixtureDef.restitution = cc2d.Restitution;
+				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+				body->CreateFixture(&fixtureDef);
+			}
+		}
 	}
 
 	void Scene::OnPhysics2DStop()
 	{
-
+		delete m_PhysicsWorld;
+		m_PhysicsWorld = nullptr;
 	}
 
 
@@ -324,6 +486,8 @@ namespace CraftNow {
 				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
 		}
+
+		//TODO: 在编辑摄像机里绘制碰撞体方框
 
 		// Draw circles
 		{

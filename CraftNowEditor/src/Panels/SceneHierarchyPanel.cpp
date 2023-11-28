@@ -64,14 +64,14 @@ namespace CraftNow {
 						auto& spriteT = m_Context->CreateEntity(u8"精灵");
 						spriteT.AddComponent<SpriteRendererComponent>();
 					}
+					if (ImGui::MenuItem(u8"创建 圆"))
+					{
+						auto& spriteT = m_Context->CreateEntity(u8"圆");
+						spriteT.AddComponent<CircleRendererComponent>();
+					}
 
 					ImGui::EndMenu();
 				}
-				/*if (ImGui::MenuItem(u8"创建 ..."))
-				{
-					if (ImGui::MenuItem(u8"创建 空实体"))
-						m_Context->CreateEntity(u8"空");
-				}*/
 
 				ImGui::EndPopup();
 			}
@@ -110,7 +110,8 @@ namespace CraftNow {
 		{
 			if (ImGui::MenuItem(u8"删除 实体"))
 				entityDeleted = true;
-
+			if (ImGui::MenuItem(u8"复制 实体"))
+				m_Context->DuplicateEntity(entity);
 			ImGui::EndPopup();
 		}
 
@@ -278,8 +279,8 @@ namespace CraftNow {
 			DisplayAddComponentEntry<SpriteRendererComponent>(u8"精灵");
 			DisplayAddComponentEntry<CircleRendererComponent>(u8"圆");
 			DisplayAddComponentEntry<Rigidbody2DComponent>(u8"2D刚体");
-			DisplayAddComponentEntry<BoxCollider2DComponent>(u8"2D碰撞体 方块");
-			DisplayAddComponentEntry<CircleCollider2DComponent>(u8"2D碰撞体 圆");
+			DisplayAddComponentEntry<BoxCollider2DComponent>(u8"2D方块 碰撞体");
+			DisplayAddComponentEntry<CircleCollider2DComponent>(u8"2D圆 碰撞体");
 			//DisplayAddComponentEntry<TextComponent>("Text Component");
 
 			ImGui::EndPopup();
@@ -296,7 +297,7 @@ namespace CraftNow {
 				DrawVec3Control(u8"缩放", component.Scale, 1.0f);
 			});
 
-		DrawComponent<CameraComponent>(u8"相机设置", entity, [](auto& component)
+		DrawComponent<CameraComponent>(u8"相机", entity, [](auto& component)
 			{
 				auto& camera = component.Camera;
 
@@ -359,7 +360,7 @@ namespace CraftNow {
 				}
 			});
 
-		DrawComponent<SpriteRendererComponent>(u8"精灵渲染设置", entity, [](auto& component)
+		DrawComponent<SpriteRendererComponent>(u8"精灵", entity, [](auto& component)
 			{
 				ImGui::ColorEdit4(u8"颜色", glm::value_ptr(component.Color));
 
@@ -385,6 +386,144 @@ namespace CraftNow {
 
 				ImGui::DragFloat(u8"平铺系数", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
 			});
+
+		//DrawComponent<ScriptComponent>("Script", entity, [entity, scene = m_Context](auto& component) mutable
+		//	{
+		//		bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
+
+		//		static char buffer[64];
+		//		strcpy_s(buffer, sizeof(buffer), component.ClassName.c_str());
+
+		//		UI::ScopedStyleColor textColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f), !scriptClassExists);
+
+		//		if (ImGui::InputText("Class", buffer, sizeof(buffer)))
+		//		{
+		//			component.ClassName = buffer;
+		//			return;
+		//		}
+
+		//		// Fields
+		//		bool sceneRunning = scene->IsRunning();
+		//		if (sceneRunning)
+		//		{
+		//			Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity.GetUUID());
+		//			if (scriptInstance)
+		//			{
+		//				const auto& fields = scriptInstance->GetScriptClass()->GetFields();
+		//				for (const auto& [name, field] : fields)
+		//				{
+		//					if (field.Type == ScriptFieldType::Float)
+		//					{
+		//						float data = scriptInstance->GetFieldValue<float>(name);
+		//						if (ImGui::DragFloat(name.c_str(), &data))
+		//						{
+		//							scriptInstance->SetFieldValue(name, data);
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
+		//		else
+		//		{
+		//			if (scriptClassExists)
+		//			{
+		//				Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(component.ClassName);
+		//				const auto& fields = entityClass->GetFields();
+
+		//				auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+		//				for (const auto& [name, field] : fields)
+		//				{
+		//					// Field has been set in editor
+		//					if (entityFields.find(name) != entityFields.end())
+		//					{
+		//						ScriptFieldInstance& scriptField = entityFields.at(name);
+
+		//						// Display control to set it maybe
+		//						if (field.Type == ScriptFieldType::Float)
+		//						{
+		//							float data = scriptField.GetValue<float>();
+		//							if (ImGui::DragFloat(name.c_str(), &data))
+		//								scriptField.SetValue(data);
+		//						}
+		//					}
+		//					else
+		//					{
+		//						// Display control to set it maybe
+		//						if (field.Type == ScriptFieldType::Float)
+		//						{
+		//							float data = 0.0f;
+		//							if (ImGui::DragFloat(name.c_str(), &data))
+		//							{
+		//								ScriptFieldInstance& fieldInstance = entityFields[name];
+		//								fieldInstance.Field = field;
+		//								fieldInstance.SetValue(data);
+		//							}
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
+		//	});
+
+		DrawComponent<CircleRendererComponent>(u8"圆", entity, [](auto& component)
+			{
+				ImGui::ColorEdit4(u8"颜色", glm::value_ptr(component.Color));
+				ImGui::DragFloat(u8"厚度", &component.Thickness, 0.025f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"渐变", &component.Fade, 0.00025f, 0.0f, 1.0f);
+			});
+
+		DrawComponent<Rigidbody2DComponent>(u8"2D刚体", entity, [](auto& component)
+			{
+				const char* bodyTypeStrings[] = { u8"静态", u8"动态", u8"运动学" };
+				const char* currentBodyTypeString = bodyTypeStrings[(int)component.Type];
+				if (ImGui::BeginCombo(u8"类型", currentBodyTypeString))
+				{
+					for (int i = 0; i <= 2; i++)
+					{
+						bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
+						if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
+						{
+							currentBodyTypeString = bodyTypeStrings[i];
+							component.Type = (Rigidbody2DComponent::BodyType)i;
+						}
+
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
+
+					ImGui::EndCombo();
+				}
+
+				ImGui::Checkbox(u8"固定旋转", &component.FixedRotation);
+			});
+
+		DrawComponent<BoxCollider2DComponent>(u8"2D 方形碰撞体", entity, [](auto& component)
+			{
+				ImGui::DragFloat2(u8"偏移", glm::value_ptr(component.Offset));
+				ImGui::DragFloat2(u8"尺寸", glm::value_ptr(component.Size));
+				ImGui::DragFloat(u8"密度", &component.Density, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"摩擦系数", &component.Friction, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"弹力系数", &component.Restitution, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"弹力门限", &component.RestitutionThreshold, 0.01f, 0.0f);
+			});
+
+		DrawComponent<CircleCollider2DComponent>(u8"2D 圆形碰撞体", entity, [](auto& component)
+			{
+				ImGui::DragFloat2(u8"偏移", glm::value_ptr(component.Offset));
+				ImGui::DragFloat(u8"半径", &component.Radius);
+				ImGui::DragFloat(u8"密度", &component.Density, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"摩擦系数", &component.Friction, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"弹力系数", &component.Restitution, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"弹力门限", &component.RestitutionThreshold, 0.01f, 0.0f);
+			});
+
+		/*DrawComponent<TextComponent>("Text Renderer", entity, [](auto& component)
+			{
+				ImGui::InputTextMultiline("Text String", &component.TextString);
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+				ImGui::DragFloat("Kerning", &component.Kerning, 0.025f);
+				ImGui::DragFloat("Line Spacing", &component.LineSpacing, 0.025f);
+			});*/
 	}
 
 }
