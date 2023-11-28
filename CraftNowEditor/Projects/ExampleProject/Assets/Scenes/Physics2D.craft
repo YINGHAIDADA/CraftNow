@@ -4,10 +4,10 @@ EditorCamera:
   AspectRatio: 1.88363636
   NearClip: 0.100000001
   FarClip: 1000
-  FocalPoint: [0.706214786, -0.0657215118, -0.456987232]
-  Distance: 12.3090658
-  Pitch: 0.124799885
-  Yaw: -0.0623995326
+  FocalPoint: [0.224406332, 0.111959189, -0.501697481]
+  Distance: 11.2273388
+  Pitch: 0.201600239
+  Yaw: -0.467997998
   ViewportWidth: 1036
   ViewportHeight: 550
 Entities:
@@ -99,4 +99,25 @@ Entities:
       Density: 0.959999979
       Friction: 0.219999999
       Restitution: 0.360000014
+      RestitutionThreshold: 0.5
+  - Entity: 8208684852762445439
+    TagComponent:
+      Tag: 圆
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CircleRendererComponent:
+      Color: [0.250562757, 0.737451732, 0.68669498, 1]
+      Thickness: 1
+      Fade: 0.00499999989
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
       RestitutionThreshold: 0.5

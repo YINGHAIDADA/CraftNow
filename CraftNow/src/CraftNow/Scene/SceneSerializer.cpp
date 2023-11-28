@@ -300,18 +300,18 @@ namespace CraftNow {
 			out << YAML::EndMap; // SpriteRendererComponent
 		}
 
-		//if (entity.HasComponent<CircleRendererComponent>())
-		//{
-		//	out << YAML::Key << "CircleRendererComponent";
-		//	out << YAML::BeginMap; // CircleRendererComponent
+		if (entity.HasComponent<CircleRendererComponent>())
+		{
+			out << YAML::Key << "CircleRendererComponent";
+			out << YAML::BeginMap; // CircleRendererComponent
 
-		//	auto& circleRendererComponent = entity.GetComponent<CircleRendererComponent>();
-		//	out << YAML::Key << "Color" << YAML::Value << circleRendererComponent.Color;
-		//	out << YAML::Key << "Thickness" << YAML::Value << circleRendererComponent.Thickness;
-		//	out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
+			auto& circleRendererComponent = entity.GetComponent<CircleRendererComponent>();
+			out << YAML::Key << "Color" << YAML::Value << circleRendererComponent.Color;
+			out << YAML::Key << "Thickness" << YAML::Value << circleRendererComponent.Thickness;
+			out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
 
-		//	out << YAML::EndMap; // CircleRendererComponent
-		//}
+			out << YAML::EndMap; // CircleRendererComponent
+		}
 
 		if (entity.HasComponent<Rigidbody2DComponent>())
 		{
@@ -341,21 +341,21 @@ namespace CraftNow {
 			out << YAML::EndMap; // BoxCollider2DComponent
 		}
 
-		//if (entity.HasComponent<CircleCollider2DComponent>())
-		//{
-		//	out << YAML::Key << "CircleCollider2DComponent";
-		//	out << YAML::BeginMap; // CircleCollider2DComponent
+		if (entity.HasComponent<CircleCollider2DComponent>())
+		{
+			out << YAML::Key << "CircleCollider2DComponent";
+			out << YAML::BeginMap; // CircleCollider2DComponent
 
-		//	auto& cc2dComponent = entity.GetComponent<CircleCollider2DComponent>();
-		//	out << YAML::Key << "Offset" << YAML::Value << cc2dComponent.Offset;
-		//	out << YAML::Key << "Radius" << YAML::Value << cc2dComponent.Radius;
-		//	out << YAML::Key << "Density" << YAML::Value << cc2dComponent.Density;
-		//	out << YAML::Key << "Friction" << YAML::Value << cc2dComponent.Friction;
-		//	out << YAML::Key << "Restitution" << YAML::Value << cc2dComponent.Restitution;
-		//	out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2dComponent.RestitutionThreshold;
+			auto& cc2dComponent = entity.GetComponent<CircleCollider2DComponent>();
+			out << YAML::Key << "Offset" << YAML::Value << cc2dComponent.Offset;
+			out << YAML::Key << "Radius" << YAML::Value << cc2dComponent.Radius;
+			out << YAML::Key << "Density" << YAML::Value << cc2dComponent.Density;
+			out << YAML::Key << "Friction" << YAML::Value << cc2dComponent.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << cc2dComponent.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2dComponent.RestitutionThreshold;
 
-		//	out << YAML::EndMap; // CircleCollider2DComponent
-		//}
+			out << YAML::EndMap; // CircleCollider2DComponent
+		}
 
 		//if (entity.HasComponent<TextComponent>())
 		//{
@@ -584,14 +584,14 @@ namespace CraftNow {
 						src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
 				}
 
-				//auto circleRendererComponent = entity["CircleRendererComponent"];
-				//if (circleRendererComponent)
-				//{
-				//	auto& crc = deserializedEntity.AddComponent<CircleRendererComponent>();
-				//	crc.Color = circleRendererComponent["Color"].as<glm::vec4>();
-				//	crc.Thickness = circleRendererComponent["Thickness"].as<float>();
-				//	crc.Fade = circleRendererComponent["Fade"].as<float>();
-				//}
+				auto circleRendererComponent = entity["CircleRendererComponent"];
+				if (circleRendererComponent)
+				{
+					auto& crc = deserializedEntity.AddComponent<CircleRendererComponent>();
+					crc.Color = circleRendererComponent["Color"].as<glm::vec4>();
+					crc.Thickness = circleRendererComponent["Thickness"].as<float>();
+					crc.Fade = circleRendererComponent["Fade"].as<float>();
+				}
 
 				auto rigidbody2DComponent = entity["Rigidbody2DComponent"];
 				if (rigidbody2DComponent)
@@ -613,17 +613,17 @@ namespace CraftNow {
 					bc2d.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
 
-				//auto circleCollider2DComponent = entity["CircleCollider2DComponent"];
-				//if (circleCollider2DComponent)
-				//{
-				//	auto& cc2d = deserializedEntity.AddComponent<CircleCollider2DComponent>();
-				//	cc2d.Offset = circleCollider2DComponent["Offset"].as<glm::vec2>();
-				//	cc2d.Radius = circleCollider2DComponent["Radius"].as<float>();
-				//	cc2d.Density = circleCollider2DComponent["Density"].as<float>();
-				//	cc2d.Friction = circleCollider2DComponent["Friction"].as<float>();
-				//	cc2d.Restitution = circleCollider2DComponent["Restitution"].as<float>();
-				//	cc2d.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
-				//}
+				auto circleCollider2DComponent = entity["CircleCollider2DComponent"];
+				if (circleCollider2DComponent)
+				{
+					auto& cc2d = deserializedEntity.AddComponent<CircleCollider2DComponent>();
+					cc2d.Offset = circleCollider2DComponent["Offset"].as<glm::vec2>();
+					cc2d.Radius = circleCollider2DComponent["Radius"].as<float>();
+					cc2d.Density = circleCollider2DComponent["Density"].as<float>();
+					cc2d.Friction = circleCollider2DComponent["Friction"].as<float>();
+					cc2d.Restitution = circleCollider2DComponent["Restitution"].as<float>();
+					cc2d.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
 
 				//auto textComponent = entity["TextComponent"];
 				//if (textComponent)

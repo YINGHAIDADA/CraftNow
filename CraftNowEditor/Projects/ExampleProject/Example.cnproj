@@ -1,5 +1,5 @@
 Project:
   Name: 3DExample
-  StartScene: "Scenes/3DExample.craft"
+  StartScene: "Scenes/Physics2D.craft"
   AssetDirectory: "Assets"
   ScriptModulePath: "Scripts/"

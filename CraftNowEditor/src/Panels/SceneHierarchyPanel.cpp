@@ -64,14 +64,14 @@ namespace CraftNow {
 						auto& spriteT = m_Context->CreateEntity(u8"精灵");
 						spriteT.AddComponent<SpriteRendererComponent>();
 					}
+					if (ImGui::MenuItem(u8"创建 圆"))
+					{
+						auto& spriteT = m_Context->CreateEntity(u8"圆");
+						spriteT.AddComponent<CircleRendererComponent>();
+					}
 
 					ImGui::EndMenu();
 				}
-				/*if (ImGui::MenuItem(u8"创建 ..."))
-				{
-					if (ImGui::MenuItem(u8"创建 空实体"))
-						m_Context->CreateEntity(u8"空");
-				}*/
 
 				ImGui::EndPopup();
 			}
@@ -279,8 +279,8 @@ namespace CraftNow {
 			DisplayAddComponentEntry<SpriteRendererComponent>(u8"精灵");
 			DisplayAddComponentEntry<CircleRendererComponent>(u8"圆");
 			DisplayAddComponentEntry<Rigidbody2DComponent>(u8"2D刚体");
-			DisplayAddComponentEntry<BoxCollider2DComponent>(u8"2D碰撞体 方块");
-			DisplayAddComponentEntry<CircleCollider2DComponent>(u8"2D碰撞体 圆");
+			DisplayAddComponentEntry<BoxCollider2DComponent>(u8"2D方块 碰撞体");
+			DisplayAddComponentEntry<CircleCollider2DComponent>(u8"2D圆 碰撞体");
 			//DisplayAddComponentEntry<TextComponent>("Text Component");
 
 			ImGui::EndPopup();
@@ -465,20 +465,20 @@ namespace CraftNow {
 		//		}
 		//	});
 
-		/*DrawComponent<CircleRendererComponent>("Circle Renderer", entity, [](auto& component)
+		DrawComponent<CircleRendererComponent>(u8"圆", entity, [](auto& component)
 			{
-				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
-				ImGui::DragFloat("Thickness", &component.Thickness, 0.025f, 0.0f, 1.0f);
-				ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
-			});*/
+				ImGui::ColorEdit4(u8"颜色", glm::value_ptr(component.Color));
+				ImGui::DragFloat(u8"厚度", &component.Thickness, 0.025f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"渐变", &component.Fade, 0.00025f, 0.0f, 1.0f);
+			});
 
 		DrawComponent<Rigidbody2DComponent>(u8"2D刚体", entity, [](auto& component)
 			{
-				const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
+				const char* bodyTypeStrings[] = { u8"静态", u8"动态", u8"运动学" };
 				const char* currentBodyTypeString = bodyTypeStrings[(int)component.Type];
-				if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
+				if (ImGui::BeginCombo(u8"类型", currentBodyTypeString))
 				{
-					for (int i = 0; i < 2; i++)
+					for (int i = 0; i <= 2; i++)
 					{
 						bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
 						if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
@@ -497,7 +497,7 @@ namespace CraftNow {
 				ImGui::Checkbox(u8"固定旋转", &component.FixedRotation);
 			});
 
-		DrawComponent<BoxCollider2DComponent>(u8"2D Box碰撞体", entity, [](auto& component)
+		DrawComponent<BoxCollider2DComponent>(u8"2D 方形碰撞体", entity, [](auto& component)
 			{
 				ImGui::DragFloat2(u8"偏移", glm::value_ptr(component.Offset));
 				ImGui::DragFloat2(u8"尺寸", glm::value_ptr(component.Size));
@@ -507,15 +507,15 @@ namespace CraftNow {
 				ImGui::DragFloat(u8"弹力门限", &component.RestitutionThreshold, 0.01f, 0.0f);
 			});
 
-		/*DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entity, [](auto& component)
+		DrawComponent<CircleCollider2DComponent>(u8"2D 圆形碰撞体", entity, [](auto& component)
 			{
-				ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
-				ImGui::DragFloat("Radius", &component.Radius);
-				ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
-				ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
-				ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
-				ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
-			});*/
+				ImGui::DragFloat2(u8"偏移", glm::value_ptr(component.Offset));
+				ImGui::DragFloat(u8"半径", &component.Radius);
+				ImGui::DragFloat(u8"密度", &component.Density, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"摩擦系数", &component.Friction, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"弹力系数", &component.Restitution, 0.01f, 0.0f, 1.0f);
+				ImGui::DragFloat(u8"弹力门限", &component.RestitutionThreshold, 0.01f, 0.0f);
+			});
 
 		/*DrawComponent<TextComponent>("Text Renderer", entity, [](auto& component)
 			{
