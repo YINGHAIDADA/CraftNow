@@ -44,8 +44,9 @@ namespace CraftNow {
 
 		Entity GetPrimaryCameraEntity();
 
-		EditorCamera& LoadEditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 		EditorCamera& GetEditorCamera() { return m_EditorCamera; }
+		EditorCamera& LoadEditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
+		EditorCamera& CopyEditorCamera(EditorCamera& other);
 
 
 		bool IsRunning() const { return m_IsRunning; }

@@ -233,7 +233,7 @@ namespace CraftNow {
 				}
 				case SceneState::Simulate:
 				{
-					//m_ActiveScene->OnUpdateSimulation(ts);
+					m_ActiveScene->OnUpdateSimulation(ts);
 					break;
 				}
 				case SceneState::Play:
@@ -551,7 +551,7 @@ namespace CraftNow {
 	{
 		//m_CameraController.OnEvent(e);
 
-		if (m_SceneState == SceneState::Edit)
+		if (m_SceneState != SceneState::Play)
 		{
 
 			m_ActiveScene->GetEditorCamera().OnEvent(e);
@@ -671,7 +671,7 @@ namespace CraftNow {
 		if (e.GetMouseButton() == Mouse::ButtonLeft)
 		{
 			//操控摄像机时不选择, ImGuizmo::IsOver()判断鼠标是否在ImGuizmo的移动控件上，虽然会引起选择bug
-			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt) && m_SceneState == SceneState::Edit)
 			{
 				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
 				if (m_GizmoType == -1)
@@ -843,7 +843,15 @@ namespace CraftNow {
 
 	void EditorLayer::OnSceneSimulate()
 	{
+		if (m_SceneState == SceneState::Play)
+			OnSceneStop();
 
+		m_SceneState = SceneState::Simulate;
+
+		m_ActiveScene = Scene::Copy(m_EditorScene);
+		m_ActiveScene->OnSimulationStart();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::OnScenePause()
@@ -863,7 +871,15 @@ namespace CraftNow {
 
 	void EditorLayer::OnDuplicateEntity()
 	{
+		if (m_SceneState != SceneState::Edit)
+			return;
 
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectedEntity)
+		{
+			Entity newEntity = m_EditorScene->DuplicateEntity(selectedEntity);
+			m_SceneHierarchyPanel.SetSelectedEntity(newEntity);
+		}
 	}
 
 	void EditorLayer::UI_Toolbar()

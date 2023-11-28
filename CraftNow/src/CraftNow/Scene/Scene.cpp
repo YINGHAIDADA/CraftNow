@@ -89,6 +89,9 @@ namespace CraftNow {
 		// Copy components (except IDComponent and TagComponent)
 		CopyComponent(AllComponents{}, dstSceneRegistry, srcSceneRegistry, enttMap);
 
+		// 复制编辑器相机参数
+		newScene->CopyEditorCamera(other->GetEditorCamera());
+
 		return newScene;
 	}
 
@@ -118,7 +121,7 @@ namespace CraftNow {
 
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
-		if (!m_IsPaused /*|| m_StepFrames-- > 0*/)
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
 			// Update scripts
 			{
@@ -230,7 +233,7 @@ namespace CraftNow {
 
 	void Scene::OnUpdateSimulation(Timestep ts)
 	{
-		if (!m_IsPaused /*|| m_StepFrames-- > 0*/)
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
 			// Physics
 			{
@@ -254,7 +257,7 @@ namespace CraftNow {
 				}
 			}
 		}
-
+		m_EditorCamera.OnUpdate(ts);
 		RenderScene(m_EditorCamera);
 	}
 
@@ -366,9 +369,21 @@ namespace CraftNow {
 		return m_EditorCamera;
 	}
 
+	EditorCamera& Scene::CopyEditorCamera(EditorCamera& other)
+	{
+		m_EditorCamera = EditorCamera(other.GetFov(), other.GetAspectRatio(), other.GetNearClip(), other.GetFarClip());
+		m_EditorCamera.SetFocalPoint(other.GetFocalPoint());
+		m_EditorCamera.SetDistance(other.GetDistance());
+		m_EditorCamera.SetPitch(other.GetPitch());
+		m_EditorCamera.SetYaw(other.GetYaw());
+		m_EditorCamera.SetViewportSize(other.GetViewportSize().x, other.GetViewportSize().y);
+		m_EditorCamera.LoadedEditorCamera();
+		return m_EditorCamera;
+	}
+
 	void Scene::Step(int frames)
 	{
-
+		m_StepFrames = frames;
 	}
 
 	void Scene::OnPhysics2DStart()
