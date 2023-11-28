@@ -22,9 +22,12 @@ namespace CraftNow {
 	#include "CraftNow/Embed/Icon.embed"
 	#include "CraftNow/Embed/WindowImages.embed"
 
+	//static Ref<Font> s_Font;
+
 	EditorLayer::EditorLayer()
 		: Layer("EditorLayer"), m_CameraController(1600.0f / 900.0f), m_ViewportSize({1600, 900})
 	{
+		//s_Font = Font::GetDefault();
 	}
 
 	void EditorLayer::OnAttach()
@@ -74,6 +77,9 @@ namespace CraftNow {
 
 		}
 		//--------------------------------------------------
+
+		//TODO: 全局设置Line宽度，opengl的设置明显不合理，后续改进
+		//Renderer2D::SetLineWidth(4.0f);
 
 		//加载图标
 		if (Application::Get().GetSpecification().CustomTitlebar)

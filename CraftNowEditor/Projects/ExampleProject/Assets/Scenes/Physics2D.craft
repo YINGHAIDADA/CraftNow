@@ -4,10 +4,10 @@ EditorCamera:
   AspectRatio: 1.88363636
   NearClip: 0.100000001
   FarClip: 1000
-  FocalPoint: [0.224406332, 0.111959189, -0.501697481]
-  Distance: 11.2273388
-  Pitch: 0.201600239
-  Yaw: -0.467997998
+  FocalPoint: [0.528167307, 0.434885234, -0.521962166]
+  Distance: 9.6081543
+  Pitch: 0.26879999
+  Yaw: -0.429599494
   ViewportWidth: 1036
   ViewportHeight: 550
 Entities:
@@ -64,12 +64,13 @@ Entities:
     TagComponent:
       Tag: 地板
     TransformComponent:
-      Translation: [0, -1.41280007, 0]
+      Translation: [0, -5.86981583, 0]
       Rotation: [0, 0, 0]
-      Scale: [6.7419672, 0.460678041, 1]
+      Scale: [10, 10, 1]
     SpriteRendererComponent:
-      Color: [0.218886822, 0.281853259, 0.00544119114, 1]
-      TilingFactor: 1
+      Color: [1, 1, 1, 1]
+      TexturePath: D:\VS_Projects\CraftNow\CraftNowEditor\Projects\ExampleProject\Assets\Textures\stone.png
+      TilingFactor: 20
     Rigidbody2DComponent:
       BodyType: Static
       FixedRotation: false
@@ -109,7 +110,7 @@ Entities:
       Scale: [1, 1, 1]
     CircleRendererComponent:
       Color: [0.250562757, 0.737451732, 0.68669498, 1]
-      Thickness: 1
+      Thickness: 0.174999997
       Fade: 0.00499999989
     Rigidbody2DComponent:
       BodyType: Dynamic

@@ -20,6 +20,10 @@ namespace CraftNow
 		CN_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
+		// Set working directory here
+		if (!m_Specification.WorkingDirectory.empty())
+			std::filesystem::current_path(m_Specification.WorkingDirectory);
+
 		Init();
 
 	}

@@ -96,7 +96,8 @@ namespace CraftNow {
 		std::filesystem::path m_EditorProjectPath;
 
 		//TODO: 应该绑定在场景内，而不应该在编辑器内
-		EditorCamera m_EditorCamera;
+		//		ps:已转移到场景内
+		//EditorCamera m_EditorCamera;
 
 		Entity m_HoveredEntity;
 
