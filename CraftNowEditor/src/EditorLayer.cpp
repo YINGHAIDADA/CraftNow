@@ -739,6 +739,7 @@ namespace CraftNow {
 		{
 			const TransformComponent& transform = selectedEntity.GetComponent<TransformComponent>();
 			Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
+
 			/*if (selectedEntity.HasComponent<SpriteRendererComponent>())
 			{
 				Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
