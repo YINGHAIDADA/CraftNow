@@ -21,6 +21,8 @@
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
+		
+		"%{IncludeDir.filewatch}",
 	}
 
 	links

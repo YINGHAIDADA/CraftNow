@@ -17,7 +17,7 @@ Intermediates/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
-**.csproj
+**.csproj**
 
 # Directories
 CraftNow/vendor/VulkanSDK

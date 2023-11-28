@@ -30,6 +30,7 @@ group ""
 
 group "Core"
 	include "CraftNow"
+	include "ScriptCore"
 	include "CraftNowEditor"
 group ""
 
