@@ -21,3 +21,6 @@
 [submodule "CraftNow/vendor/ImGuizmo"]
 	path = CraftNow/vendor/ImGuizmo
 	url = https://github.com/YINGHAIDADA/ImGuizmo
+[submodule "CraftNow/vendor/Box2D"]
+	path = CraftNow/vendor/Box2D
+	url = https://github.com/YINGHAIDADA/box2d

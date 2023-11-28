@@ -24,6 +24,7 @@ group "Dependencies"
 	include "CraftNow/vendor/Glad"
 	include "CraftNow/vendor/imgui"
 	include "CraftNow/vendor/yaml-cpp"
+	include "CraftNow/vendor/Box2D"
 	
 group ""
 
