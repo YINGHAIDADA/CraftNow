@@ -6,8 +6,8 @@ EditorCamera:
   FarClip: 1000
   FocalPoint: [0.528167307, 0.434885234, -0.521962166]
   Distance: 9.6081543
-  Pitch: 0.26879999
-  Yaw: -0.429599494
+  Pitch: 0.278400034
+  Yaw: -0.424799472
   ViewportWidth: 1036
   ViewportHeight: 550
 Entities:
@@ -48,7 +48,7 @@ Entities:
       Scale: [0.361159712, 0.375572056, 0.848135769]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      TexturePath: D:\VS_Projects\CraftNow\CraftNowEditor\Projects\ExampleProject\Assets\Textures\yinghai_alpha.png
+      TexturePath: Textures/yinghai_alpha.png
       TilingFactor: 1
     Rigidbody2DComponent:
       BodyType: Dynamic
@@ -69,7 +69,7 @@ Entities:
       Scale: [10, 10, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      TexturePath: D:\VS_Projects\CraftNow\CraftNowEditor\Projects\ExampleProject\Assets\Textures\stone.png
+      TexturePath: Textures/stone.png
       TilingFactor: 20
     Rigidbody2DComponent:
       BodyType: Static

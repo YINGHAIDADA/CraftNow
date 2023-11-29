@@ -1,0 +1,81 @@
+Scene: Untitled
+EditorCamera:
+  Fov: 30
+  AspectRatio: 1.88363636
+  NearClip: 0.100000001
+  FarClip: 1000
+  FocalPoint: [0.0515458994, 0.00588934729, 0.00176084414]
+  Distance: 11.0534449
+  Pitch: -0.00240004854
+  Yaw: 0.0119993091
+  ViewportWidth: 1036
+  ViewportHeight: 550
+Entities:
+  - Entity: 10840119383733006614
+    TagComponent:
+      Tag: 相机B
+    TransformComponent:
+      Translation: [-0.0900000036, -0.352706909, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -100
+        OrthographicFar: 100
+      Primary: false
+      FixedAspectRatio: false
+  - Entity: 6520054054533225814
+    TagComponent:
+      Tag: 相机A
+    TransformComponent:
+      Translation: [0.00996303558, -0.352706909, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 5
+        OrthographicNear: -100
+        OrthographicFar: 100
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 2116514241144984598
+    TagComponent:
+      Tag: Map
+    TransformComponent:
+      Translation: [4.96000004, 3.83999991, -0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [49.9199982, 31.6800003, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/Legend_of_Zelda.png
+      TilingFactor: 1
+  - Entity: 12152425037303889047
+    TagComponent:
+      Tag: red
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 0, 0, 0.600000024]
+      TilingFactor: 1
+  - Entity: 14387448752769342425
+    TagComponent:
+      Tag: YINGHAI
+    TransformComponent:
+      Translation: [0, 0, 0.200000003]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/yinghai_alpha.png
+      TilingFactor: 1

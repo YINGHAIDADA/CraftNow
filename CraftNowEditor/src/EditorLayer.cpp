@@ -787,9 +787,15 @@ namespace CraftNow {
 		if (Project::Load(path))
 		{
 			//ScriptEngine::Init();
+			m_EditorProjectPath = path;
 
 			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
-			OpenScene(startScenePath);
+			if(!startScenePath.empty())
+				OpenScene(startScenePath);
+			else
+			{
+				NewScene();
+			}
 			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
 
 		}
@@ -801,16 +807,32 @@ namespace CraftNow {
 			Project::SaveActive(m_EditorProjectPath);
 		else
 			SaveProjectAs();
-		 
+		//TODO: 同时保存场景
 	}
 
 	void EditorLayer::SaveProjectAs()
 	{
-		//TODO: 设置Project Config
 		std::string filepath = FileDialogs::SaveFile("CraftNow Scene (*.craft)\0*.craft\0");
+		//TODO: 设置Project Config
+		std::filesystem::path path(filepath);
+		auto& config = Project::GetActive()->GetConfig();
+		config.Name = path.filename().string();
+		config.AssetDirectory = "Assets";
+		config.ScriptModulePath = "Scripts/";
+		if (m_ActiveScene && !m_EditorScenePath.empty())
+		{
+			config.StartScene = m_EditorScenePath.string();
+		}
+		else
+		{
+			//TODO: 提示先保存场景文件
+			CN_WARN("保存工程：场景未保存！...");
+			config.StartScene = "";
+		}
+
 		if (!filepath.empty())
 		{
-			Project::SaveActive(m_EditorProjectPath);
+			Project::SaveActive(filepath);
 			m_EditorProjectPath = filepath;
 		}
 
@@ -868,6 +890,7 @@ namespace CraftNow {
 
 	void EditorLayer::SaveScene()
 	{
+		
 		if (!m_EditorScenePath.empty())
 			SerializeScene(m_ActiveScene, m_EditorScenePath);
 		else
