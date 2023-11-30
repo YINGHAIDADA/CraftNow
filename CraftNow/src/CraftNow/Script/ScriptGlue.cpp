@@ -267,6 +267,12 @@ namespace CraftNow {
 		return Input::IsKeyPressed(keycode);
 	}
 
+	static bool Input_IsKeyRepeat(KeyCode keycode)
+	{
+		bool res = Input::IsKeyRepeat(keycode);
+		return res;
+	}
+
 	template<typename... Component>
 	static void RegisterComponent()
 	{
@@ -329,5 +335,6 @@ namespace CraftNow {
 		CN_ADD_INTERNAL_CALL(TextComponent_SetLineSpacing);*/
 
 		CN_ADD_INTERNAL_CALL(Input_IsKeyDown);
+		CN_ADD_INTERNAL_CALL(Input_IsKeyRepeat);
 	}
 }

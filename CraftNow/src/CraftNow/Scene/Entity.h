@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "CraftNow/Core/UUID.h"
-#include "Scene.h"
-#include "Components.h"
+#include "CraftNow/Scene/Scene.h"
+#include "CraftNow/Scene/Components.h"
 
 #include "entt.hpp"
 

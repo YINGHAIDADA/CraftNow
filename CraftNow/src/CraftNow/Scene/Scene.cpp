@@ -6,6 +6,7 @@
 #include "ScriptableEntity.h"
 #include "CraftNow/Renderer/Renderer2D.h"
 #include "CraftNow/Physics/Physics2D.h"
+#include "CraftNow/Script/ScriptEngine.h"
 
 #include <glm/glm.hpp>
 
@@ -127,12 +128,12 @@ namespace CraftNow {
 			{
 
 				// C# Entity OnUpdate
-				/*auto view = m_Registry.view<ScriptComponent>();
+				auto view = m_Registry.view<ScriptComponent>();
 				for (auto e : view)
 				{
 					Entity entity = { e, this };
 					ScriptEngine::OnUpdateEntity(entity, ts);
-				}*/
+				}
 
 				m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
 					{
@@ -284,17 +285,17 @@ namespace CraftNow {
 		OnPhysics2DStart();
 
 		// Scripting
-		//{
-		//	ScriptEngine::OnRuntimeStart(this);
-		//	// Instantiate all script entities
+		{
+			ScriptEngine::OnRuntimeStart(this);
+			// Instantiate all script entities
 
-		//	auto view = m_Registry.view<ScriptComponent>();
-		//	for (auto e : view)
-		//	{
-		//		Entity entity = { e, this };
-		//		ScriptEngine::OnCreateEntity(entity);
-		//	}
-		//}
+			auto view = m_Registry.view<ScriptComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e, this };
+				ScriptEngine::OnCreateEntity(entity);
+			}
+		}
 	}
 
 	void Scene::OnRuntimeStop()
@@ -303,7 +304,7 @@ namespace CraftNow {
 
 		OnPhysics2DStop();
 
-		//ScriptEngine::OnRuntimeStop();
+		ScriptEngine::OnRuntimeStop();
 	}
 
 	void Scene::OnSimulationStart()

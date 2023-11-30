@@ -3,7 +3,7 @@
 
 #include "CraftNow/Scene/Entity.h"
 #include "CraftNow/Scene/Components.h"
-//#include "CraftNow/Scripting/ScriptEngine.h"
+#include "CraftNow/Script/ScriptEngine.h"
 #include "CraftNow/Core/UUID.h"
 #include "CraftNow/Utils/PlatformUtils.h"
 
@@ -230,60 +230,60 @@ namespace CraftNow {
 			out << YAML::EndMap; // CameraComponent
 		}
 
-		//if (entity.HasComponent<ScriptComponent>())
-		//{
-		//	auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
 
-		//	out << YAML::Key << "ScriptComponent";
-		//	out << YAML::BeginMap; // ScriptComponent
-		//	out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
+			out << YAML::Key << "ScriptComponent";
+			out << YAML::BeginMap; // ScriptComponent
+			out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
 
-		//	// Fields
-		//	Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(scriptComponent.ClassName);
-		//	const auto& fields = entityClass->GetFields();
-		//	if (fields.size() > 0)
-		//	{
-		//		out << YAML::Key << "ScriptFields" << YAML::Value;
-		//		auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
-		//		out << YAML::BeginSeq;
-		//		for (const auto& [name, field] : fields)
-		//		{
-		//			if (entityFields.find(name) == entityFields.end())
-		//				continue;
+			// Fields
+			Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(scriptComponent.ClassName);
+			const auto& fields = entityClass->GetFields();
+			if (fields.size() > 0)
+			{
+				out << YAML::Key << "ScriptFields" << YAML::Value;
+				auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+				out << YAML::BeginSeq;
+				for (const auto& [name, field] : fields)
+				{
+					if (entityFields.find(name) == entityFields.end())
+						continue;
 
-		//			out << YAML::BeginMap; // ScriptField
-		//			out << YAML::Key << "Name" << YAML::Value << name;
-		//			out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.Type);
+					out << YAML::BeginMap; // ScriptField
+					out << YAML::Key << "Name" << YAML::Value << name;
+					out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.Type);
 
-		//			out << YAML::Key << "Data" << YAML::Value;
-		//			ScriptFieldInstance& scriptField = entityFields.at(name);
+					out << YAML::Key << "Data" << YAML::Value;
+					ScriptFieldInstance& scriptField = entityFields.at(name);
 
-		//			switch (field.Type)
-		//			{
-		//				WRITE_SCRIPT_FIELD(Float, float);
-		//				WRITE_SCRIPT_FIELD(Double, double);
-		//				WRITE_SCRIPT_FIELD(Bool, bool);
-		//				WRITE_SCRIPT_FIELD(Char, char);
-		//				WRITE_SCRIPT_FIELD(Byte, int8_t);
-		//				WRITE_SCRIPT_FIELD(Short, int16_t);
-		//				WRITE_SCRIPT_FIELD(Int, int32_t);
-		//				WRITE_SCRIPT_FIELD(Long, int64_t);
-		//				WRITE_SCRIPT_FIELD(UByte, uint8_t);
-		//				WRITE_SCRIPT_FIELD(UShort, uint16_t);
-		//				WRITE_SCRIPT_FIELD(UInt, uint32_t);
-		//				WRITE_SCRIPT_FIELD(ULong, uint64_t);
-		//				WRITE_SCRIPT_FIELD(Vector2, glm::vec2);
-		//				WRITE_SCRIPT_FIELD(Vector3, glm::vec3);
-		//				WRITE_SCRIPT_FIELD(Vector4, glm::vec4);
-		//				WRITE_SCRIPT_FIELD(Entity, UUID);
-		//			}
-		//			out << YAML::EndMap; // ScriptFields
-		//		}
-		//		out << YAML::EndSeq;
-		//	}
+					switch (field.Type)
+					{
+						WRITE_SCRIPT_FIELD(Float, float);
+						WRITE_SCRIPT_FIELD(Double, double);
+						WRITE_SCRIPT_FIELD(Bool, bool);
+						WRITE_SCRIPT_FIELD(Char, char);
+						WRITE_SCRIPT_FIELD(Byte, int8_t);
+						WRITE_SCRIPT_FIELD(Short, int16_t);
+						WRITE_SCRIPT_FIELD(Int, int32_t);
+						WRITE_SCRIPT_FIELD(Long, int64_t);
+						WRITE_SCRIPT_FIELD(UByte, uint8_t);
+						WRITE_SCRIPT_FIELD(UShort, uint16_t);
+						WRITE_SCRIPT_FIELD(UInt, uint32_t);
+						WRITE_SCRIPT_FIELD(ULong, uint64_t);
+						WRITE_SCRIPT_FIELD(Vector2, glm::vec2);
+						WRITE_SCRIPT_FIELD(Vector3, glm::vec3);
+						WRITE_SCRIPT_FIELD(Vector4, glm::vec4);
+						WRITE_SCRIPT_FIELD(Entity, UUID);
+					}
+					out << YAML::EndMap; // ScriptFields
+				}
+				out << YAML::EndSeq;
+			}
 
-		//	out << YAML::EndMap; // ScriptComponent
-		//}
+			out << YAML::EndMap; // ScriptComponent
+		}
 
 		if (entity.HasComponent<SpriteRendererComponent>())
 		{
@@ -522,61 +522,61 @@ namespace CraftNow {
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
 				}
 
-				//auto scriptComponent = entity["ScriptComponent"];
-				//if (scriptComponent)
-				//{
-				//	auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
-				//	sc.ClassName = scriptComponent["ClassName"].as<std::string>();
+				auto scriptComponent = entity["ScriptComponent"];
+				if (scriptComponent)
+				{
+					auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
+					sc.ClassName = scriptComponent["ClassName"].as<std::string>();
 
-				//	auto scriptFields = scriptComponent["ScriptFields"];
-				//	if (scriptFields)
-				//	{
-				//		Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(sc.ClassName);
-				//		if (entityClass)
-				//		{
-				//			const auto& fields = entityClass->GetFields();
-				//			auto& entityFields = ScriptEngine::GetScriptFieldMap(deserializedEntity);
+					auto scriptFields = scriptComponent["ScriptFields"];
+					if (scriptFields)
+					{
+						Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(sc.ClassName);
+						if (entityClass)
+						{
+							const auto& fields = entityClass->GetFields();
+							auto& entityFields = ScriptEngine::GetScriptFieldMap(deserializedEntity);
 
-				//			for (auto scriptField : scriptFields)
-				//			{
-				//				std::string name = scriptField["Name"].as<std::string>();
-				//				std::string typeString = scriptField["Type"].as<std::string>();
-				//				ScriptFieldType type = Utils::ScriptFieldTypeFromString(typeString);
+							for (auto scriptField : scriptFields)
+							{
+								std::string name = scriptField["Name"].as<std::string>();
+								std::string typeString = scriptField["Type"].as<std::string>();
+								ScriptFieldType type = Utils::ScriptFieldTypeFromString(typeString);
 
-				//				ScriptFieldInstance& fieldInstance = entityFields[name];
+								ScriptFieldInstance& fieldInstance = entityFields[name];
 
-				//				// TODO(Yan): turn this assert into CraftNownut log warning
-				//				CN_CORE_ASSERT(fields.find(name) != fields.end());
+								// TODO(Yan): turn this assert into CraftNownut log warning
+								CN_CORE_ASSERT(fields.find(name) != fields.end());
 
-				//				if (fields.find(name) == fields.end())
-				//					continue;
+								if (fields.find(name) == fields.end())
+									continue;
 
-				//				fieldInstance.Field = fields.at(name);
+								fieldInstance.Field = fields.at(name);
 
-				//				switch (type)
-				//				{
-				//					READ_SCRIPT_FIELD(Float, float);
-				//					READ_SCRIPT_FIELD(Double, double);
-				//					READ_SCRIPT_FIELD(Bool, bool);
-				//					READ_SCRIPT_FIELD(Char, char);
-				//					READ_SCRIPT_FIELD(Byte, int8_t);
-				//					READ_SCRIPT_FIELD(Short, int16_t);
-				//					READ_SCRIPT_FIELD(Int, int32_t);
-				//					READ_SCRIPT_FIELD(Long, int64_t);
-				//					READ_SCRIPT_FIELD(UByte, uint8_t);
-				//					READ_SCRIPT_FIELD(UShort, uint16_t);
-				//					READ_SCRIPT_FIELD(UInt, uint32_t);
-				//					READ_SCRIPT_FIELD(ULong, uint64_t);
-				//					READ_SCRIPT_FIELD(Vector2, glm::vec2);
-				//					READ_SCRIPT_FIELD(Vector3, glm::vec3);
-				//					READ_SCRIPT_FIELD(Vector4, glm::vec4);
-				//					READ_SCRIPT_FIELD(Entity, UUID);
-				//				}
-				//			}
-				//		}
-				//	}
+								switch (type)
+								{
+									READ_SCRIPT_FIELD(Float, float);
+									READ_SCRIPT_FIELD(Double, double);
+									READ_SCRIPT_FIELD(Bool, bool);
+									READ_SCRIPT_FIELD(Char, char);
+									READ_SCRIPT_FIELD(Byte, int8_t);
+									READ_SCRIPT_FIELD(Short, int16_t);
+									READ_SCRIPT_FIELD(Int, int32_t);
+									READ_SCRIPT_FIELD(Long, int64_t);
+									READ_SCRIPT_FIELD(UByte, uint8_t);
+									READ_SCRIPT_FIELD(UShort, uint16_t);
+									READ_SCRIPT_FIELD(UInt, uint32_t);
+									READ_SCRIPT_FIELD(ULong, uint64_t);
+									READ_SCRIPT_FIELD(Vector2, glm::vec2);
+									READ_SCRIPT_FIELD(Vector3, glm::vec3);
+									READ_SCRIPT_FIELD(Vector4, glm::vec4);
+									READ_SCRIPT_FIELD(Entity, UUID);
+								}
+							}
+						}
+					}
 
-				//}
+				}
 
 				auto spriteRendererComponent = entity["SpriteRendererComponent"];
 				if (spriteRendererComponent)

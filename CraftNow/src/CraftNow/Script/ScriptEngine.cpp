@@ -35,11 +35,11 @@ namespace CraftNow {
 		{ "System.UInt32", ScriptFieldType::UInt },
 		{ "System.UInt64", ScriptFieldType::ULong },
 
-		{ "Hazel.Vector2", ScriptFieldType::Vector2 },
-		{ "Hazel.Vector3", ScriptFieldType::Vector3 },
-		{ "Hazel.Vector4", ScriptFieldType::Vector4 },
+		{ "CraftNow.Vector2", ScriptFieldType::Vector2 },
+		{ "CraftNow.Vector3", ScriptFieldType::Vector3 },
+		{ "CraftNow.Vector4", ScriptFieldType::Vector4 },
 
-		{ "Hazel.Entity", ScriptFieldType::Entity },
+		{ "CraftNow.Entity", ScriptFieldType::Entity },
 	};
 
 	namespace Utils {
@@ -168,10 +168,10 @@ namespace CraftNow {
 		InitMono();
 		ScriptGlue::RegisterFunctions();
 
-		bool status = LoadAssembly("Resources/Scripts/Hazel-ScriptCore.dll");
+		bool status = LoadAssembly("resources/Scripts/ScriptCore.dll");
 		if (!status)
 		{
-			CN_CORE_ERROR("[ScriptEngine] Could not load Hazel-ScriptCore assembly.");
+			CN_CORE_ERROR("[ScriptEngine] 无法加载ScriptCore程序集");
 			return;
 		}
 
@@ -179,7 +179,7 @@ namespace CraftNow {
 		status = LoadAppAssembly(scriptModulePath);
 		if (!status)
 		{
-			CN_CORE_ERROR("[ScriptEngine] Could not load app assembly.");
+			CN_CORE_ERROR("[ScriptEngine] 无法加载 Game 程序集.");
 			return;
 		}
 
@@ -187,8 +187,8 @@ namespace CraftNow {
 
 		ScriptGlue::RegisterComponents();
 
-		// Retrieve and instantiate class
-		s_Data->EntityClass = ScriptClass("Hazel", "Entity", true);
+		// 检索并实例化类
+		s_Data->EntityClass = ScriptClass("CraftNow", "Entity", true);
 	}
 
 	void ScriptEngine::Shutdown()
@@ -212,7 +212,7 @@ namespace CraftNow {
 			mono_debug_init(MONO_DEBUG_FORMAT_MONO);
 		}
 
-		MonoDomain* rootDomain = mono_jit_init("HazelJITRuntime");
+		MonoDomain* rootDomain = mono_jit_init("JITRuntime");
 		CN_CORE_ASSERT(rootDomain);
 
 		// Store the root domain pointer
@@ -235,14 +235,33 @@ namespace CraftNow {
 		s_Data->RootDomain = nullptr;
 	}
 
+	void PrintAssemblyTypes(MonoAssembly* assembly)
+	{
+		MonoImage* image = mono_assembly_get_image(assembly);
+		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
+		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
+
+		for (int32_t i = 0; i < numTypes; i++)
+		{
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
+
+			const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
+			const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+
+			CN_CORE_TRACE("{}.{}", nameSpace, name);
+		}
+	}
+
 	bool ScriptEngine::LoadAssembly(const std::filesystem::path& filepath)
 	{
 		// Create an App Domain
-		s_Data->AppDomain = mono_domain_create_appdomain("HazelScriptRuntime", nullptr);
+		s_Data->AppDomain = mono_domain_create_appdomain("ScriptRuntime", nullptr);
 		mono_domain_set(s_Data->AppDomain, true);
 
 		s_Data->CoreAssemblyFilepath = filepath;
 		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filepath, s_Data->EnableDebugging);
+		//PrintAssemblyTypes(s_Data->CoreAssembly);
 		if (s_Data->CoreAssembly == nullptr)
 			return false;
 
@@ -277,7 +296,7 @@ namespace CraftNow {
 		ScriptGlue::RegisterComponents();
 
 		// Retrieve and instantiate class
-		s_Data->EntityClass = ScriptClass("Hazel", "Entity", true);
+		s_Data->EntityClass = ScriptClass("CraftNow", "Entity", true);
 	}
 
 	void ScriptEngine::OnRuntimeStart(Scene* scene)
@@ -375,7 +394,7 @@ namespace CraftNow {
 
 		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(s_Data->AppAssemblyImage, MONO_TABLE_TYPEDEF);
 		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
-		MonoClass* entityClass = mono_class_from_name(s_Data->CoreAssemblyImage, "Hazel", "Entity");
+		MonoClass* entityClass = mono_class_from_name(s_Data->CoreAssemblyImage, "CraftNow", "Entity");
 
 		for (int32_t i = 0; i < numTypes; i++)
 		{
@@ -426,7 +445,7 @@ namespace CraftNow {
 
 		}
 
-		auto& entityClasses = s_Data->EntityClasses;
+		//auto& entityClasses = s_Data->EntityClasses;
 
 		//mono_field_get_value()
 

@@ -1,7 +1,7 @@
 ﻿#include "EditorLayer.h"
 #include "CraftNow/Scene/SceneSerializer.h"
 #include "CraftNow/Math/Math.h"
-//#include "CraftNow/Scripting/ScriptEngine.h"
+#include "CraftNow/Script/ScriptEngine.h"
 //#include "CraftNow/Renderer/Font.h"
 #include "CraftNow/Utils/PlatformUtils.h"
 
@@ -647,7 +647,7 @@ namespace CraftNow {
 		{
 			if (control)
 			{
-				//ScriptEngine::ReloadAssembly();
+				ScriptEngine::ReloadAssembly();
 			}
 			else
 			{
@@ -786,7 +786,7 @@ namespace CraftNow {
 
 		if (Project::Load(path))
 		{
-			//ScriptEngine::Init();
+			ScriptEngine::Init();
 			m_EditorProjectPath = path;
 
 			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
@@ -1298,7 +1298,7 @@ namespace CraftNow {
 		{
 			if (ImGui::MenuItem(u8"重新加载部件", "Ctrl+R"))
 			{
-				//ScriptEngine::ReloadAssembly();
+				ScriptEngine::ReloadAssembly();
 			}
 
 			ImGui::EndMenu();

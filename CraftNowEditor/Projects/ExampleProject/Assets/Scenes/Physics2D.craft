@@ -39,26 +39,30 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
+    ScriptComponent:
+      ClassName: Sandbox.Camera
   - Entity: 12837192831274
     TagComponent:
-      Tag: 刚体方块
+      Tag: Player
     TransformComponent:
       Translation: [0.205780998, 0.923703551, 0.0225147791]
-      Rotation: [0, 0, -0.235084534]
+      Rotation: [0, 0, 0]
       Scale: [0.361159712, 0.375572056, 0.848135769]
+    ScriptComponent:
+      ClassName: Sandbox.Player
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
       TexturePath: Textures/yinghai_alpha.png
       TilingFactor: 1
     Rigidbody2DComponent:
       BodyType: Dynamic
-      FixedRotation: false
+      FixedRotation: true
     BoxCollider2DComponent:
       Offset: [0, 0]
       Size: [0.5, 0.5]
       Density: 0.730000019
-      Friction: 0.170000002
-      Restitution: 0.589999974
+      Friction: 0.540000021
+      Restitution: 0
       RestitutionThreshold: 0.5
   - Entity: 12837192831273
     TagComponent:

@@ -2,6 +2,8 @@
 **/bin/
 bin-int/
 Intermediates/
+CraftNowEditor/resources/Scripts
+**/Binaries/
 
 # CraftNow files
 *.log
