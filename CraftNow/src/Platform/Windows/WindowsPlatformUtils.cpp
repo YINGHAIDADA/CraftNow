@@ -86,4 +86,27 @@ namespace CraftNow {
 			return false;
 		}
 	}
+
+	bool FileDialogs::isFileExist(const std::filesystem::path& directory, const std::string& targetFileName)
+	{
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
+			if (entry.is_regular_file() && entry.path().filename().string() == targetFileName) {
+				// 找到目标文件
+				return true;
+			}
+		}
+		// 没有找到目标文件
+		return false;
+	}
+
+	void FileDialogs::copyFile(const std::filesystem::path& source, const std::filesystem::path& destination)
+	{
+		try {
+			std::filesystem::copy(source, destination / source.filename(), std::filesystem::copy_options::overwrite_existing);
+			CN_CORE_TRACE("文件复制成功！");
+		}
+		catch (const std::filesystem::filesystem_error& e) {
+			CN_CORE_ERROR("文件复制失败！..");
+		}
+	}
 }

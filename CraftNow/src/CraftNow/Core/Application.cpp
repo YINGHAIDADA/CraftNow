@@ -2,10 +2,10 @@
 #include "CraftNow/Core/Application.h"
 
 #include "CraftNow/Renderer/Renderer.h"
+#include "CraftNow/Script/ScriptEngine.h"
 
 #include "CraftNow/Core/Input.h"
-
-#include "Platform/OpenGL/OpenGLVertexArray.h"
+#include "CraftNow/Utils/PlatformUtils.h"
 
 #include <GLFW/glfw3.h>
 
@@ -30,6 +30,8 @@ namespace CraftNow
 
 	Application::~Application()
 	{
+		ScriptEngine::Shutdown();
+		Renderer::Shutdown();
 		s_Instance = nullptr;
 	}
 
@@ -40,27 +42,9 @@ namespace CraftNow
 
 		Renderer::Init();
 
-		
-		
-
 		//初始化ImGui
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-	}
-
-	void Application::OnEvent(Event &e)
-	{
-		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
-
-		// 从最上层开始迭代检查事件触发
-		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
-		{
-			if (e.Handled)
-				break;
-			(*it)->OnEvent(e);
-		}
 	}
 
 	void Application::PushLayer(Layer *layer)
@@ -87,7 +71,24 @@ namespace CraftNow
 
 	void Application::SubmitToMainThread(const std::function<void()>& function)
 	{
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
 
+		m_MainThreadQueue.emplace_back(function);
+	}
+
+	void Application::OnEvent(Event &e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
+
+		// 从最上层开始迭代检查事件触发
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+		{
+			if (e.Handled)
+				break;
+			(*it)->OnEvent(e);
+		}
 	}
 
 	void Application::Run()
@@ -100,6 +101,8 @@ namespace CraftNow
 			
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
+
+			ExecuteMainThreadQueue();
 
 			if (!m_Minimized)
 			{
@@ -146,7 +149,12 @@ namespace CraftNow
 
 	void Application::ExecuteMainThreadQueue()
 	{
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
 
+		for (auto& func : m_MainThreadQueue)
+			func();
+
+		m_MainThreadQueue.clear();
 	}
 
 }

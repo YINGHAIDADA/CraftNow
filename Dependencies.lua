@@ -11,6 +11,8 @@ IncludeDir["entt"] = "%{wks.location}/CraftNow/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "%{wks.location}/CraftNow/vendor/yaml-cpp/include"
 IncludeDir["ImGuizmo"] = "%{wks.location}/CraftNow/vendor/ImGuizmo"
 IncludeDir["Box2D"] = "%{wks.location}/CraftNow/vendor/Box2D/include"
+IncludeDir["mono"] = "%{wks.location}/CraftNow/vendor/mono/include"
+IncludeDir["filewatch"] = "%{wks.location}/CraftNow/vendor/filewatch"
 IncludeDir["shaderc"] = "%{VULKAN_SDK}/Include/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "%{VULKAN_SDK}/Include/spirv_cross"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
@@ -18,8 +20,11 @@ IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
 LibraryDir = {}
 
 LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
+LibraryDir["mono"] = "%{wks.location}/CraftNow/vendor/mono/lib/%{cfg.buildcfg}"
 
 Library = {}
+Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"
+
 Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
 Library["VulkanUtils"] = "%{LibraryDir.VulkanSDK}/VkLayer_utils.lib"
 
@@ -31,3 +36,9 @@ Library["SPIRV_Tools_Debug"] = "%{LibraryDir.VulkanSDK}/SPIRV-Toolsd.lib"
 Library["ShaderC_Release"] = "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
 Library["SPIRV_Cross_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
 Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
+
+-- Windows
+Library["WinSock"] = "Ws2_32.lib"
+Library["WinMM"] = "Winmm.lib"
+Library["WinVersion"] = "Version.lib"
+Library["BCrypt"] = "Bcrypt.lib"

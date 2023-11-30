@@ -2,4 +2,4 @@ Project:
   Name: 3DExample
   StartScene: "Scenes/Physics2D.craft"
   AssetDirectory: "Assets"
-  ScriptModulePath: "Scripts/"
+  ScriptModulePath: "Scripts/Binaries/Sandbox.dll"

@@ -1,4 +1,5 @@
-﻿include "Dependencies.lua"
+﻿include "./vendor/premake/premake_customization/solution_items.lua"
+include "Dependencies.lua"
 
 workspace "CraftNow"
 	architecture "x86_64"
@@ -30,6 +31,7 @@ group ""
 
 group "Core"
 	include "CraftNow"
+	include "ScriptCore"
 	include "CraftNowEditor"
 group ""
 

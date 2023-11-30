@@ -11,6 +11,7 @@ namespace CraftNow {
 	{
 	public:
 		static bool IsKeyPressed(KeyCode key);
+		static bool IsKeyRepeat(KeyCode key);
 
 		static bool IsMouseButtonPressed(MouseCode button);
 		static glm::vec2 GetMousePosition();

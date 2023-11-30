@@ -36,6 +36,8 @@
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.mono}",
+		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.VulkanSDK}",
 	}
 
@@ -47,7 +49,8 @@
 		"yaml-cpp",
 		"Box2D",
 		
-		"opengl32.lib"
+		"opengl32.lib",
+		"%{Library.mono}",
 	}
 
 	defines
@@ -66,6 +69,14 @@
 		defines
 		{
 			"CN_PLATFORM_WINDOWS",
+		}
+		
+		links
+		{
+			"%{Library.WinSock}",
+			"%{Library.WinMM}",
+			"%{Library.WinVersion}",
+			"%{Library.BCrypt}",
 		}
 
 	filter "configurations:Debug"
