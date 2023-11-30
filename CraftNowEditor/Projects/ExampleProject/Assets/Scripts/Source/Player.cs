@@ -14,6 +14,9 @@ namespace Sandbox
 		private Rigidbody2DComponent m_Rigidbody;
 		private bool jump_flag;
 
+		public float Speed;
+		public float Time = 0.0f;
+
 		void OnCreate()
 		{
 			Console.WriteLine($"Script: Player.OnCreate - {ID}");
@@ -27,6 +30,7 @@ namespace Sandbox
 		void OnUpdate(float ts)
 		{
 			// Console.WriteLine($"Player.OnUpdate: {ts}");
+			Time += ts;
 
 			float speed = 0.01f;
 			Vector3 velocity = Vector3.Zero;
@@ -50,6 +54,23 @@ namespace Sandbox
 				velocity.X = -1.0f;
 			else if (Input.IsKeyDown(KeyCode.D))
 				velocity.X = 1.0f;
+
+			Entity cameraEntity = FindEntityByName("相机");
+			if (cameraEntity != null)
+			{
+				Camera camera = cameraEntity.As<Camera>();
+
+				if (Input.IsKeyDown(KeyCode.Q))
+				{
+					camera.DistanceFromPlayer += speed * 2.0f;
+					Console.WriteLine("Q press");
+				}
+				else if (Input.IsKeyDown(KeyCode.E))
+				{
+					camera.DistanceFromPlayer -= speed * 2.0f;
+					Console.WriteLine("E press");
+				}
+			}
 
 			velocity *= speed;
 
