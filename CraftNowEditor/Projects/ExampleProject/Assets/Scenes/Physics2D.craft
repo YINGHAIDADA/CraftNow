@@ -41,6 +41,8 @@ Entities:
       FixedAspectRatio: false
     ScriptComponent:
       ClassName: Sandbox.Camera
+      ScriptFields:
+        []
   - Entity: 12837192831274
     TagComponent:
       Tag: Player
@@ -50,6 +52,8 @@ Entities:
       Scale: [0.361159712, 0.375572056, 0.848135769]
     ScriptComponent:
       ClassName: Sandbox.Player
+      ScriptFields:
+        []
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
       TexturePath: Textures/yinghai_alpha.png
