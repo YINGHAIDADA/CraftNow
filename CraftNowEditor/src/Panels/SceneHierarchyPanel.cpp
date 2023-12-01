@@ -418,10 +418,23 @@ namespace CraftNow {
 							if (field.Type == ScriptFieldType::Float)
 							{
 								float data = scriptInstance->GetFieldValue<float>(name);
-								if (ImGui::DragFloat(name.c_str(), &data))
+
+								ImGui::Text("%s: %f", name.c_str(), data);
+								/*if (ImGui::DragFloat(name.c_str(), &data))
 								{
 									scriptInstance->SetFieldValue(name, data);
-								}
+								}*/
+							}
+
+							if (field.Type == ScriptFieldType::Vector3)
+							{
+								glm::vec3 data = scriptInstance->GetFieldValue<glm::vec3>(name);
+
+								ImGui::Text("%s: (%.2f, %.2f, %.2f)", name.c_str(), data.x, data.y, data.z);
+								/*if (ImGui::DragFloat(name.c_str(), &data))
+								{
+									scriptInstance->SetFieldValue(name, data);
+								}*/
 							}
 						}
 					}
@@ -437,7 +450,7 @@ namespace CraftNow {
 						for (const auto& [name, field] : fields)
 						{
 							// Field has been set in editor
-							if (entityFields.find(name) != entityFields.end())
+							if (entityFields.find(name) != entityFields.end()) //经过初始化的从此处显示
 							{
 								ScriptFieldInstance& scriptField = entityFields.at(name);
 
@@ -445,8 +458,17 @@ namespace CraftNow {
 								if (field.Type == ScriptFieldType::Float)
 								{
 									float data = scriptField.GetValue<float>();
-									if (ImGui::DragFloat(name.c_str(), &data))
+									//if (ImGui::DragFloat(name.c_str(), &data))
+									if(ImGui::SliderFloat(name.c_str(), &data, 0.0f, 0.03f))
 										scriptField.SetValue(data);
+								}
+
+								if (field.Type == ScriptFieldType::Vector3)
+								{
+									glm::vec3 data = scriptField.GetValue<glm::vec3>();
+
+									ImGui::Text("%s: (%.2f, %.2f, %.2f)", name.c_str(), data.x, data.y, data.z);
+									
 								}
 							}
 							else
@@ -455,12 +477,23 @@ namespace CraftNow {
 								if (field.Type == ScriptFieldType::Float)
 								{
 									float data = 0.0f;
-									if (ImGui::DragFloat(name.c_str(), &data))
+									if (ImGui::SliderFloat(name.c_str(), &data, 0.0f, 0.03f))
 									{
 										ScriptFieldInstance& fieldInstance = entityFields[name];
 										fieldInstance.Field = field;
 										fieldInstance.SetValue(data);
 									}
+								}
+
+								if (field.Type == ScriptFieldType::Vector3)
+								{
+									glm::vec3 data = { 0.0f,0.0f,0.0f };
+
+									ImGui::Text("%s: (%.2f, %.2f, %.2f)", name.c_str(), data.x, data.y, data.z);
+									/*if (ImGui::DragFloat(name.c_str(), &data))
+									{
+										scriptInstance->SetFieldValue(name, data);
+									}*/
 								}
 							}
 						}

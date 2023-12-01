@@ -9,7 +9,7 @@ namespace Sandbox
 {
 	public class Camera : Entity
 	{
-		public Entity OtherEntity;
+		//public Entity OtherEntity;
 
 		public float DistanceFromPlayer = 5.0f;
 
@@ -53,7 +53,7 @@ namespace Zelda
 {
 	public class Camera : Entity
 	{
-		public Entity OtherEntity;
+		//public Entity OtherEntity;
 
 		public float DistanceFromPlayer = 5.0f;
 

@@ -14,8 +14,8 @@ namespace Sandbox
 		private Rigidbody2DComponent m_Rigidbody;
 		private bool jump_flag;
 
-		public float Speed;
-		public float Time = 0.0f;
+		public float Speed = 0.01f;
+		public Vector3 Velocity = Vector3.Zero;
 
 		void OnCreate()
 		{
@@ -29,10 +29,9 @@ namespace Sandbox
 
 		void OnUpdate(float ts)
 		{
-			// Console.WriteLine($"Player.OnUpdate: {ts}");
-			Time += ts;
+			Console.WriteLine($"Player.OnUpdate: Spped={Speed}");
 
-			float speed = 0.01f;
+			float speed = Speed;
 			Vector3 velocity = Vector3.Zero;
 
 			if (Input.IsKeyDown(KeyCode.Space))
@@ -74,6 +73,8 @@ namespace Sandbox
 
 			velocity *= speed;
 
+			Velocity = velocity;
+
 			m_Rigidbody.ApplyLinearImpulse(velocity.XY, true);
 
 			//Vector3 translation = m_Transform.Translation;
@@ -104,7 +105,7 @@ namespace Zelda
 
 		void OnUpdate(float ts)
 		{
-			// Console.WriteLine($"Player.OnUpdate: {ts}");
+			//Console.WriteLine($"Player.OnUpdate: Spped={Speed}");
 			Time += ts;
 
 			float speed = 0.01f;

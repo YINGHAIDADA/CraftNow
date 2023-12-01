@@ -1294,6 +1294,38 @@ namespace CraftNow {
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu(u8"编辑"))
+		{
+			if (ImGui::MenuItem(u8"撤销", "Ctrl+Z"))
+			{
+				
+			}
+			if (ImGui::MenuItem(u8"重做", "Ctrl+Y"))
+			{
+
+			}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu(u8"视图"))
+		{
+			if (ImGui::MenuItem(u8"场景层级", ""))
+			{
+
+			}
+			if (ImGui::MenuItem(u8"属性", ""))
+			{
+
+			}
+			if (ImGui::MenuItem(u8"状态", ""))
+			{
+
+			}
+
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu(u8"脚本"))
 		{
 			if (ImGui::MenuItem(u8"重新加载部件", "Ctrl+R"))

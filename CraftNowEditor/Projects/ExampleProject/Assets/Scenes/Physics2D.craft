@@ -1,31 +1,332 @@
 Scene: Untitled
 EditorCamera:
   Fov: 30
-  AspectRatio: 1.88363636
+  AspectRatio: 1.70727277
   NearClip: 0.100000001
   FarClip: 1000
-  FocalPoint: [0.528167307, 0.434885234, -0.521962166]
-  Distance: 9.6081543
-  Pitch: 0.278400034
-  Yaw: -0.424799472
-  ViewportWidth: 1036
+  FocalPoint: [0.694262803, 5.85259962, 0]
+  Distance: 36.3764229
+  Pitch: 0
+  Yaw: 0
+  ViewportWidth: 939
   ViewportHeight: 550
 Entities:
-  - Entity: 6322450473710003994
+  - Entity: 15696472315076287780
     TagComponent:
-      Tag: 背景
+      Tag: 障碍
     TransformComponent:
-      Translation: [0, 0, -1]
+      Translation: [0.38639915, 12.9779816, -1.1124539e-06]
       Rotation: [0, 0, 0]
-      Scale: [9.89999962, 5.4000001, 1]
+      Scale: [0.899999976, 0.899999976, 1]
     SpriteRendererComponent:
-      Color: [0.220077217, 0.220077217, 0.220077217, 1]
+      Color: [1, 0.196911216, 0.196911216, 1]
       TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 0.0399999991
+      Friction: 1
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 16182374173243501015
+    TagComponent:
+      Tag: 终点
+    TransformComponent:
+      Translation: [4.11048174, -0.35670957, -6.10351562e-05]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CircleRendererComponent:
+      Color: [0.851041734, 0.99227798, 0.517210543, 1]
+      Thickness: 0.300000012
+      Fade: 0.263999999
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 15735214325632176704
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [1.38749218, 1.11588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 17047404067897792044
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [1.38749218, 2.11588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 10055008134559058609
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [2.38749218, 1.11588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 6219748252579677855
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [-0.61250782, 2.11588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 11905254225388369737
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [-0.11250782, 0.61588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 11414375629693934742
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [-0.11250782, -0.38411665, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 7639421515122320488
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [-1.61250782, 0.61588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 914319712701051722
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [-1.61250782, 1.61588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 3013860380187793976
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [-2.61250782, 1.61588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 11720447994531659682
+    TagComponent:
+      Tag: 墙(copy)(copy)
+    TransformComponent:
+      Translation: [-3.61250782, 1.61588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 672960906656266313
+    TagComponent:
+      Tag: 墙(copy)
+    TransformComponent:
+      Translation: [1.88749218, -0.38411665, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 12251152807012744173
+    TagComponent:
+      Tag: 墙
+    TransformComponent:
+      Translation: [-4.61250782, 1.61588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 12229250872560988814
+    TagComponent:
+      Tag: 墙
+    TransformComponent:
+      Translation: [-4.61250782, 0.61588335, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
   - Entity: 12837192831275
     TagComponent:
       Tag: 相机
     TransformComponent:
-      Translation: [0, 0, 3.79999995]
+      Translation: [0.0241716504, 0.0128323287, 3.12215996]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -42,18 +343,33 @@ Entities:
     ScriptComponent:
       ClassName: Sandbox.Camera
       ScriptFields:
-        []
+        - Name: DistanceFromPlayer
+          Type: Float
+          Data: 4
   - Entity: 12837192831274
     TagComponent:
       Tag: Player
     TransformComponent:
-      Translation: [0.205780998, 0.923703551, 0.0225147791]
+      Translation: [-3.20529056, 0.261386245, 0.0225148685]
       Rotation: [0, 0, 0]
       Scale: [0.361159712, 0.375572056, 0.848135769]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -100
+        OrthographicFar: 100
+      Primary: false
+      FixedAspectRatio: false
     ScriptComponent:
       ClassName: Sandbox.Player
       ScriptFields:
-        []
+        - Name: Speed
+          Type: Float
+          Data: 0.0199999996
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
       TexturePath: Textures/yinghai_alpha.png
@@ -89,44 +405,34 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 16860485781188885765
+  - Entity: 10717710894677061976
     TagComponent:
-      Tag: 长方体刚体
+      Tag: 精灵
     TransformComponent:
-      Translation: [0.654208422, 1.26519966, 0]
-      Rotation: [0, 0, -0.720820963]
-      Scale: [0.959999263, 0.279999912, 0.848134398]
+      Translation: [-4.61250782, -0.38411662, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.98455596, 0.592603385, 0.0532192662, 1]
-      TilingFactor: 1
+      Color: [1, 1, 1, 1]
+      TexturePath: Textures/stone.png
+      TilingFactor: 2
     Rigidbody2DComponent:
-      BodyType: Dynamic
+      BodyType: Static
       FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
       Size: [0.5, 0.5]
-      Density: 0.959999979
-      Friction: 0.219999999
-      Restitution: 0.360000014
-      RestitutionThreshold: 0.5
-  - Entity: 8208684852762445439
-    TagComponent:
-      Tag: 圆
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CircleRendererComponent:
-      Color: [0.250562757, 0.737451732, 0.68669498, 1]
-      Thickness: 0.174999997
-      Fade: 0.00499999989
-    Rigidbody2DComponent:
-      BodyType: Dynamic
-      FixedRotation: false
-    CircleCollider2DComponent:
-      Offset: [0, 0]
-      Radius: 0.5
       Density: 1
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
+  - Entity: 6322450473710003994
+    TagComponent:
+      Tag: 背景
+    TransformComponent:
+      Translation: [-2.98023224e-08, 0, -1]
+      Rotation: [0, 0, 0]
+      Scale: [9.89999962, 5.4000001, 1]
+    SpriteRendererComponent:
+      Color: [0.220077217, 0.220077217, 0.220077217, 1]
+      TilingFactor: 1
