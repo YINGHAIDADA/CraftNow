@@ -149,7 +149,7 @@ namespace CraftNow {
 	{
 		static Ref<Font> DefaultFont;
 		if (!DefaultFont)
-			DefaultFont = CreateRef<Font>("assets/fonts/opensans/OpenSans-Regular.ttf");
+			DefaultFont = CreateRef<Font>("assets/fonts/FP-10px.ttf");
 
 		return DefaultFont;
 	}

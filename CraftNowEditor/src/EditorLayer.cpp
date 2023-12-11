@@ -445,6 +445,8 @@ namespace CraftNow {
 			ImGui::Text(u8"Indices: %d", stats.GetTotalIndexCount());
 
 			ImGui::Checkbox(u8"显示碰撞体框", &m_ShowPhysicsColliders);
+
+			ImGui::Image((ImTextureID)s_Font->GetAtlasTexture()->GetRendererID(), { 512,512 }, { 0, 1 }, { 1, 0 });
 			/*ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));*/
 
 			//---------------SceneCamera-------------
