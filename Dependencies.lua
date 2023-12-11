@@ -16,6 +16,8 @@ IncludeDir["filewatch"] = "%{wks.location}/CraftNow/vendor/filewatch"
 IncludeDir["shaderc"] = "%{VULKAN_SDK}/Include/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "%{VULKAN_SDK}/Include/spirv_cross"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
+IncludeDir["msdfgen"] = "%{wks.location}/CraftNow/vendor/msdf-atlas-gen/msdfgen"
+IncludeDir["msdf_atlas_gen"] = "%{wks.location}/CraftNow/vendor/msdf-atlas-gen/msdf-atlas-gen"
 
 LibraryDir = {}
 

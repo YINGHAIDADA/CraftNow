@@ -2,7 +2,7 @@
 #include "CraftNow/Scene/SceneSerializer.h"
 #include "CraftNow/Math/Math.h"
 #include "CraftNow/Script/ScriptEngine.h"
-//#include "CraftNow/Renderer/Font.h"
+#include "CraftNow/Renderer/Font.h"
 #include "CraftNow/Utils/PlatformUtils.h"
 
 //#include "CraftNow/Utils/ChineseUtils.h"
@@ -22,12 +22,12 @@ namespace CraftNow {
 	#include "CraftNow/Embed/Icon.embed"
 	#include "CraftNow/Embed/WindowImages.embed"
 
-	//static Ref<Font> s_Font;
+	static Ref<Font> s_Font;
 
 	EditorLayer::EditorLayer()
 		: Layer("EditorLayer"), m_CameraController(1600.0f / 900.0f), m_ViewportSize({1600, 900})
 	{
-		//s_Font = Font::GetDefault();
+		s_Font = Font::GetDefault();
 	}
 
 	void EditorLayer::OnAttach()
