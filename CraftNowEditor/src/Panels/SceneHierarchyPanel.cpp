@@ -553,13 +553,13 @@ namespace CraftNow {
 				ImGui::DragFloat(u8"弹力门限", &component.RestitutionThreshold, 0.01f, 0.0f);
 			});
 
-		/*DrawComponent<TextComponent>("Text Renderer", entity, [](auto& component)
+		DrawComponent<TextComponent>("Text Renderer", entity, [](auto& component)
 			{
 				ImGui::InputTextMultiline("Text String", &component.TextString);
 				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
 				ImGui::DragFloat("Kerning", &component.Kerning, 0.025f);
 				ImGui::DragFloat("Line Spacing", &component.LineSpacing, 0.025f);
-			});*/
+			});
 	}
 
 }

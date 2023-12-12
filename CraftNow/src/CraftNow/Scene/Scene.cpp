@@ -25,7 +25,7 @@ namespace CraftNow {
 
 	Scene::~Scene()
 	{
-		//delete m_PhysicsWorld;
+		delete m_PhysicsWorld;
 	}
 
 	template<typename... Component>
@@ -226,7 +226,7 @@ namespace CraftNow {
 			}
 
 			// Draw text
-			/*{
+			{
 				auto view = m_Registry.view<TransformComponent, TextComponent>();
 				for (auto entity : view)
 				{
@@ -234,7 +234,7 @@ namespace CraftNow {
 
 					Renderer2D::DrawString(text.TextString, transform.GetTransform(), text, (int)entity);
 				}
-			}*/
+			}
 
 			Renderer2D::EndScene();
 		}
@@ -502,7 +502,7 @@ namespace CraftNow {
 		}
 
 		// Draw text
-		/*{
+		{
 			auto view = m_Registry.view<TransformComponent, TextComponent>();
 			for (auto entity : view)
 			{
@@ -510,7 +510,7 @@ namespace CraftNow {
 
 				Renderer2D::DrawString(text.TextString, transform.GetTransform(), text, (int)entity);
 			}
-		}*/
+		}
 
 		Renderer2D::EndScene();
 	}
@@ -579,8 +579,8 @@ namespace CraftNow {
 	{
 	}
 
-	/*template<>
+	template<>
 	void Scene::OnComponentAdded<TextComponent>(Entity entity, TextComponent& component)
 	{
-	}*/
+	}
 }

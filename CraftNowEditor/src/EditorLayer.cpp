@@ -426,7 +426,6 @@ namespace CraftNow {
 		m_SceneHierarchyPanel.OnImGuiRender();
 		m_ContentBrowserPanel->OnImGuiRender();
 
-
 		{
 			ImGui::Begin(u8"状态");
 
