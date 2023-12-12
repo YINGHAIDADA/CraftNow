@@ -3,7 +3,7 @@
 #include "CraftNow/Scene/SceneCamera.h"
 #include "CraftNow/Core/UUID.h"
 #include "CraftNow/Renderer/Texture.h"
-//#include "CraftNow/Renderer/Font.h"
+#include "CraftNow/Renderer/Font.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -165,14 +165,14 @@ namespace CraftNow {
 		CircleCollider2DComponent(const CircleCollider2DComponent&) = default;
 	};
 
-	/*struct TextComponent
+	struct TextComponent
 	{
 		std::string TextString;
 		Ref<Font> FontAsset = Font::GetDefault();
 		glm::vec4 Color{ 1.0f };
 		float Kerning = 0.0f;
 		float LineSpacing = 0.0f;
-	};*/
+	};
 
 	template<typename... Component>
 	struct ComponentGroup
@@ -183,6 +183,6 @@ namespace CraftNow {
 		ComponentGroup<TransformComponent, SpriteRendererComponent,
 		CircleRendererComponent, CameraComponent, ScriptComponent,
 		NativeScriptComponent, Rigidbody2DComponent, BoxCollider2DComponent,
-		CircleCollider2DComponent/*, TextComponent*/>;
+		CircleCollider2DComponent, TextComponent>;
 
 }

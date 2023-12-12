@@ -2,7 +2,7 @@
 #include "CraftNow/Scene/SceneSerializer.h"
 #include "CraftNow/Math/Math.h"
 #include "CraftNow/Script/ScriptEngine.h"
-//#include "CraftNow/Renderer/Font.h"
+#include "CraftNow/Renderer/Font.h"
 #include "CraftNow/Utils/PlatformUtils.h"
 
 //#include "CraftNow/Utils/ChineseUtils.h"
@@ -22,12 +22,12 @@ namespace CraftNow {
 	#include "CraftNow/Embed/Icon.embed"
 	#include "CraftNow/Embed/WindowImages.embed"
 
-	//static Ref<Font> s_Font;
+	static Ref<Font> s_Font;
 
 	EditorLayer::EditorLayer()
 		: Layer("EditorLayer"), m_CameraController(1600.0f / 900.0f), m_ViewportSize({1600, 900})
 	{
-		//s_Font = Font::GetDefault();
+		s_Font = Font::GetDefault();
 	}
 
 	void EditorLayer::OnAttach()
@@ -426,7 +426,6 @@ namespace CraftNow {
 		m_SceneHierarchyPanel.OnImGuiRender();
 		m_ContentBrowserPanel->OnImGuiRender();
 
-
 		{
 			ImGui::Begin(u8"状态");
 
@@ -445,6 +444,8 @@ namespace CraftNow {
 			ImGui::Text(u8"Indices: %d", stats.GetTotalIndexCount());
 
 			ImGui::Checkbox(u8"显示碰撞体框", &m_ShowPhysicsColliders);
+
+			ImGui::Image((ImTextureID)s_Font->GetAtlasTexture()->GetRendererID(), { 512,512 }, { 0, 1 }, { 1, 0 });
 			/*ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));*/
 
 			//---------------SceneCamera-------------
@@ -1291,6 +1292,38 @@ namespace CraftNow {
 
 
 			if (ImGui::MenuItem(u8"退出")) Application::Get().Close();
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu(u8"编辑"))
+		{
+			if (ImGui::MenuItem(u8"撤销", "Ctrl+Z"))
+			{
+				
+			}
+			if (ImGui::MenuItem(u8"重做", "Ctrl+Y"))
+			{
+
+			}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu(u8"视图"))
+		{
+			if (ImGui::MenuItem(u8"场景层级", ""))
+			{
+
+			}
+			if (ImGui::MenuItem(u8"属性", ""))
+			{
+
+			}
+			if (ImGui::MenuItem(u8"状态", ""))
+			{
+
+			}
+
 			ImGui::EndMenu();
 		}
 

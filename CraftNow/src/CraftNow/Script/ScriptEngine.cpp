@@ -145,17 +145,17 @@ namespace CraftNow {
 		Scene* SceneContext = nullptr;
 	};
 
-	static ScriptEngineData* s_Data = nullptr;
+	static ScriptEngineData* s_SEData = nullptr;
 
 	static void OnAppAssemblyFileSystemEvent(const std::string& path, const filewatch::Event change_type)
 	{
-		if (!s_Data->AssemblyReloadPending && change_type == filewatch::Event::modified)
+		if (!s_SEData->AssemblyReloadPending && change_type == filewatch::Event::modified)
 		{
-			s_Data->AssemblyReloadPending = true;
+			s_SEData->AssemblyReloadPending = true;
 
 			Application::Get().SubmitToMainThread([]()
 				{
-					s_Data->AppAssemblyFileWatcher.reset();
+					s_SEData->AppAssemblyFileWatcher.reset();
 					ScriptEngine::ReloadAssembly();
 				});
 		}
@@ -163,7 +163,7 @@ namespace CraftNow {
 
 	void ScriptEngine::Init()
 	{
-		s_Data = new ScriptEngineData();
+		s_SEData = new ScriptEngineData();
 
 		InitMono();
 		ScriptGlue::RegisterFunctions();
@@ -188,20 +188,20 @@ namespace CraftNow {
 		ScriptGlue::RegisterComponents();
 
 		// 检索并实例化类
-		s_Data->EntityClass = ScriptClass("CraftNow", "Entity", true);
+		s_SEData->EntityClass = ScriptClass("CraftNow", "Entity", true);
 	}
 
 	void ScriptEngine::Shutdown()
 	{
 		ShutdownMono();
-		delete s_Data;
+		delete s_SEData;
 	}
 
 	void ScriptEngine::InitMono()
 	{
 		mono_set_assemblies_path("mono/lib");
 
-		if (s_Data->EnableDebugging)
+		if (s_SEData->EnableDebugging)
 		{
 			const char* argv[2] = {
 				"--debugger-agent=transport=dt_socket,address=127.0.0.1:2550,server=y,suspend=n,loglevel=3,logfile=MonoDebugger.log",
@@ -216,10 +216,10 @@ namespace CraftNow {
 		CN_CORE_ASSERT(rootDomain);
 
 		// Store the root domain pointer
-		s_Data->RootDomain = rootDomain;
+		s_SEData->RootDomain = rootDomain;
 
-		if (s_Data->EnableDebugging)
-			mono_debug_domain_create(s_Data->RootDomain);
+		if (s_SEData->EnableDebugging)
+			mono_debug_domain_create(s_SEData->RootDomain);
 
 		mono_thread_set_main(mono_thread_current());
 	}
@@ -228,11 +228,11 @@ namespace CraftNow {
 	{
 		mono_domain_set(mono_get_root_domain(), false);
 
-		mono_domain_unload(s_Data->AppDomain);
-		s_Data->AppDomain = nullptr;
+		mono_domain_unload(s_SEData->AppDomain);
+		s_SEData->AppDomain = nullptr;
 
-		mono_jit_cleanup(s_Data->RootDomain);
-		s_Data->RootDomain = nullptr;
+		mono_jit_cleanup(s_SEData->RootDomain);
+		s_SEData->RootDomain = nullptr;
 	}
 
 	void PrintAssemblyTypes(MonoAssembly* assembly)
@@ -256,30 +256,30 @@ namespace CraftNow {
 	bool ScriptEngine::LoadAssembly(const std::filesystem::path& filepath)
 	{
 		// Create an App Domain
-		s_Data->AppDomain = mono_domain_create_appdomain("ScriptRuntime", nullptr);
-		mono_domain_set(s_Data->AppDomain, true);
+		s_SEData->AppDomain = mono_domain_create_appdomain("ScriptRuntime", nullptr);
+		mono_domain_set(s_SEData->AppDomain, true);
 
-		s_Data->CoreAssemblyFilepath = filepath;
-		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filepath, s_Data->EnableDebugging);
-		//PrintAssemblyTypes(s_Data->CoreAssembly);
-		if (s_Data->CoreAssembly == nullptr)
+		s_SEData->CoreAssemblyFilepath = filepath;
+		s_SEData->CoreAssembly = Utils::LoadMonoAssembly(filepath, s_SEData->EnableDebugging);
+		//PrintAssemblyTypes(s_SEData->CoreAssembly);
+		if (s_SEData->CoreAssembly == nullptr)
 			return false;
 
-		s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly);
+		s_SEData->CoreAssemblyImage = mono_assembly_get_image(s_SEData->CoreAssembly);
 		return true;
 	}
 
 	bool ScriptEngine::LoadAppAssembly(const std::filesystem::path& filepath)
 	{
-		s_Data->AppAssemblyFilepath = filepath;
-		s_Data->AppAssembly = Utils::LoadMonoAssembly(filepath, s_Data->EnableDebugging);
-		if (s_Data->AppAssembly == nullptr)
+		s_SEData->AppAssemblyFilepath = filepath;
+		s_SEData->AppAssembly = Utils::LoadMonoAssembly(filepath, s_SEData->EnableDebugging);
+		if (s_SEData->AppAssembly == nullptr)
 			return false;
 
-		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
+		s_SEData->AppAssemblyImage = mono_assembly_get_image(s_SEData->AppAssembly);
 
-		s_Data->AppAssemblyFileWatcher = CreateScope<filewatch::FileWatch<std::string>>(filepath.string(), OnAppAssemblyFileSystemEvent);
-		s_Data->AssemblyReloadPending = false;
+		s_SEData->AppAssemblyFileWatcher = CreateScope<filewatch::FileWatch<std::string>>(filepath.string(), OnAppAssemblyFileSystemEvent);
+		s_SEData->AssemblyReloadPending = false;
 		return true;
 	}
 
@@ -287,26 +287,26 @@ namespace CraftNow {
 	{
 		mono_domain_set(mono_get_root_domain(), false);
 
-		mono_domain_unload(s_Data->AppDomain);
+		mono_domain_unload(s_SEData->AppDomain);
 
-		LoadAssembly(s_Data->CoreAssemblyFilepath);
-		LoadAppAssembly(s_Data->AppAssemblyFilepath);
+		LoadAssembly(s_SEData->CoreAssemblyFilepath);
+		LoadAppAssembly(s_SEData->AppAssemblyFilepath);
 		LoadAssemblyClasses();
 
 		ScriptGlue::RegisterComponents();
 
 		// Retrieve and instantiate class
-		s_Data->EntityClass = ScriptClass("CraftNow", "Entity", true);
+		s_SEData->EntityClass = ScriptClass("CraftNow", "Entity", true);
 	}
 
 	void ScriptEngine::OnRuntimeStart(Scene* scene)
 	{
-		s_Data->SceneContext = scene;
+		s_SEData->SceneContext = scene;
 	}
 
 	bool ScriptEngine::EntityClassExists(const std::string& fullClassName)
 	{
-		return s_Data->EntityClasses.find(fullClassName) != s_Data->EntityClasses.end();
+		return s_SEData->EntityClasses.find(fullClassName) != s_SEData->EntityClasses.end();
 	}
 
 	void ScriptEngine::OnCreateEntity(Entity entity)
@@ -316,13 +316,13 @@ namespace CraftNow {
 		{
 			UUID entityID = entity.GetUUID();
 
-			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_Data->EntityClasses[sc.ClassName], entity);
-			s_Data->EntityInstances[entityID] = instance;
+			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_SEData->EntityClasses[sc.ClassName], entity);
+			s_SEData->EntityInstances[entityID] = instance;
 
-			// Copy field values
-			if (s_Data->EntityScriptFields.find(entityID) != s_Data->EntityScriptFields.end())
+			// 从编辑器复制 Fields 到 脚本运行时
+			if (s_SEData->EntityScriptFields.find(entityID) != s_SEData->EntityScriptFields.end())
 			{
-				const ScriptFieldMap& fieldMap = s_Data->EntityScriptFields.at(entityID);
+				const ScriptFieldMap& fieldMap = s_SEData->EntityScriptFields.at(entityID);
 				for (const auto& [name, fieldInstance] : fieldMap)
 					instance->SetFieldValueInternal(name, fieldInstance.m_Buffer);
 			}
@@ -334,9 +334,9 @@ namespace CraftNow {
 	void ScriptEngine::OnUpdateEntity(Entity entity, Timestep ts)
 	{
 		UUID entityUUID = entity.GetUUID();
-		if (s_Data->EntityInstances.find(entityUUID) != s_Data->EntityInstances.end())
+		if (s_SEData->EntityInstances.find(entityUUID) != s_SEData->EntityInstances.end())
 		{
-			Ref<ScriptInstance> instance = s_Data->EntityInstances[entityUUID];
+			Ref<ScriptInstance> instance = s_SEData->EntityInstances[entityUUID];
 			instance->InvokeOnUpdate((float)ts);
 		}
 		else
@@ -347,13 +347,13 @@ namespace CraftNow {
 
 	Scene* ScriptEngine::GetSceneContext()
 	{
-		return s_Data->SceneContext;
+		return s_SEData->SceneContext;
 	}
 
 	Ref<ScriptInstance> ScriptEngine::GetEntityScriptInstance(UUID entityID)
 	{
-		auto it = s_Data->EntityInstances.find(entityID);
-		if (it == s_Data->EntityInstances.end())
+		auto it = s_SEData->EntityInstances.find(entityID);
+		if (it == s_SEData->EntityInstances.end())
 			return nullptr;
 
 		return it->second;
@@ -362,22 +362,22 @@ namespace CraftNow {
 
 	Ref<ScriptClass> ScriptEngine::GetEntityClass(const std::string& name)
 	{
-		if (s_Data->EntityClasses.find(name) == s_Data->EntityClasses.end())
+		if (s_SEData->EntityClasses.find(name) == s_SEData->EntityClasses.end())
 			return nullptr;
 
-		return s_Data->EntityClasses.at(name);
+		return s_SEData->EntityClasses.at(name);
 	}
 
 	void ScriptEngine::OnRuntimeStop()
 	{
-		s_Data->SceneContext = nullptr;
+		s_SEData->SceneContext = nullptr;
 
-		s_Data->EntityInstances.clear();
+		s_SEData->EntityInstances.clear();
 	}
 
 	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetEntityClasses()
 	{
-		return s_Data->EntityClasses;
+		return s_SEData->EntityClasses;
 	}
 
 	ScriptFieldMap& ScriptEngine::GetScriptFieldMap(Entity entity)
@@ -385,31 +385,31 @@ namespace CraftNow {
 		CN_CORE_ASSERT(entity);
 
 		UUID entityID = entity.GetUUID();
-		return s_Data->EntityScriptFields[entityID];
+		return s_SEData->EntityScriptFields[entityID];
 	}
 
 	void ScriptEngine::LoadAssemblyClasses()
 	{
-		s_Data->EntityClasses.clear();
+		s_SEData->EntityClasses.clear();
 
-		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(s_Data->AppAssemblyImage, MONO_TABLE_TYPEDEF);
+		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(s_SEData->AppAssemblyImage, MONO_TABLE_TYPEDEF);
 		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
-		MonoClass* entityClass = mono_class_from_name(s_Data->CoreAssemblyImage, "CraftNow", "Entity");
+		MonoClass* entityClass = mono_class_from_name(s_SEData->CoreAssemblyImage, "CraftNow", "Entity");
 
 		for (int32_t i = 0; i < numTypes; i++)
 		{
 			uint32_t cols[MONO_TYPEDEF_SIZE];
 			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
 
-			const char* nameSpace = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAMESPACE]);
-			const char* className = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAME]);
+			const char* nameSpace = mono_metadata_string_heap(s_SEData->AppAssemblyImage, cols[MONO_TYPEDEF_NAMESPACE]);
+			const char* className = mono_metadata_string_heap(s_SEData->AppAssemblyImage, cols[MONO_TYPEDEF_NAME]);
 			std::string fullName;
 			if (strlen(nameSpace) != 0)
 				fullName = fmt::format("{}.{}", nameSpace, className);
 			else
 				fullName = className;
 
-			MonoClass* monoClass = mono_class_from_name(s_Data->AppAssemblyImage, nameSpace, className);
+			MonoClass* monoClass = mono_class_from_name(s_SEData->AppAssemblyImage, nameSpace, className);
 
 			if (monoClass == entityClass)
 				continue;
@@ -419,7 +419,7 @@ namespace CraftNow {
 				continue;
 
 			Ref<ScriptClass> scriptClass = CreateRef<ScriptClass>(nameSpace, className);
-			s_Data->EntityClasses[fullName] = scriptClass;
+			s_SEData->EntityClasses[fullName] = scriptClass;
 
 
 			// This routine is an iterator routine for retrieving the fields in a class.
@@ -427,7 +427,7 @@ namespace CraftNow {
 			// to iterate over all of the elements. When no more values are available, the return value is NULL.
 
 			int fieldCount = mono_class_num_fields(monoClass);
-			CN_CORE_WARN("{} has {} fields:", className, fieldCount);
+			CN_CORE_WARN("{}.{} has {} fields:", nameSpace, className, fieldCount);
 			void* iterator = nullptr;
 			while (MonoClassField* field = mono_class_get_fields(monoClass, &iterator))
 			{
@@ -445,7 +445,7 @@ namespace CraftNow {
 
 		}
 
-		//auto& entityClasses = s_Data->EntityClasses;
+		//auto& entityClasses = s_SEData->EntityClasses;
 
 		//mono_field_get_value()
 
@@ -453,24 +453,24 @@ namespace CraftNow {
 
 	MonoImage* ScriptEngine::GetCoreAssemblyImage()
 	{
-		return s_Data->CoreAssemblyImage;
+		return s_SEData->CoreAssemblyImage;
 	}
 
 
 	MonoObject* ScriptEngine::GetManagedInstance(UUID uuid)
 	{
-		CN_CORE_ASSERT(s_Data->EntityInstances.find(uuid) != s_Data->EntityInstances.end());
-		return s_Data->EntityInstances.at(uuid)->GetManagedObject();
+		CN_CORE_ASSERT(s_SEData->EntityInstances.find(uuid) != s_SEData->EntityInstances.end());
+		return s_SEData->EntityInstances.at(uuid)->GetManagedObject();
 	}
 
 	MonoString* ScriptEngine::CreateString(const char* string)
 	{
-		return mono_string_new(s_Data->AppDomain, string);
+		return mono_string_new(s_SEData->AppDomain, string);
 	}
 
 	MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass)
 	{
-		MonoObject* instance = mono_object_new(s_Data->AppDomain, monoClass);
+		MonoObject* instance = mono_object_new(s_SEData->AppDomain, monoClass);
 		mono_runtime_object_init(instance);
 		return instance;
 	}
@@ -478,7 +478,7 @@ namespace CraftNow {
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className, bool isCore)
 		: m_ClassNamespace(classNamespace), m_ClassName(className)
 	{
-		m_MonoClass = mono_class_from_name(isCore ? s_Data->CoreAssemblyImage : s_Data->AppAssemblyImage, classNamespace.c_str(), className.c_str());
+		m_MonoClass = mono_class_from_name(isCore ? s_SEData->CoreAssemblyImage : s_SEData->AppAssemblyImage, classNamespace.c_str(), className.c_str());
 	}
 
 	MonoObject* ScriptClass::Instantiate()
@@ -502,7 +502,7 @@ namespace CraftNow {
 	{
 		m_Instance = scriptClass->Instantiate();
 
-		m_Constructor = s_Data->EntityClass.GetMethod(".ctor", 1);
+		m_Constructor = s_SEData->EntityClass.GetMethod(".ctor", 1);
 		m_OnCreateMethod = scriptClass->GetMethod("OnCreate", 0);
 		m_OnUpdateMethod = scriptClass->GetMethod("OnUpdate", 1);
 

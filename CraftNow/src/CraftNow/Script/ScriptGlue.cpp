@@ -166,7 +166,7 @@ namespace CraftNow {
 		body->SetType(Utils::Rigidbody2DTypeToBox2DBody(bodyType));
 	}
 
-	/*static MonoString* TextComponent_GetText(UUID entityID)
+	static MonoString* TextComponent_GetText(UUID entityID)
 	{
 		Scene* scene = ScriptEngine::GetSceneContext();
 		CN_CORE_ASSERT(scene);
@@ -260,7 +260,7 @@ namespace CraftNow {
 
 		auto& tc = entity.GetComponent<TextComponent>();
 		tc.LineSpacing = lineSpacing;
-	}*/
+	}
 
 	static bool Input_IsKeyDown(KeyCode keycode)
 	{
@@ -325,14 +325,14 @@ namespace CraftNow {
 		CN_ADD_INTERNAL_CALL(Rigidbody2DComponent_GetType);
 		CN_ADD_INTERNAL_CALL(Rigidbody2DComponent_SetType);
 
-		/*CN_ADD_INTERNAL_CALL(TextComponent_GetText);
+		CN_ADD_INTERNAL_CALL(TextComponent_GetText);
 		CN_ADD_INTERNAL_CALL(TextComponent_SetText);
 		CN_ADD_INTERNAL_CALL(TextComponent_GetColor);
 		CN_ADD_INTERNAL_CALL(TextComponent_SetColor);
 		CN_ADD_INTERNAL_CALL(TextComponent_GetKerning);
 		CN_ADD_INTERNAL_CALL(TextComponent_SetKerning);
 		CN_ADD_INTERNAL_CALL(TextComponent_GetLineSpacing);
-		CN_ADD_INTERNAL_CALL(TextComponent_SetLineSpacing);*/
+		CN_ADD_INTERNAL_CALL(TextComponent_SetLineSpacing);
 
 		CN_ADD_INTERNAL_CALL(Input_IsKeyDown);
 		CN_ADD_INTERNAL_CALL(Input_IsKeyRepeat);

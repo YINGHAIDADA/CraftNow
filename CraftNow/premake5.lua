@@ -39,6 +39,8 @@
 		"%{IncludeDir.mono}",
 		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.VulkanSDK}",
+		"%{IncludeDir.msdfgen}",
+		"%{IncludeDir.msdf_atlas_gen}",
 	}
 
 	links
@@ -48,6 +50,7 @@
 		"ImGui",
 		"yaml-cpp",
 		"Box2D",
+		"msdf-atlas-gen",
 		
 		"opengl32.lib",
 		"%{Library.mono}",

@@ -15,7 +15,7 @@ namespace CraftNow {
 			case ImageFormat::RGBA8: return GL_RGBA;
 			}
 
-			//CN_CORE_ASSERT(false);
+			CN_CORE_ASSERT(false);
 			return 0;
 		}
 
@@ -27,7 +27,7 @@ namespace CraftNow {
 			case ImageFormat::RGBA8: return GL_RGBA8;
 			}
 
-			//CN_CORE_ASSERT(false);
+			CN_CORE_ASSERT(false);
 			return 0;
 		}
 

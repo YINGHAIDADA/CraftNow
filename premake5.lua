@@ -26,6 +26,7 @@ group "Dependencies"
 	include "CraftNow/vendor/imgui"
 	include "CraftNow/vendor/yaml-cpp"
 	include "CraftNow/vendor/Box2D"
+	include "CraftNow/vendor/msdf-atlas-gen"
 	
 group ""
 

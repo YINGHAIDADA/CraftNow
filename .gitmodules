@@ -24,3 +24,6 @@
 [submodule "CraftNow/vendor/Box2D"]
 	path = CraftNow/vendor/Box2D
 	url = https://github.com/YINGHAIDADA/box2d
+[submodule "CraftNow/vendor/msdf-atlas-gen"]
+	path = CraftNow/vendor/msdf-atlas-gen
+	url = https://github.com/YINGHAIDADA/msdf-atlas-gen

@@ -7,7 +7,7 @@
 
 #include "CraftNow/Renderer/Camera.h"
 #include "CraftNow/Renderer/EditorCamera.h"
-//#include "CraftNow/Renderer/Font.h"
+#include "CraftNow/Renderer/Font.h"
 
 #include "CraftNow/Scene/Components.h"
 
@@ -59,8 +59,8 @@ namespace CraftNow {
 			float Kerning = 0.0f;
 			float LineSpacing = 0.0f;
 		};
-		//static void DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const TextParams& textParams, int entityID = -1);
-		//static void DrawString(const std::string& string, const glm::mat4& transform, const TextComponent& component, int entityID = -1);
+		static void DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const TextParams& textParams, int entityID = -1);
+		static void DrawString(const std::string& string, const glm::mat4& transform, const TextComponent& component, int entityID = -1);
 
 		static float GetLineWidth();
 		static void SetLineWidth(float width);

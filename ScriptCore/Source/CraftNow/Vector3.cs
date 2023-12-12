@@ -37,6 +37,16 @@
 			}
 		}
 
+		public Vector2 XZ
+		{
+			get => new Vector2(X, Z);
+			set
+			{
+				X = value.X;
+				Z = value.Y;
+			}
+		}
+
 		public static Vector3 operator +(Vector3 a, Vector3 b)
 		{
 			return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
