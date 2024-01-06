@@ -292,19 +292,20 @@ namespace CraftNow {
 
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
-			if (spriteRendererComponent.Texture)
-			{
-				std::filesystem::path texturePath(spriteRendererComponent.Texture->GetPath());
-				
-				std::filesystem::path dir = Project::GetAssetDirectory() / "Textures";
-				if (!FileDialogs::isFileExist(Project::GetAssetDirectory() / "Textures", texturePath.filename().string()))
-				{
-					//TODO: 复制到工程文件夹Assets下的Textures
-					CN_INFO("复制 {0} 到工程文件夹", texturePath.filename().string());
-					FileDialogs::copyFile(texturePath, Project::GetAssetDirectory() / "Textures/");
-				}
-				out << YAML::Key << "TexturePath" << YAML::Value << "Textures/" + texturePath.filename().string();
-			}
+			//if (spriteRendererComponent.Texture)
+			//{
+			//	std::filesystem::path texturePath(spriteRendererComponent.Texture->GetPath());
+			//	
+			//	std::filesystem::path dir = Project::GetAssetDirectory() / "Textures";
+			//	if (!FileDialogs::isFileExist(Project::GetAssetDirectory() / "Textures", texturePath.filename().string()))
+			//	{
+			//		//TODO: 复制到工程文件夹Assets下的Textures
+			//		CN_INFO("复制 {0} 到工程文件夹", texturePath.filename().string());
+			//		FileDialogs::copyFile(texturePath, Project::GetAssetDirectory() / "Textures/");
+			//	}
+			//	out << YAML::Key << "TexturePath" << YAML::Value << "Textures/" + texturePath.filename().string();
+			//}
+			out << YAML::Key << "TextureHandle" << YAML::Value << spriteRendererComponent.Texture;
 
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 
@@ -438,10 +439,20 @@ namespace CraftNow {
 		}
 	}
 
+	void SceneSerializer::Serialize(const std::filesystem::path& filepath)
+	{
+		Serialize(filepath.string());
+	}
+
 	void SceneSerializer::SerializeRuntime(const std::string& filepath)
 	{
 		// Not implemented
 		CN_CORE_ASSERT(false);
+	}
+
+	bool SceneSerializer::Deserialize(const std::filesystem::path& filepath)
+	{
+		return Deserialize(filepath.string());
 	}
 
 	bool SceneSerializer::Deserialize(const std::string& filepath)
@@ -585,18 +596,21 @@ namespace CraftNow {
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
 					if (spriteRendererComponent["TexturePath"])
 					{
-						std::string texturePath = spriteRendererComponent["TexturePath"].as<std::string>();
-						//TODO: 路径根据工程路径确定位置
-						std::filesystem::path p(texturePath);
-						// 如果是绝对路径就直接打开
-						if(p.is_absolute() || texturePath.find("..") != std::string::npos)
-							src.Texture = Texture2D::Create(texturePath);
-						else
-						{
-							auto path = Project::GetAssetFileSystemPath(texturePath);
-							src.Texture = Texture2D::Create(path.string());
-						}
+						//std::string texturePath = spriteRendererComponent["TexturePath"].as<std::string>();
+						////TODO: 路径根据工程路径确定位置
+						//std::filesystem::path p(texturePath);
+						//// 如果是绝对路径就直接打开
+						//if(p.is_absolute() || texturePath.find("..") != std::string::npos)
+						//	src.Texture = Texture2D::Create(texturePath);
+						//else
+						//{
+						//	auto path = Project::GetAssetFileSystemPath(texturePath);
+						//	src.Texture = Texture2D::Create(path.string());
+						//}
 					}
+
+					if (spriteRendererComponent["TextureHandle"])
+						src.Texture = spriteRendererComponent["TextureHandle"].as<AssetHandle>();
 
 					if (spriteRendererComponent["TilingFactor"])
 						src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();

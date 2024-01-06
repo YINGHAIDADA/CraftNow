@@ -21,6 +21,8 @@
 #include <unordered_set>
 
 #include "CraftNow/Core/Core.h"
+#include "CraftNow/Core/Buffer.h"
+
 #include "CraftNow/Core/Log.h"
 
 #include "CraftNow/Debug/Instrumentor.h"

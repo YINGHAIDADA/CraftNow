@@ -1,6 +1,9 @@
 ﻿#pragma once
 
 #include "CraftNow/Core/Core.h"
+#include "CraftNow/Core/Buffer.h"
+
+#include "CraftNow/Asset/Asset.h"
 
 #include <string>
 
@@ -23,7 +26,7 @@ namespace CraftNow {
 		bool GenerateMips = true;
 	};
 
-	class Texture
+	class Texture : public Asset
 	{
 	public:
 		virtual ~Texture() = default;
@@ -36,7 +39,7 @@ namespace CraftNow {
 
 		virtual const std::string& GetPath() const = 0;
 
-		virtual void SetData(void* data, uint32_t size) = 0;
+		virtual void SetData(Buffer data) = 0;
 
 		virtual void Bind(uint32_t slot = 0) const = 0;
 
@@ -49,7 +52,10 @@ namespace CraftNow {
 	{
 	public:
 		static Ref<Texture2D> Create(const std::string& path);
-		static Ref<Texture2D> Create(const TextureSpecification& specification);
+		static Ref<Texture2D> Create(const TextureSpecification& specification, Buffer data = Buffer());
+		static AssetType GetStaticType() { return AssetType::Texture2D; }
+		virtual AssetType GetType() const { return GetStaticType(); }
+
 		static void* Decode(const void* buffer, uint64_t length, uint32_t& outWidth, uint32_t& outHeight);
 	};
 }

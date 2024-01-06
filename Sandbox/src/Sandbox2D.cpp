@@ -1,4 +1,7 @@
 ﻿#include "Sandbox2D.h"
+
+#include "CraftNow/Asset/TextureImporter.h"
+
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -13,8 +16,8 @@ void Sandbox2D::OnAttach()
 {
 	CN_PROFILE_FUNCTION();
 
-	m_CheckerboardTexture = CraftNow::Texture2D::Create("assets/textures/yinghai_alpha.png");
-	m_Tail_mapTexture = CraftNow::Texture2D::Create("assets/textures/Legend_of_Zelda/maps/Legend_of_Zelda.png");
+	m_CheckerboardTexture = CraftNow::TextureImporter::LoadTexture2D("assets/textures/yinghai_alpha.png");
+	m_Tail_mapTexture = CraftNow::TextureImporter::LoadTexture2D("assets/textures/Legend_of_Zelda/maps/Legend_of_Zelda.png");
 
 	m_Sub1 = CraftNow::SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 5, 10 }, { 16,16 }, { 1,1 });
 	m_Sub2 = CraftNow::SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 4, 9 }, { 16,16 }, { 1,2 });

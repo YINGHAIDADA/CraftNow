@@ -175,7 +175,7 @@ namespace CraftNow {
 			return;
 		}
 
-		auto scriptModulePath = Project::GetAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
+		auto scriptModulePath = Project::GetActiveAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
 		status = LoadAppAssembly(scriptModulePath);
 		if (!status)
 		{

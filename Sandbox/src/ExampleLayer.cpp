@@ -1,6 +1,8 @@
 ﻿#include "cnpch.h"
 #include "ExampleLayer.h"
 
+#include "CraftNow/Asset/TextureImporter.h"
+
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -118,7 +120,7 @@ void ExampleLayer::OnUpdate(CraftNow::Timestep ts)
 	}*/
 
 	//-----------转换矩阵---------------------------
-	m_Texture = CraftNow::Texture2D::Create("assets/textures/yinghai_alpha.png");
+	m_Texture = CraftNow::TextureImporter::LoadTexture2D("assets/textures/yinghai_alpha.png");
 
 	auto textureShader = m_ShaderLibrary.Get("Texture");
 	textureShader->Bind();

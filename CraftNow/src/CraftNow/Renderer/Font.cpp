@@ -32,7 +32,7 @@ namespace CraftNow {
 		spec.GenerateMips = false;
 
 		Ref<Texture2D> texture = Texture2D::Create(spec);
-		texture->SetData((void*)bitmap.pixels, bitmap.width * bitmap.height * 3);
+		texture->SetData(Buffer((void*)bitmap.pixels, bitmap.width * bitmap.height * 3));
 		return texture;
 	}
 
@@ -44,7 +44,7 @@ namespace CraftNow {
 
 		std::string fileString = filepath.string();
 
-		// TODO(Yan): msdfgen::loadFontData loads from memory buffer which we'll need 
+		// TODO: msdfgen::loadFontData loads from memory buffer which we'll need 
 		msdfgen::FontHandle* font = msdfgen::loadFont(ft, fileString.c_str());
 		if (!font)
 		{

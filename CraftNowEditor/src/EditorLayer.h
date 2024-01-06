@@ -24,6 +24,7 @@ namespace CraftNow {
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+		bool OnWindowDrop(WindowDropEvent& e);
 
 		void OnOverlayRender();
 
@@ -35,7 +36,7 @@ namespace CraftNow {
 
 		void NewScene();
 		void OpenScene();
-		void OpenScene(const std::filesystem::path& path);
+		void OpenScene(AssetHandle handle);
 		void SaveScene();
 		void SaveSceneAs();
 

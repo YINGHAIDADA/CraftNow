@@ -4,6 +4,8 @@
 #include "CraftNow/Core/UUID.h"
 #include "CraftNow/Renderer/EditorCamera.h"
 
+#include "CraftNow/Asset/Asset.h"
+
 
 #include "entt.hpp"
 
@@ -13,13 +15,15 @@ namespace CraftNow {
 
 	class Entity;
 
-	class Scene
+	class Scene : public Asset
 	{
 	public:
 		Scene();
 		~Scene();
 
 		static Ref<Scene> Copy(Ref<Scene> other);
+
+		virtual AssetType GetType() const { return AssetType::Scene; }
 
 		Entity CreateEntity(const std::string& name = std::string(), const glm::vec3& translation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& rotation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& scale = { 1.0f, 1.0f, 1.0f });
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string(), const glm::vec3& translation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& rotation = { 0.0f, 0.0f, 0.0f }, const glm::vec3& scale = { 0.0f, 0.0f, 0.0f });

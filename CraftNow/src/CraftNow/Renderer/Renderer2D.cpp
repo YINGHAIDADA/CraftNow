@@ -6,6 +6,8 @@
 #include "CraftNow/Renderer/UniformBuffer.h"
 #include "CraftNow/Renderer/RenderCommand.h"
 
+#include "CraftNow/Asset/AssetManager.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -202,7 +204,7 @@ namespace CraftNow {
 
 		s_Data.WhiteTexture = Texture2D::Create(TextureSpecification());
 		uint32_t whiteTextureData = 0xffffffff;
-		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+		s_Data.WhiteTexture->SetData(Buffer(&whiteTextureData, sizeof(uint32_t)));
 
 		//----------what for?----------------
 		/*int32_t samplers[s_Data.MaxTextureSlots];
@@ -420,6 +422,7 @@ namespace CraftNow {
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		CN_PROFILE_FUNCTION();
+		CN_CORE_VERIFY(texture);
 
 		constexpr size_t quadVertexCount = 4;
 		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -625,7 +628,10 @@ namespace CraftNow {
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
 	{
 		if (src.Texture)
-			DrawQuad(transform, src.Texture, src.TilingFactor, src.Color, entityID);
+		{
+			Ref<Texture2D> texture = AssetManager::GetAsset<Texture2D>(src.Texture);
+			DrawQuad(transform, texture, src.TilingFactor, src.Color, entityID);
+		}
 		else
 			DrawQuad(transform, src.Color, entityID);
 	}

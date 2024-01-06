@@ -7,6 +7,10 @@
 
 //#include "CraftNow/Utils/ChineseUtils.h"
 
+#include "CraftNow/Asset/AssetManager.h"
+#include "CraftNow/Asset/TextureImporter.h"
+#include "CraftNow/Asset/SceneImporter.h"
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 
@@ -41,11 +45,11 @@ namespace CraftNow {
 		m_Sub2 = SubTexture2D::CreateFromCoords(m_Tail_mapTexture, { 4, 9 }, { 16,16 }, { 1,2 });*/
 
 		//初始化运行视图图标
-		m_IconPlay = Texture2D::Create("resources/icons/PlayButton.png");
-		m_IconStop = Texture2D::Create("resources/icons/StopButton.png");
-		m_IconPause = Texture2D::Create("resources/icons/PauseButton.png");
-		m_IconSimulate = Texture2D::Create("resources/icons/SimulateButton.png");
-		m_IconStep = Texture2D::Create("resources/icons/StepButton.png");
+		m_IconPlay = TextureImporter::LoadTexture2D("resources/icons/PlayButton.png");
+		m_IconStop = TextureImporter::LoadTexture2D("resources/icons/StopButton.png");
+		m_IconPause = TextureImporter::LoadTexture2D("resources/icons/PauseButton.png");
+		m_IconSimulate = TextureImporter::LoadTexture2D("resources/icons/SimulateButton.png");
+		m_IconStep = TextureImporter::LoadTexture2D("resources/icons/StepButton.png");
 
 		//Framebuffer
 		FramebufferSpecification fbSpec;
@@ -89,35 +93,35 @@ namespace CraftNow {
 				uint32_t w, h;
 				void* data = Texture2D::Decode(g_Icon, sizeof(g_Icon), w, h);
 				m_AppHeaderIcon = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-				m_AppHeaderIcon->SetData(data, w * h * 4);
+				m_AppHeaderIcon->SetData(Buffer(data, w * h * 4));
 				free(data);
 			}
 			{
 				uint32_t w, h;
 				void* data = Texture2D::Decode(g_WindowMinimizeIcon, sizeof(g_WindowMinimizeIcon), w, h);
 				m_IconMinimize = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-				m_IconMinimize->SetData(data, w * h * 4);
+				m_IconMinimize->SetData(Buffer(data, w * h * 4));
 				free(data);
 			}
 			{
 				uint32_t w, h;
 				void* data = Texture2D::Decode(g_WindowMaximizeIcon, sizeof(g_WindowMaximizeIcon), w, h);
 				m_IconMaximize = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-				m_IconMaximize->SetData(data, w * h * 4);
+				m_IconMaximize->SetData(Buffer(data, w * h * 4));
 				free(data);
 			}
 			{
 				uint32_t w, h;
 				void* data = Texture2D::Decode(g_WindowRestoreIcon, sizeof(g_WindowRestoreIcon), w, h);
 				m_IconRestore = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-				m_IconRestore->SetData(data, w * h * 4);
+				m_IconRestore->SetData(Buffer(data, w * h * 4));
 				free(data);
 			}
 			{
 				uint32_t w, h;
 				void* data = Texture2D::Decode(g_WindowCloseIcon, sizeof(g_WindowCloseIcon), w, h);
 				m_IconClose = Texture2D::Create({ w,h,ImageFormat::RGBA8 ,true });
-				m_IconClose->SetData(data, w * h * 4);
+				m_IconClose->SetData(Buffer(data, w * h * 4));
 				free(data);
 			}
 		}
@@ -494,8 +498,8 @@ namespace CraftNow {
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 				{
-					const wchar_t* path = (const wchar_t*)payload->Data;
-					OpenScene(path);
+					AssetHandle handle = *(AssetHandle*)payload->Data;
+					OpenScene(handle);
 				}
 				ImGui::EndDragDropTarget();
 			}
@@ -569,6 +573,7 @@ namespace CraftNow {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+		dispatcher.Dispatch<WindowDropEvent>(BIND_EVENT_FN(EditorLayer::OnWindowDrop));
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -673,6 +678,15 @@ namespace CraftNow {
 		}
 
 		return false;
+	}
+
+	bool EditorLayer::OnWindowDrop(WindowDropEvent& e)
+	{
+		// TODO: if a project is dropped in, probably open it
+
+		//AssetManager::ImportAsset();
+
+		return true;
 	}
 
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
@@ -790,14 +804,14 @@ namespace CraftNow {
 			ScriptEngine::Init();
 			m_EditorProjectPath = path;
 
-			auto startScenePath = Project::GetAssetFileSystemPath(Project::GetActive()->GetConfig().StartScene);
-			if(!startScenePath.empty())
-				OpenScene(startScenePath);
+			AssetHandle startScene = Project::GetActive()->GetConfig().StartScene;
+			if (startScene)
+				OpenScene(startScene);
 			else
 			{
 				NewScene();
 			}
-			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
+			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
 
 		}
 	}
@@ -822,13 +836,13 @@ namespace CraftNow {
 		config.ScriptModulePath = "Scripts/";
 		if (m_ActiveScene && !m_EditorScenePath.empty())
 		{
-			config.StartScene = m_EditorScenePath.string();
+			config.StartScene = m_ActiveScene->Handle;
 		}
 		else
 		{
 			//TODO: 提示先保存场景文件
 			CN_WARN("保存工程：场景未保存！...");
-			config.StartScene = "";
+			config.StartScene = 0;
 		}
 
 		if (!filepath.empty())
@@ -853,40 +867,52 @@ namespace CraftNow {
 
 	void EditorLayer::OpenScene()
 	{
-		std::string filepath = FileDialogs::OpenFile("CraftNow Scene (*.craft)\0*.craft\0");
+		/*std::string filepath = FileDialogs::OpenFile("CraftNow Scene (*.craft)\0*.craft\0");
 		if (!filepath.empty())
-			OpenScene(filepath);
+			OpenScene(filepath);*/
 	}
 
-	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	void EditorLayer::OpenScene(AssetHandle handle)
 	{
+		CN_CORE_ASSERT(handle);
+
 		if (m_SceneState != SceneState::Edit)
 		{
-
-			//OnSceneStop();
+			OnSceneStop();
 		}
 
-		if (path.extension().string() != ".craft")
-		{
-			CN_WARN("Could not load {0} - not a scene file", path.filename().string());
-			return;
-		}
+		Ref<Scene> readOnlyScene = AssetManager::GetAsset<Scene>(handle);
+		Ref<Scene> newScene = Scene::Copy(readOnlyScene);
 
-		//TODO: 可能存在内存泄露，应该在某处处理
-		Ref<Scene> newScene = CreateRef<Scene>();
-		SceneSerializer serializer(newScene);
-		if (serializer.Deserialize(path.string()))
-		{
-			m_EditorScene = newScene;
+		m_EditorScene = newScene;
+		//修复打开场景不显示的问题
+		m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(m_EditorScene);
 
-			//修复打开场景不显示的问题
-			m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_ActiveScene = m_EditorScene;
+		m_EditorScenePath = Project::GetActive()->GetEditorAssetManager()->GetFilePath(handle);
 
-			m_SceneHierarchyPanel.SetContext(m_EditorScene);
+		//if (path.extension().string() != ".craft")
+		//{
+		//	CN_WARN("Could not load {0} - not a scene file", path.filename().string());
+		//	return;
+		//}
 
-			m_ActiveScene = m_EditorScene;
-			m_EditorScenePath = path;
-		}
+		////TODO: 可能存在内存泄露，应该在某处处理
+		//Ref<Scene> newScene = CreateRef<Scene>();
+		//SceneSerializer serializer(newScene);
+		//if (serializer.Deserialize(path.string()))
+		//{
+		//	m_EditorScene = newScene;
+
+		//	//修复打开场景不显示的问题
+		//	m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+
+		//	m_SceneHierarchyPanel.SetContext(m_EditorScene);
+
+		//	m_ActiveScene = m_EditorScene;
+		//	m_EditorScenePath = path;
+		//}
 	}
 
 	void EditorLayer::SaveScene()
@@ -906,6 +932,13 @@ namespace CraftNow {
 			SerializeScene(m_ActiveScene, filepath);
 			m_EditorScenePath = filepath;
 		}
+	}
+
+	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
+	{
+		SceneImporter::SaveScene(scene, path);
+		/*SceneSerializer serializer(scene);
+		serializer.Serialize(path.string());*/
 	}
 
 	void EditorLayer::OnScenePlay()
@@ -958,13 +991,6 @@ namespace CraftNow {
 
 		m_ActiveScene->SetPaused(true);
 	}
-
-	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
-	{
-		SceneSerializer serializer(scene);
-		serializer.Serialize(path.string());
-	}
-
 
 	void EditorLayer::OnDuplicateEntity()
 	{

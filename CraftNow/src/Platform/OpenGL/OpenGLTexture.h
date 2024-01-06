@@ -9,7 +9,7 @@ namespace CraftNow {
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D(const TextureSpecification& specification);
+		OpenGLTexture2D(const TextureSpecification& specification, Buffer data = Buffer());
 		OpenGLTexture2D(const std::string& path);
 		virtual ~OpenGLTexture2D();
 
@@ -21,7 +21,7 @@ namespace CraftNow {
 
 		virtual const std::string& GetPath() const override { return m_Path; }
 
-		virtual void SetData(void* data, uint32_t size) override;
+		virtual void SetData(Buffer data) override;
 
 		virtual void Bind(uint32_t slot = 0) const override;
 
