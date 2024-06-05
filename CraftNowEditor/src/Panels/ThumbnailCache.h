@@ -22,7 +22,7 @@ namespace CraftNow {
 
 		std::map<std::filesystem::path, ThumbnailImage> m_CachedImages;
 
-		// TEMP (replace with Hazel::Serialization)
+		// TEMP (replace with CraftNow::Serialization)
 		std::filesystem::path m_ThumbnailCachePath;
 	};
 }

@@ -491,9 +491,11 @@ namespace CraftNow {
 			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
+			//从Frambuffer渲染视图窗口
 			uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 			ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
 
+			//实现拖拽打开场景文件
 			if (ImGui::BeginDragDropTarget())
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
@@ -813,6 +815,11 @@ namespace CraftNow {
 			}
 			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
 
+		}
+		else {
+			//TODO: 未能正常打开，处理异常
+			CN_WARN("Could not load project file", path.filename().string());
+			return;
 		}
 	}
 

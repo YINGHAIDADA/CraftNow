@@ -2,6 +2,5 @@
   Name: 3DExample
   StartScene: 0
   AssetDirectory: "Assets"
-  AssetRegistryPath:
-    AssetRegistryPath: ""
-    ScriptModulePath: "Scripts/Binaries/Sandbox.dll"
+  AssetRegistryPath: "AssetRegistry.yaml"
+  ScriptModulePath: "Scripts/Binaries/Sandbox.dll"

@@ -70,6 +70,7 @@ namespace CraftNow {
 		}
 	private:
 		entt::entity m_EntityHandle{ entt::null };
+		//TODO: 改为智能指针 Ref<Scene>
 		Scene* m_Scene = nullptr;
 	};
 }

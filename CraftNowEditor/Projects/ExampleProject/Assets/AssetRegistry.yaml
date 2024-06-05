@@ -1,0 +1,4 @@
+AssetRegistry:
+  - Handle: 0
+    FilePath: "Scenes/Physics2D.craft"
+    Type: "AssetType::Scene"
