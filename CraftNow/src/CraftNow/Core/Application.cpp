@@ -2,6 +2,7 @@
 #include "CraftNow/Core/Application.h"
 
 #include "CraftNow/Renderer/Renderer.h"
+#include "CraftNow/Renderer/RenderCommand.h"
 
 #include "CraftNow/Core/Input.h"
 
@@ -99,6 +100,11 @@ namespace CraftNow
 
 			if (!m_Minimized)
 			{
+				// 即使没有压入任何层，也默认清除帧缓冲，
+				// 否则拖拽 ImGui 窗口时会出现残影
+				RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+				RenderCommand::Clear();
+
 				{
 					CN_PROFILE_SCOPE("LayerStack OnUpdate");
 					// 从最底开始层更新每一层
